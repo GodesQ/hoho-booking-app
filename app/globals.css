@@ -2,26 +2,164 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+nav {
+	max-width: 1440px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    width: 100%;
+    position: absolute;
+}
+
+.nav-logo {
+	border-radius: 5px;
+}
+nav ul li {
+	display: inline-block;
+	margin-right: 30px;
+}
+
+nav ul li a {
+	color: #fff;
+}
+
+.header-section {
+	width: 100%;
+	height: 450px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.header-content {
+	@apply text-foreground;
+	text-align: center;
+}
+.header-section h2 {
+	font-size: 45px;
+	font-weight: 600;
+}
+
+.hero-book-form {
+	max-width: 1440px;
+    margin: 0 auto;
+	width: 100%;
+	border-radius: 20px;
+	height: auto;
+	padding: 30px 50px;
+}
+.hero-book-form form {
+	@apply bg-white shadow-small rounded;
+	padding: 20px 0px;
+	margin-top: -80px;
+	position: relative;
+}
+.hero-book-form form .fieldset {
+	width: 85%;
+	padding: 0 20px;
+	display: flex;
+	gap: 10px;
+}
+.hero-book-form form .book-btn {
+	@apply bg-primary rounded;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 15%;
+	height: 100%;
+	font-size: 18px;
+	color: #fff;
+	font-weight: 600;
+}
+::placeholder {
+	color: red;
+}
+
+.diy-card {
+	width: 300px;
+}
+
+.guided-header-content {
+	width: 95%;
+}
+.guided-header-button {
+	position: absolute;
+	right: 0;
+	width: auto;
+	text-align: right;
+}
+.tour-container {
+	max-width: 1440px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 40px 50px;
+	display: flex;
+	gap: 10px;
+}
+.tour-content {
+	width: 70%;
+}
+.tour-content h3 {
+	@apply text-black;
+	font-size: 23px;
+	font-weight: 500;
+	line-height: 45px;
+}
+.tour-content p {
+	@apply text-gray-600;
+}
+.tour-book-form {
+	width: 30%;
+}
+
+.reservation-navbar {
+	width: 100%;
+	padding: 10px 0;
+	@apply text-black bg-white shadow;
+}
+
+.wrapper {
+	max-width: 1440px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.reservation-steps-main {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.reservation-steps-main ul {
+	width: 600px;
+}
+.reservation-steps-main ul li {
+	display: inline-block;
+	width: 32%;
+	text-align: center;
+	border-top: 3px solid lightgray;
+	padding-top: 10px;
+}
+.reservation-steps-main ul li.active {
+	border-top: 3px solid #ab2001;
+}
+
+@media screen and (max-width: 768px) {
+	.hero-book-form {
+		display: none;
+	}
+	.diy-card {
+		width: 200px;
+		height: 100%;
+	}
 }

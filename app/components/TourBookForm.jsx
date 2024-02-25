@@ -1,0 +1,174 @@
+"use client"
+
+import React, { useEffect, useState } from 'react'
+import { Calendar, CalendarIcon } from "lucide-react";
+import { DayPicker } from 'react-day-picker';
+import { Card, CardBody, Popover, PopoverTrigger, Button, PopoverContent, Input, Spacer, ButtonGroup, RadioGroup, Radio, cn, Select, SelectItem, CardHeader } from "@nextui-org/react";
+import 'react-day-picker/dist/style.css';
+import { format } from 'date-fns';
+
+export default function TourBookForm({ tour }) {
+    const [ticketPasses, setTicketPasses] = useState({});
+
+    const [reservation, setReservation] = useState({
+        tour: tour,
+        reservation_date: format(new Date(), 'yyyy-MM-dd'),
+        number_of_pax: null,
+        ticket_pass: null,
+    });
+
+    const [errors, setErrors] = useState([]);
+
+    useEffect(() => {
+        fetchTicketPasses();
+    }, [])
+
+    async function fetchTicketPasses() {
+        let response = await fetch('http://127.0.0.1:8000/api/v2/ticket-passes');
+        response = response.json();
+        setTicketPasses(response.data);
+    }
+
+
+    function handleAddToCart() {
+        if(handleReservationErrors()) return;
+        
+        // Retrieve existing cart data from localStorage
+        let carts = JSON.parse(localStorage.getItem('carts')) || [];
+        carts.push(reservation);
+
+        // Store the updated cart data back in localStorage
+        localStorage.setItem('carts', JSON.stringify(carts));
+    }
+
+    function handleReservationErrors() {
+        let newErrors = [];
+        for (const key in reservation) {
+            let key_name = key.split('_').join(' ');
+            let error = `The ${key_name} is required`;
+    
+            if ((reservation[key] == null || reservation[key] == '') && key !== 'ticket_pass') {
+                if (!newErrors.includes(error)) {
+                    newErrors.push(error);
+                }
+            } else {
+                if (newErrors.includes(error)) {
+                    newErrors = newErrors.filter(e => e !== error);
+                }
+            }
+        }
+        setErrors(newErrors);
+        
+        return newErrors.length != 0 ? true : false;
+    }    
+
+    const handleDayClick = (day, modifiers) => {
+        setReservation(prevReservation => ({
+            ...prevReservation,
+            reservation_date: format(day, 'yyyy-MM-dd'),
+        }));
+    }
+
+    const handleSelectedPax = (e) => {
+        setReservation(prevReservation => ({
+            ...prevReservation,
+            number_of_pax: e.target.value,
+        }));
+    }
+
+    return (
+        <div className="tour-book-form">
+            <Card className='p-2'>
+                <CardHeader className='flex flex-col items-start gap-2'>
+                    {   
+                        errors.length > 0 ? (
+                            errors.map((error, index) => (
+                                <div key={index} className='py-1.5 px-3 text-left w-full bg-primary text-white rounded'>{error}</div>
+                            ))
+                        ) : (<></>)
+                    }
+                    <h2 className='text-black text-left text-small leading-6'>{tour.name}</h2>
+                    <h2 className='text-primary text-small'>₱ {parseFloat(tour.price).toFixed(2)}</h2>
+                </CardHeader>
+                <CardBody>
+                    <div className="form-group gap-4">
+                        <Popover placement="bottom">
+                            <PopoverTrigger>
+                                <Input classNames={{
+                                    label: 'cursor-pointer text-small',
+                                    input: ['cursor-pointer', 'text-left', 'placeholder:text-black dark:placeholder:text-black text-small leading-6'],
+                                    description: 'text-background',
+                                }} type="date" label="Reservation Date" placeholder="MM/DD/YYYY" endContent={<Calendar size={22} color="gray" />} value={reservation.reservation_date} />
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <DayPicker selected={new Date(reservation.reservation_date)} mode="single" disabled={{ before: new Date() }} onDayClick={handleDayClick} />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+                    <Spacer y={5} />
+                    <div className="form-group gap-4">
+                        <Select
+                            label="Number of Pax"
+                            placeholder="Select Number of Pax"
+                            classNames={{ base: 'text-black', label: 'text-small' }}
+                            color='black'
+                            onChange={handleSelectedPax}
+                        >
+                            {
+                                Array.from({ length: 100 }).map((_, index) => {
+                                    const paxCount = index + 25;
+                                    return (
+                                        <SelectItem key={paxCount} value={paxCount} textValue={`${paxCount} Pax`} classNames={{ base: 'text-small' }}>
+                                            {`${paxCount} Pax`}
+                                        </SelectItem>
+                                    );
+                                })
+                            }
+                        </Select>
+                    </div>
+                    <Spacer y={5} />
+                    {
+                        tour.type == 'DIY Tour' ? (
+                            <RadioGroup label="Ticket Passes">
+                                {
+                                    ticketPasses.map(ticketPass => (
+                                        <CustomRadio value={ticketPass.id}>
+                                            {ticketPass.name}
+                                        </CustomRadio>
+                                    ))
+                                }
+                            </RadioGroup>
+                        ) : (
+                            <></>
+                        )
+                    }
+                    <Spacer y={5} />
+                    <ButtonGroup fullWidth className='gap-3'>
+                        <Button className='bg-transparent border-primary border-1 rounded text-primary' onClick={handleAddToCart}>Add to Cart</Button>
+                        <Button className='bg-primary text-foreground rounded'>Book Now</Button>
+                    </ButtonGroup>
+                </CardBody>
+            </Card>
+        </div>
+    )
+}
+
+export const CustomRadio = (props) => {
+    const { children, ...otherProps } = props;
+
+    return (
+        <Radio
+            {...otherProps}
+            classNames={{
+                base: cn(
+                    "m-0 text-black bg-content2 hover:bg-content2 items-center justify-between",
+                    `flex-row-reverse max-w-[${screen.width}px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent`,
+                    "data-[selected=true]:border-primary"
+                ),
+                label: cn('text-black block'),
+            }}
+        >
+            {children}
+        </Radio>
+    );
+};
