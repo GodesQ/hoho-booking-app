@@ -2,6 +2,8 @@ import '../globals.css'
 import { Montserrat } from 'next/font/google'
 import { Providers } from '../providers'
 import ReservationNavbar from '../components/ReservationNavbar'
+import { Spacer } from '@nextui-org/react'
+import Footer from '../components/Footer'
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -16,7 +18,9 @@ export default function RootLayout({ children }) {
         <body className={montserrat.className + ' lightRed'}>
                 <Providers>
                     <ReservationNavbar />
+                    <Spacer y={5} />
                     {children}
+                    <Footer />
                 </Providers>
             </body>
         </html>

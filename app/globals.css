@@ -5,6 +5,14 @@
 body {
 }
 
+.wrapper {
+	max-width: 1440px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 nav {
 	max-width: 1440px;
     margin: 0 auto;
@@ -101,12 +109,12 @@ nav ul li a {
 	max-width: 1440px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 40px 50px;
+	padding: 20px 30px;
 	display: flex;
 	gap: 10px;
 }
 .tour-content {
-	width: 70%;
+	width: 65%;
 }
 .tour-content h3 {
 	@apply text-black;
@@ -118,21 +126,14 @@ nav ul li a {
 	@apply text-gray-600;
 }
 .tour-book-form {
-	width: 30%;
+	width: 35%;
 }
 
 .reservation-navbar {
 	width: 100%;
-	padding: 10px 0;
+	padding: 15px 0;
 	@apply text-black bg-white shadow;
-}
-
-.wrapper {
-	max-width: 1440px;
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 30px;
-	padding-right: 30px;
+	/* box-shadow: 0px 5px 10px #000; */
 }
 
 .reservation-steps-main {
@@ -152,6 +153,47 @@ nav ul li a {
 }
 .reservation-steps-main ul li.active {
 	border-top: 3px solid #ab2001;
+}
+.cart-main {
+	width: 100%;
+	padding: 10px 0;
+	@apply text-black bg-white;
+}
+.cart-container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 20px;
+}
+.cart-list {
+	width: 65%;
+}
+.cart {
+	@apply text-black bg-white shadow px-4 py-4 w-full rounded flex justify-between gap-4 mb-5;
+}
+.cart-main-content {
+	width: 75%;
+}
+.cart-content {
+	width: 100%;
+	height: 80%;
+}
+.cart-content-action {
+	height: 20%;
+	/* border-top: 1px solid #000; */
+	@apply py-1;
+}
+
+.cart-form {
+	@apply bg-white text-black p-2 shadow;
+	width: 35%;
+}
+
+.footer {
+	width: 100%;
+	padding: 10px;
+	background: #ab2001 !important;
 }
 
 @media screen and (max-width: 768px) {
