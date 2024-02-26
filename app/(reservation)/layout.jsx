@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
                     <ReservationNavbar />
                     <Spacer y={5} />
                     {children}
+                    <Spacer y={10} />
                     <Footer />
                 </Providers>
             </body>

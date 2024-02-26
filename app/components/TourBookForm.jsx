@@ -29,8 +29,10 @@ import {
 
 import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
+import { useRouter } from 'next/navigation'
 
 export default function TourBookForm({ tour }) {
+  const router = useRouter();
   const [ticketPasses, setTicketPasses] = useState({});
 
   const [reservation, setReservation] = useState({
@@ -64,6 +66,7 @@ export default function TourBookForm({ tour }) {
 
     // Store the updated cart data back in localStorage
     localStorage.setItem("carts", JSON.stringify(carts));
+    router.push('/cart');
   }
 
   function handleReservationErrors() {
