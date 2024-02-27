@@ -198,8 +198,29 @@ nav ul li a {
 	gap: 20px;
 }
 
-.tour-items-list {
+.checkout-details {
 	width: 70%;
+}
+.checkout-summary {
+	@apply bg-white text-black p-4 shadow rounded;
+	width: 30%;
+}
+
+/* .tour-items-list {
+	width: 70%;
+} */
+
+.customer-detail-form {
+	@apply bg-white text-black p-5 shadow w-full rounded;
+}
+.phone-number-input {
+	@apply h-14 min-h-unit-10 bg-default-100 px-4 rounded;
+}
+
+.PhoneInput input {
+	height: 100%;
+	background: transparent;
+	outline: none;
 }
 
 .footer {
