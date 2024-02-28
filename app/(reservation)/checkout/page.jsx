@@ -8,6 +8,8 @@ import PhoneInput from 'react-phone-number-input'
 export default function page() {
     const [tourItems, setTourItems] = useState([]);
 
+    const [totalAmount, setTotalAmount] = useState(0);
+
     const [reservation, setReservation] = useState({
         firstname: '',
         lastname: '',
@@ -29,6 +31,7 @@ export default function page() {
         setTourItems(tour_items);
         
         let reservationItems = [];
+        let totalAmount = 0;
 
         tour_items.forEach(item => {
             reservationItems.push({
@@ -41,7 +44,11 @@ export default function page() {
                 "discounted_amount": item.total_amount,
                 "discount": 0
             });
+
+            totalAmount += item.total_amount;
         });
+
+        setTotalAmount(totalAmount);
 
         setReservation((prevReservation) => ({
             ...prevReservation,
@@ -172,7 +179,7 @@ export default function page() {
                         </div>
                         <div className="flex justify-between my-2">
                             <div>Total Amount :</div>
-                            <div>₱ 0.00</div>
+                            <div>₱ {parseFloat(totalAmount).toFixed(2)}</div>
                         </div>
                     </div>
                 </div>

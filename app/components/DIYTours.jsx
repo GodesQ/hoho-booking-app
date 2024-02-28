@@ -18,7 +18,7 @@ export default async function DIYTours() {
         <div className='flex justify-center flex-wrap gap-5'>
             {
                 tours.map(tour => (
-                    <Link href="#" key={tour.id}>
+                    <Link href={`/tours/diy/${tour.id}`} key={tour.id}>
                         <Card className="py-4 diy-card" key={tour.id}>
                             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                                 <h4 className="font-bold xl:text-medium text-black">{tour.name.length > 20 ? tour.name.substr(0, 20) + '...' : tour.name}</h4>
