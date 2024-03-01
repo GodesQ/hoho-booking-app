@@ -29,7 +29,7 @@ import {
 
 import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function TourBookForm({ tour }) {
   const router = useRouter();
@@ -54,7 +54,13 @@ export default function TourBookForm({ tour }) {
   }, []);
 
   async function fetchTicketPasses() {
-    let response = await fetch("http://127.0.0.1:8000/api/v2/ticket-passes").then(data => data.json());
+    let response = await fetch("http://127.0.0.1:8000/api/v2/ticket-passes", {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-code": "hoho-code-hohobookingwebsite030124",
+        "x-api-key": "hoho-key05kNHJan87du71ui7VnI4xJ7e030124",
+      },
+    }).then((data) => data.json());
     setTicketPasses(response.data);
   }
 
@@ -67,7 +73,7 @@ export default function TourBookForm({ tour }) {
 
     // Store the updated cart data back in localStorage
     localStorage.setItem("carts", JSON.stringify(carts));
-    router.push('/cart');
+    router.push("/cart");
   }
 
   function handleReservationErrors() {
@@ -105,8 +111,8 @@ export default function TourBookForm({ tour }) {
   const handleSelectedPax = (e) => {
     const newReservation = { ...reservation, number_of_pax: e.target.value };
     setReservation((prevReservation) => ({
-        ...prevReservation, 
-        number_of_pax: e.target.value
+      ...prevReservation,
+      number_of_pax: e.target.value,
     }));
     computeTotalAmount(newReservation.number_of_pax, reservation.ticket_pass);
   };
@@ -122,19 +128,29 @@ export default function TourBookForm({ tour }) {
         totalAmount = tour.bracket_price_one * numberOfPax;
       }
     } else {
-      let selectedTicketPass = ticketPasses.find(pass => pass.name === ticketPass);
+      let selectedTicketPass = ticketPasses.find(
+        (pass) => pass.name === ticketPass
+      );
       totalAmount = selectedTicketPass?.price * numberOfPax;
     }
 
-    setReservation((prevReservation) => ({...prevReservation, total_amount: totalAmount}));
-  }
+    setReservation((prevReservation) => ({
+      ...prevReservation,
+      total_amount: totalAmount,
+    }));
+  };
 
   const handleTicketPassChange = (e) => {
-    let ticketPass = ticketPasses.find(ticketPass => ticketPass.id == e.target.value);
+    let ticketPass = ticketPasses.find(
+      (ticketPass) => ticketPass.id == e.target.value
+    );
     setTourPrice(ticketPass.price);
-    setReservation((prevReservation) => ({...prevReservation, ticket_pass: ticketPass.name}));
+    setReservation((prevReservation) => ({
+      ...prevReservation,
+      ticket_pass: ticketPass.name,
+    }));
     computeTotalAmount(reservation.number_of_pax, ticketPass.name);
-  }
+  };
 
   return (
     <div className="tour-book-form">
@@ -159,15 +175,13 @@ export default function TourBookForm({ tour }) {
             <h2 className="text-primary text-small">
               ₱ {parseFloat(tourPrice).toFixed(2)}
             </h2>
-            {
-              tour.type == 'Guided Tour' ? (
-                <a href="#" onClick={onOpen} className="text-primary text-sm">
-                  Bracket Prices
-                </a>
-              ) : (
-                <></>
-              )
-            }
+            {tour.type == "Guided Tour" ? (
+              <a href="#" onClick={onOpen} className="text-primary text-sm">
+                Bracket Prices
+              </a>
+            ) : (
+              <></>
+            )}
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
               <ModalContent>
                 {(onClose) => (
@@ -176,27 +190,33 @@ export default function TourBookForm({ tour }) {
                       Guided Tour Bracket Prices
                     </ModalHeader>
                     <ModalBody>
-                        <div className="flex justify-between items-center px-2 my-1">
-                            <div>
-                                <h4>Bracket Price One</h4>
-                                <small>( Minimum of 4 )</small>
-                            </div>
-                            <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour.bracket_price_one).toFixed(2)}</p>
+                      <div className="flex justify-between items-center px-2 my-1">
+                        <div>
+                          <h4>Bracket Price One</h4>
+                          <small>( Minimum of 4 )</small>
                         </div>
-                        <div className="flex justify-between items-center px-2 my-1">
-                            <div>
-                                <h4>Bracket Price Two</h4>
-                                <small>( Minimum of 10 )</small>
-                            </div>
-                            <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour.bracket_price_two).toFixed(2)}</p>
+                        <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                          ₱ {parseFloat(tour.bracket_price_one).toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="flex justify-between items-center px-2 my-1">
+                        <div>
+                          <h4>Bracket Price Two</h4>
+                          <small>( Minimum of 10 )</small>
                         </div>
-                        <div className="flex justify-between items-center px-2 my-1">
-                            <div>
-                                <h4>Bracket Price Three</h4>
-                                <small>( Minimum of 25 )</small>
-                            </div>
-                            <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour.bracket_price_three).toFixed(2)}</p>
+                        <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                          ₱ {parseFloat(tour.bracket_price_two).toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="flex justify-between items-center px-2 my-1">
+                        <div>
+                          <h4>Bracket Price Three</h4>
+                          <small>( Minimum of 25 )</small>
                         </div>
+                        <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                          ₱ {parseFloat(tour.bracket_price_three).toFixed(2)}
+                        </p>
+                      </div>
                     </ModalBody>
                     <ModalFooter>
                       <Button color="primary" variant="light" onPress={onClose}>
@@ -268,7 +288,11 @@ export default function TourBookForm({ tour }) {
           {tour.type == "DIY Tour" ? (
             <RadioGroup label="Ticket Passes">
               {ticketPasses.map((ticketPass) => (
-                <CustomRadio value={ticketPass.id} key={ticketPass.id} onChange={handleTicketPassChange}>
+                <CustomRadio
+                  value={ticketPass.id}
+                  key={ticketPass.id}
+                  onChange={handleTicketPassChange}
+                >
                   {ticketPass.name}
                 </CustomRadio>
               ))}
