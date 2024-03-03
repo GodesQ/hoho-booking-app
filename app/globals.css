@@ -229,6 +229,41 @@ nav ul li a {
 	background: #ab2001 !important;
 }
 
+.login-main-container {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+}
+
+.login-content-container {
+	width: 50%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 25px 55px;
+	flex-direction: column;
+	gap: 30px;
+}
+.login-form {
+	width: 100%;
+}
+
+.login-image-container {
+	width: 50%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	color: #fff;
+	gap: 20px;
+}
+.login-image-container h2 {
+	width: 75%;
+	text-align: center;
+}
+
 @media screen and (max-width: 768px) {
 	.hero-book-form {
 		display: none;

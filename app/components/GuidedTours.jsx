@@ -7,8 +7,8 @@ async function fetchGuidedTours() {
     next: { revalidate: 60 },
     headers: {
       "Content-Type": "application/json",
-      "x-api-code": "hoho-code-hohobookingwebsite030124",
-      "x-api-key": "hoho-key05kNHJan87du71ui7VnI4xJ7e030124",
+      "x-api-code": "hoho-code-hohobooking030224",
+      "x-api-key": "hoho-keyoDzHXAw9xHTPtqfinCF4lwWST030224",
     },
   });
 

@@ -9,8 +9,8 @@ async function getDIYTour(id) {
   let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      "x-api-code": "hoho-code-hohobookingwebsite030124",
-      "x-api-key": "hoho-key05kNHJan87du71ui7VnI4xJ7e030124",
+      "x-api-code": "hoho-code-hohobooking030224",
+      "x-api-key": "hoho-keyoDzHXAw9xHTPtqfinCF4lwWST030224",
     },
   });
   return await response.json();

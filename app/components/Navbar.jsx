@@ -16,7 +16,7 @@ export default function Navbar() {
                 <li><Link href="https://philippines-hoho.ph/">Official Website</Link></li>
             </ul>
             <div className="flex gap-3 items-center justify-between">
-                <a href='' className='py-2 px-4 bg-primary rounded text-foreground'>Login Now</a>
+                <Link href='/login' className='py-2 px-4 bg-primary rounded text-foreground'>Login Now</Link>
                 <Link href='/cart'><ShoppingCart color="white" size={20} className='cursor-pointer' /></Link>
             </div>
 

@@ -17,12 +17,11 @@ export default function AttractionSlider() {
     let response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        'x-api-code': 'hoho-code-hohobookingwebsite030124',
-        'x-api-key': 'hoho-key05kNHJan87du71ui7VnI4xJ7e030124',
+        'x-api-code': 'hoho-code-hohobooking030224',
+        'x-api-key': 'hoho-keyoDzHXAw9xHTPtqfinCF4lwWST030224',
       },
     });
     response = await response.json();
-    console.log(response);
     setAttractions(response.data);
   }
 
