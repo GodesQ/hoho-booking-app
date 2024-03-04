@@ -5,8 +5,29 @@ import TourBookForm from "@/app/components/TourBookForm";
 import TourDetailTab from "@/app/components/TourDetailTab";
 import GuidedTours from "@/app/components/GuidedTours";
 
+export async function generateStaticParams() {
+  let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/guided?length=5`, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-code": "hoho-code-hohobookingwebsite030424",
+      "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+    },
+  });
+
+  const response_data = await response.json();
+  return response_data.data.map((tour) => ({
+    id: tour.id.toString(),
+  }));
+}
+
 async function getGuidedTour(id) {
-  let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/${id}`);
+  let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-code": "hoho-code-hohobookingwebsite030424",
+      "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+    },
+  });
   return await response.json();
 }
 
@@ -15,7 +36,7 @@ export default async function page({ params }) {
   tour = tour.data;
   return (
     <div className="lightRed ">
-      <HeaderPage title="Guided Tour" subTitle={tour.name} />
+      <HeaderPage title="Guided Tour" subTitle={tour?.name} />
       <div className="tour-container">
         <Card className="tour-content px-5 py-5">
           <div className="flex gap-6">
@@ -23,8 +44,8 @@ export default async function page({ params }) {
               style={{ width: "100%" }}
               width={"30%"}
               classNames={{ wrapper: "w-auto" }}
-              src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour.id}/${tour.featured_image}`}
-              alt={tour.name}
+              src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour?.id}/${tour?.featured_image}`}
+              alt={tour?.name}
             />
             <div style={{ width: "70%" }}>
               <TourDetailTab tour={tour} />

@@ -17,8 +17,8 @@ export default function AttractionSlider() {
     let response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        'x-api-code': 'hoho-code-hohobookingwebsite030124',
-        'x-api-key': 'hoho-key05kNHJan87du71ui7VnI4xJ7e030124',
+        'x-api-code': "hoho-code-hohobookingwebsite030424",
+        'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
       },
     });
     response = await response.json();
@@ -27,7 +27,7 @@ export default function AttractionSlider() {
 
   return (
     <Swiper spaceBetween={25} slidesPerView={4}>
-      {attractions.map((attraction) => (
+      {attractions?.map((attraction) => (
         <SwiperSlide key={attraction.id}>
           <Image
             alt={attraction.name}

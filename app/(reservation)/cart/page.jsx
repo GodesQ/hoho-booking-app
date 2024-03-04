@@ -1,10 +1,10 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { Button, Card, CardBody, Image, Spacer } from "@nextui-org/react";
 import { format } from "date-fns";
 import { ShoppingCart, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
 export default function CartPage() {
   const router = useRouter();
@@ -15,8 +15,8 @@ export default function CartPage() {
     getCartItems();
   }, []);
 
-  function getCartItems() {
-    let cart_items = JSON.parse(localStorage.getItem("carts")) || [];
+  async function getCartItems() {
+    let cart_items = await JSON.parse(localStorage.getItem("carts")) || [];
     setCarts(cart_items);
     calculateCartTotalAmount(cart_items);
   }
@@ -112,7 +112,7 @@ export default function CartPage() {
               <Card className="px-4 py-5 max-w-[600px]">
                 <CardBody className="text-black text-center">
                   <h2 className="text-medium mb-3"><ShoppingCart color="primary" /> Your Travel Cart</h2>
-                  <p>There are no items in your travel cart. Click on "Continue Shopping" to resume your shopping.</p>
+                  <p>There are no items in your travel cart. Click on &ldquo;Continue Shopping&ldquo; to resume your shopping.</p>
                   <Spacer y={5} />
                   <div className="text-center">
                     <Link href="/" className="bg-primary text-white py-3 px-4 rounded max-w-[100px] text-small">Continue Shopping</Link>

@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
-export default function page() {
+export default function CheckoutPage() {
     const [tourItems, setTourItems] = useState([]);
 
     const [totalAmount, setTotalAmount] = useState(0);
@@ -87,7 +87,10 @@ export default function page() {
             method: "POST",
             cache: "no-cache",
             headers: {
+                "accept": "application/json",
                 "Content-Type": "application/json",
+                "x-api-code": "hoho-code-hohobookingwebsite030424",
+                "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
             },
             body: JSON.stringify(body),
         }).then((data) => data.json());

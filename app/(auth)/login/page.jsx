@@ -7,11 +7,11 @@ import heroBackground from "../../../public/assets/bg-hero.png";
 import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";
 
-const headerStyling = {
-  backgroundImage: `url(${heroBackground.src})`,
-};
-
 export default function LoginPage() {
+  const headerStyling = {
+    backgroundImage: `url(${heroBackground.src})`,
+  };
+  
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",

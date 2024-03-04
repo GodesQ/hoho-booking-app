@@ -7,8 +7,8 @@ async function fetchGuidedTours() {
     next: { revalidate: 60 },
     headers: {
       "Content-Type": "application/json",
-      "x-api-code": "hoho-code-hohobookingwebsite030124",
-      "x-api-key": "hoho-key05kNHJan87du71ui7VnI4xJ7e030124",
+      'x-api-code': "hoho-code-hohobookingwebsite030424",
+      'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
     },
   });
 
@@ -21,8 +21,8 @@ export default async function GuidedTours() {
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-5">
-      {tours.map((tour) => (
-        <Link href={`/tours/guided/${tour.id}`}>
+      {tours.length > 0 && tours?.map((tour) => (
+        <Link href={`/tours/guided/${tour.id}`} key={tour.id}>
           <Card className="py-4" key={tour.id}>
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <h4 className="font-bold text-medium text-black">

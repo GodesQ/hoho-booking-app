@@ -43,7 +43,7 @@ export default function TourBookForm({ tour }) {
     total_amount: 0,
   });
 
-  const [tourPrice, setTourPrice] = useState(tour.price);
+  const [tourPrice, setTourPrice] = useState(tour?.price);
 
   const [errors, setErrors] = useState([]);
 
@@ -57,8 +57,8 @@ export default function TourBookForm({ tour }) {
     let response = await fetch("http://127.0.0.1:8000/api/v2/ticket-passes", {
       headers: {
         "Content-Type": "application/json",
-        "x-api-code": "hoho-code-hohobookingwebsite030124",
-        "x-api-key": "hoho-key05kNHJan87du71ui7VnI4xJ7e030124",
+        "x-api-code": "hoho-code-hohobookingwebsite030424",
+        "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
       },
     }).then((data) => data.json());
     setTicketPasses(response.data);
@@ -119,13 +119,13 @@ export default function TourBookForm({ tour }) {
 
   const computeTotalAmount = (numberOfPax, ticketPass) => {
     let totalAmount = 0;
-    if (tour.type == "Guided Tour") {
+    if (tour?.type == "Guided Tour") {
       if (numberOfPax >= 25) {
-        totalAmount = tour.bracket_price_three * numberOfPax;
+        totalAmount = tour?.bracket_price_three * numberOfPax;
       } else if (numberOfPax >= 10) {
-        totalAmount = tour.bracket_price_two * numberOfPax;
+        totalAmount = tour?.bracket_price_two * numberOfPax;
       } else {
-        totalAmount = tour.bracket_price_one * numberOfPax;
+        totalAmount = tour?.bracket_price_one * numberOfPax;
       }
     } else {
       let selectedTicketPass = ticketPasses.find(
@@ -169,13 +169,13 @@ export default function TourBookForm({ tour }) {
             <></>
           )}
           <h2 className="text-black text-left text-small leading-6">
-            {tour.name}
+            {tour?.name}
           </h2>
           <div className="flex justify-between w-full">
             <h2 className="text-primary text-small">
               ₱ {parseFloat(tourPrice).toFixed(2)}
             </h2>
-            {tour.type == "Guided Tour" ? (
+            {tour?.type == "Guided Tour" ? (
               <a href="#" onClick={onOpen} className="text-primary text-sm">
                 Bracket Prices
               </a>
@@ -196,7 +196,7 @@ export default function TourBookForm({ tour }) {
                           <small>( Minimum of 4 )</small>
                         </div>
                         <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
-                          ₱ {parseFloat(tour.bracket_price_one).toFixed(2)}
+                          ₱ {parseFloat(tour?.bracket_price_one).toFixed(2)}
                         </p>
                       </div>
                       <div className="flex justify-between items-center px-2 my-1">
@@ -205,7 +205,7 @@ export default function TourBookForm({ tour }) {
                           <small>( Minimum of 10 )</small>
                         </div>
                         <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
-                          ₱ {parseFloat(tour.bracket_price_two).toFixed(2)}
+                          ₱ {parseFloat(tour?.bracket_price_two).toFixed(2)}
                         </p>
                       </div>
                       <div className="flex justify-between items-center px-2 my-1">
@@ -214,7 +214,7 @@ export default function TourBookForm({ tour }) {
                           <small>( Minimum of 25 )</small>
                         </div>
                         <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
-                          ₱ {parseFloat(tour.bracket_price_three).toFixed(2)}
+                          ₱ {parseFloat(tour?.bracket_price_three).toFixed(2)}
                         </p>
                       </div>
                     </ModalBody>
@@ -285,9 +285,9 @@ export default function TourBookForm({ tour }) {
             </Select>
           </div>
           <Spacer y={5} />
-          {tour.type == "DIY Tour" ? (
+          {tour?.type == "DIY Tour" ? (
             <RadioGroup label="Ticket Passes">
-              {ticketPasses.map((ticketPass) => (
+              {ticketPasses.length > 0 && ticketPasses.map((ticketPass) => (
                 <CustomRadio
                   value={ticketPass.id}
                   key={ticketPass.id}

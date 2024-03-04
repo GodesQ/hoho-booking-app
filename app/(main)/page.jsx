@@ -6,7 +6,7 @@ import { Spacer } from '@nextui-org/react';
 import GuidedTours from '../components/GuidedTours';
 import DIYTours from '../components/DIYTours';
 import Link from 'next/link';
-import { ArrowRight, ArrowRightCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import HeaderPage from '../components/HeaderPage';
 
 const diySection = {

@@ -9,8 +9,8 @@ async function fetchDIYTours() {
         next: { revalidate: 60 },
         headers: {
             "Content-Type": "application/json",
-            'x-api-code': 'hoho-code-hohobookingwebsite030124',
-            'x-api-key': 'hoho-key05kNHJan87du71ui7VnI4xJ7e030124',
+            'x-api-code': "hoho-code-hohobookingwebsite030424",
+            'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
         }
     });
     return await response.json();
@@ -24,7 +24,7 @@ export default async function DIYTours() {
     return (
         <div className='flex justify-center flex-wrap gap-5'>
             {
-                tours.map(tour => (
+                tours.length > 0 && tours?.map(tour => (
                     <Link href={`/tours/diy/${tour.id}`} key={tour.id}>
                         <Card className="py-4 diy-card" key={tour.id}>
                             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
