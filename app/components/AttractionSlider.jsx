@@ -6,42 +6,55 @@ import "swiper/css";
 import { Image, Spacer, Card, CardHeader, CardBody } from "@nextui-org/react";
 
 export default function AttractionSlider() {
-  const [attractions, setAttractions] = useState([]);
+    const [attractions, setAttractions] = useState([]);
 
-  useEffect(() => {
-    fetchAttractions();
-  }, []);
+    useEffect(() => {
+        fetchAttractions();
+    }, []);
 
-  async function fetchAttractions() {
-    let url = `https://dashboard.philippines-hoho.ph/api/v2/attractions?length=10`;
-    let response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        'x-api-code': "hoho-code-hohobookingwebsite030524",
-        'x-api-key': "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
-      },
-    });
-    response = await response.json();
-    setAttractions(response.data);
-  }
+    async function fetchAttractions() {
+        let url = `https://dashboard.philippines-hoho.ph/api/v2/attractions?length=10`;
+        let response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                'x-api-code': "hoho-code-hohobookingwebsite030524",
+                'x-api-key': "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
+            },
+        });
+        response = await response.json();
+        setAttractions(response.data);
+    }
 
-  return (
-    <Swiper spaceBetween={25} slidesPerView={4}>
-      {attractions?.map((attraction) => (
-        <SwiperSlide key={attraction.id}>
-          <Image
-            alt={attraction.name}
-            className="object-cover rounded"
-            src={`https://dashboard.philippines-hoho.ph/assets/img/attractions/${attraction.id}/${attraction.featured_image}`}
-            width={"100%"}
-            style={{
-              height: "250px",
-              objectFit: "cover",
-              filter: "brightness(100%)",
-            }}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  );
+    return (
+        <Swiper spaceBetween={20} breakpoints={{
+            640: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+            1280: {
+                slidesPerView: 4,
+            },
+        }}>
+            {attractions?.map((attraction) => (
+                <SwiperSlide key={attraction.id}>
+                    <Image
+                        alt={attraction.name}
+                        className="object-cover rounded"
+                        src={`https://dashboard.philippines-hoho.ph/assets/img/attractions/${attraction.id}/${attraction.featured_image}`}
+                        width={"100%"}
+                        style={{
+                            height: "250px",
+                            objectFit: "cover",
+                            filter: "brightness(100%)",
+                        }}
+                    />
+                </SwiperSlide>
+            ))}
+        </Swiper>
+    );
 }

@@ -12,7 +12,9 @@ import HeaderPage from '../components/HeaderPage';
 const diySection = {
     backgroundImage: `url(${diyBackground.src})`,
     backgroundSize: 'cover',
-    backgroundPosition: 'right center'
+    backgroundPosition: 'right center',
+    paddingTop: '40px', 
+    paddingBottom: '40px'
 }
 
 export default function Home() {
@@ -22,7 +24,7 @@ export default function Home() {
             <HeaderPage title='Book Philippine Hop On Hop Off Tours' subTitle="Explore the Wonders of the Philippines with our Hop-On Hop-Off Tours" />
             <HeroBookForm />
             <Spacer y={30} />
-            <div className='mx-auto' style={{ maxWidth: '1440px', padding: '0 50px' }}>
+            <div className='section-container'>
                 <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>Attractions</h2>
                 <h3 className='text-center'>Discover Unforgettable Attractions Await Your Exploration</h3>
                 <Spacer y={25} />
@@ -30,7 +32,7 @@ export default function Home() {
             </div>
             <Spacer y={45} />
             <div className='' style={diySection}>
-                <div className='mx-auto' style={{ maxWidth: '1440px', padding: '40px 50px' }}>
+                <div className='section-container'>
                     <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>DIY Tours</h2>
                     <h3 className='text-center'>Discover Unforgettable Attractions Await Your Exploration</h3>
                     <Spacer y={30} />
@@ -38,7 +40,7 @@ export default function Home() {
                 </div>
             </div>
             <Spacer y={45} />
-            <div className='bg-white mx-auto' style={{ maxWidth: '1440px', padding: '0px 50px' }}>
+            <div className='section-container bg-white mx-auto' style={{ maxWidth: '1440px', padding: '0px 50px' }}>
                 <div className="flex w-full justify-center relative items-center">
                     <div className='guided-header-content'>
                         <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>Guided Tours</h2>

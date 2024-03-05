@@ -37,6 +37,11 @@ nav ul li {
 nav ul li a {
 	color: #fff;
 }
+.section-container {
+	max-width: 1440px;
+	padding: 0 50px;
+	@apply mx-auto;
+}
 
 .header-section {
 	width: 100%;
@@ -94,6 +99,13 @@ nav ul li a {
 
 .diy-card {
 	width: 300px;
+	@apply py-4;
+}
+
+.guided-card {
+	width: auto;
+	height: auto;
+	@apply py-4;
 }
 
 .guided-header-content {
@@ -271,5 +283,41 @@ nav ul li a {
 	.diy-card {
 		width: 200px;
 		height: 100%;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	.header-section {
+		padding: 10px 20px;
+	}
+	.header-content h2 {
+		font-size: 30px;
+		margin-bottom: 10px;
+	}
+	.section-container {
+		padding: 0px 20px !important;
+	}
+	.diy-card {
+		width: 150px !important;
+		height: 100%;
+		padding: 0 !important;
+	}
+	.guided-card {
+		width: 150px !important;
+		height: auto;
+		padding: 0 !important;
+	}
+	.diy-card h4 {
+		font-size: 15px !important;
+		display: none;
+	}
+	.diy-card small {
+		display: none;
+	}
+	.guided-card h4 {
+		display: none;
+	}
+	.guided-card small {
+		display: none;
 	}
 }

@@ -28,11 +28,6 @@ export default function LoginPage() {
 
   const [session, setSession] = useState(null);
 
-  // useEffect(() => {
-  //   let ses = cookieCutter.get('session');
-  //   setSession(ses);
-  // }, []);
-
   const handleLoginSubmit = async () => {
     try {
       setLoginBtnDisabled(true);
@@ -55,6 +50,7 @@ export default function LoginPage() {
 
       const responseData = await response.json();
       login(responseData);
+      
       let ses = cookieCutter.get('session');
       setSession(ses);
 

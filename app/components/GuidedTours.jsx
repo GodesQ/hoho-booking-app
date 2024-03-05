@@ -20,10 +20,10 @@ export default async function GuidedTours() {
   tours = tours.data ? tours.data : [];
 
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-5">
+    <div className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-4">
       {tours.length > 0 && tours?.map((tour) => (
-        <Link href={`/tours/guided/${tour.id}`} key={tour.id}>
-          <Card className="py-4" key={tour.id}>
+        <Card className="guided-card" key={tour.id}>
+          <Link href={`/tours/guided/${tour.id}`} key={tour.id}>
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <h4 className="font-bold text-medium text-black">
                 {tour.name.length > 20
@@ -40,8 +40,8 @@ export default async function GuidedTours() {
                 width={"100%"}
               />
             </CardBody>
-          </Card>
-        </Link>
+          </Link>
+        </Card>
       ))}
     </div>
   );
