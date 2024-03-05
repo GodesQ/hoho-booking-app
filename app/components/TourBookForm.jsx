@@ -54,11 +54,11 @@ export default function TourBookForm({ tour }) {
   }, []);
 
   async function fetchTicketPasses() {
-    let response = await fetch("http://127.0.0.1:8000/api/v2/ticket-passes", {
+    let response = await fetch("https://dashboard.philippines-hoho.ph/api/v2/ticket-passes", {
       headers: {
         "Content-Type": "application/json",
-        "x-api-code": "hoho-code-hohobookingwebsite030424",
-        "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+        "x-api-code": "hoho-code-hohobookingwebsite030524",
+        "x-api-key": "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
       },
     }).then((data) => data.json());
     setTicketPasses(response.data);

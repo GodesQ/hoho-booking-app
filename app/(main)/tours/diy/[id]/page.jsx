@@ -7,11 +7,11 @@ import DIYTours from "@/app/components/DIYTours";
 
 
 export async function generateStaticParams() {
-  let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/diy?length=5`, {
+  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/diy?length=5`, {
     headers: {
       "Content-Type": "application/json",
-      "x-api-code": "hoho-code-hohobookingwebsite030424",
-      "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+      'x-api-code': process.env.API_CODE,
+      'x-api-key': process.env.API_KEY,
     },
   });
 
@@ -22,11 +22,11 @@ export async function generateStaticParams() {
 }
 
 async function getDIYTour(id) {
-  let response = await fetch(`http://127.0.0.1:8000/api/v2/tours/${id}`, {
+  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      "x-api-code": "hoho-code-hohobookingwebsite030424",
-      "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+      'x-api-code': process.env.API_CODE,
+      'x-api-key': process.env.API_KEY,
     },
   });
   return await response.json();

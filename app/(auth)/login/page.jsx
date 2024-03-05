@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LogoText from "../../../public/hoho_text.png";
 import Logo from "../../../public/hoho-logo.jpg";
 import heroBackground from "../../../public/assets/bg-hero.png";
-import { Button, Input } from "@nextui-org/react";
-import Image from "next/image";
+import { Button, Image, Input } from "@nextui-org/react";
+import { login, getSession } from "@/action";
+import cookieCutter from 'cookie-cutter'
+import { useRouter } from 'next/navigation'
+
 
 export default function LoginPage() {
   const headerStyling = {
     backgroundImage: `url(${heroBackground.src})`,
   };
+
+  const router = useRouter()
   
   const [credentials, setCredentials] = useState({
     username: "",
@@ -21,11 +26,18 @@ export default function LoginPage() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [session, setSession] = useState(null);
+
+  // useEffect(() => {
+  //   let ses = cookieCutter.get('session');
+  //   setSession(ses);
+  // }, []);
+
   const handleLoginSubmit = async () => {
     try {
       setLoginBtnDisabled(true);
 
-      const response = await fetch(`http://127.0.0.1:8000/api/v2/login`, {
+      const response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/login`, {
         method: "POST",
         headers: {
           accept: "application/json",
@@ -42,8 +54,14 @@ export default function LoginPage() {
       }
 
       const responseData = await response.json();
+      login(responseData);
+      let ses = cookieCutter.get('session');
+      setSession(ses);
 
       setErrorMessage("");
+
+      router.push('/');
+
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -54,7 +72,7 @@ export default function LoginPage() {
       <div className="login-content-container">
         <div className="flex justify-center items-center flex-col text-center gap-3">
           <Image
-            src={Logo}
+            src={Logo.src}
             width={100}
             className="nav-logo"
             alt="Philippines Hop On Hop Off"

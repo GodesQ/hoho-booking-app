@@ -2,13 +2,13 @@ import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 async function fetchGuidedTours() {
-  let url = `http://127.0.0.1:8000/api/v2/tours/guided?length=8`;
+  let url = `https://dashboard.philippines-hoho.ph/api/v2/tours/guided?length=8`;
   let response = await fetch(url, {
     next: { revalidate: 60 },
     headers: {
       "Content-Type": "application/json",
-      'x-api-code': "hoho-code-hohobookingwebsite030424",
-      'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+      'x-api-code': "hoho-code-hohobookingwebsite030524",
+      'x-api-key': "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
     },
   });
 
@@ -17,7 +17,7 @@ async function fetchGuidedTours() {
 
 export default async function GuidedTours() {
   let tours = await fetchGuidedTours();
-  tours = tours.data;
+  tours = tours.data ? tours.data : [];
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-5">
@@ -31,7 +31,6 @@ export default async function GuidedTours() {
                   : tour.name}
               </h4>
               <small className="text-default-500">{tour.type}</small>
-              {/* <p className="text-small uppercase font-bold text-primary">P {parseFloat(tour.price).toFixed(2)}</p> */}
             </CardHeader>
             <CardBody className="overflow-visible py-2">
               <Image

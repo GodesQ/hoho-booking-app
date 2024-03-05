@@ -4,8 +4,10 @@ import { Button, Card, CardBody, Divider, Image, Input, Spacer } from '@nextui-o
 import { format } from 'date-fns';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import { useAppContext } from '@/context';
 
 export default function CheckoutPage() {
+    const {token} = useAppContext();
     const [tourItems, setTourItems] = useState([]);
 
     const [totalAmount, setTotalAmount] = useState(0);
@@ -82,15 +84,14 @@ export default function CheckoutPage() {
             promocode: reservation.promocode,
         };
 
-
-        const response = await fetch('http://127.0.0.1:8000/api/v2/tour-reservations/guest', {
+        const response = await fetch('https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/guest', {
             method: "POST",
             cache: "no-cache",
             headers: {
                 "accept": "application/json",
                 "Content-Type": "application/json",
-                "x-api-code": "hoho-code-hohobookingwebsite030424",
-                "x-api-key": "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+                "x-api-code": process.env.API_CODE,
+                "x-api-key": process.env.API_KEY,
             },
             body: JSON.stringify(body),
         }).then((data) => data.json());
@@ -105,7 +106,7 @@ export default function CheckoutPage() {
     return (
         <div className="checkout-main-container">
             <div className="wrapper">
-                <h2 className='text-large font-semibold mb-4'>Checkout</h2>
+                <h2 className='text-large font-semibold mb-4'>{token}</h2>
                 <div className="checkout-container">
                     <div className="checkout-details">
                         <div className="w-full mb-10">

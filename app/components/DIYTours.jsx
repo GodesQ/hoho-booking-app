@@ -4,13 +4,13 @@ import Link from 'next/link';
 
 
 async function fetchDIYTours() {
-    let url = `http://127.0.0.1:8000/api/v2/tours/diy`;
+    let url = `https://dashboard.philippines-hoho.ph/api/v2/tours/diy`;
     let response = await fetch(url, {
         next: { revalidate: 60 },
         headers: {
             "Content-Type": "application/json",
-            'x-api-code': "hoho-code-hohobookingwebsite030424",
-            'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+            'x-api-code': process.env.API_CODE,
+            'x-api-key': process.env.API_KEY,
         }
     });
     return await response.json();
@@ -19,7 +19,7 @@ async function fetchDIYTours() {
 
 export default async function DIYTours() {
     let tours = await fetchDIYTours();
-    tours = tours.data;
+    tours = tours.data ? tours.data : [];
 
     return (
         <div className='flex justify-center flex-wrap gap-5'>
@@ -30,7 +30,6 @@ export default async function DIYTours() {
                             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                                 <h4 className="font-bold xl:text-medium text-black">{tour.name.length > 20 ? tour.name.substr(0, 20) + '...' : tour.name}</h4>
                                 <small className="text-default-500">{tour.type}</small>
-                                {/* <p className="text-small uppercase font-bold text-primary">P {parseFloat(tour.price).toFixed(2)}</p> */}
                             </CardHeader>
                             <CardBody className="overflow-visible py-2">
                                 <Image

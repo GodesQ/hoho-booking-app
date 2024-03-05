@@ -13,12 +13,12 @@ export default function AttractionSlider() {
   }, []);
 
   async function fetchAttractions() {
-    let url = `http://127.0.0.1:8000/api/v2/attractions?length=10`;
+    let url = `https://dashboard.philippines-hoho.ph/api/v2/attractions?length=10`;
     let response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        'x-api-code': "hoho-code-hohobookingwebsite030424",
-        'x-api-key': "hoho-keyhKfPeO0iGcokF7XzrTEuP1Mil030424",
+        'x-api-code': "hoho-code-hohobookingwebsite030524",
+        'x-api-key': "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
       },
     });
     response = await response.json();
