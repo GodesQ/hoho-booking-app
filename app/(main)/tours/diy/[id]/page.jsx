@@ -40,7 +40,7 @@ export default async function DIYPage({ params }) {
       <HeaderPage title="DIY Tour" subTitle={tour?.name} />
       <div className="tour-container">
         <Card className="tour-content px-5 py-5">
-          <div className="flex gap-6">
+          <div className="flex gap-6 sm:flex-column">
             <Image
               style={{ width: "100%" }}
               width={"30%"}

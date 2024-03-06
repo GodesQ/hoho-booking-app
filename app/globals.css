@@ -25,10 +25,20 @@ nav {
     width: 100%;
     position: absolute;
 }
+.nav-btn {
+	@apply py-2 px-4;
+}
+.menu-btn {
+	display: none;
+}
+.cart-icon-btn {
+	color: #fff !important;
+}
 
 .nav-logo {
 	border-radius: 5px;
 }
+
 nav ul li {
 	display: inline-block;
 	margin-right: 30px;
@@ -284,9 +294,56 @@ nav ul li a {
 		width: 200px;
 		height: 100%;
 	}
+	.header-content h2 {
+		font-size: 35px;
+		margin-bottom: 10px;
+	}
 }
 
 @media screen and (max-width: 640px) {
+	nav {
+		width: 100%;
+		padding: 20px;
+		left: 0 !important;
+		top: 0 !important;
+		background: #fff;
+		z-index: 20;
+		margin: 0;
+		border-bottom: 1px solid #d1d2d4;
+	}
+	.nav-list {
+		position: absolute;
+		width: 100%;
+		background: #fff;
+		left: 0;
+	}
+	.nav-list li {
+		display: block !important;
+		padding: 15px 20px;
+		width: 100%;
+	}
+	.nav-list li:hover {
+		background: #d1d2d4;
+	}
+	.nav-list li a {
+		color: #000 !important;
+	}
+	.nav-logo {
+		width: 50px !important;
+	}
+	.nav-btn {
+		@apply py-1.5 px-3 text-small;
+		z-index: 19;
+	}
+	.cart-icon-btn {
+		color: #000 !important;
+		z-index: 19;
+	}
+	.menu-btn {
+		display: block;
+		z-index: 19;
+	}
+	
 	.header-section {
 		padding: 10px 20px;
 	}
@@ -319,5 +376,15 @@ nav ul li a {
 	}
 	.guided-card small {
 		display: none;
+	}
+
+	.tour-container {
+		flex-direction: column !important;
+	}
+	.tour-content {
+		width: 100%;
+	}
+	.tour-book-form {
+		width: 100%;
 	}
 }

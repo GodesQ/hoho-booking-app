@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function TourDetailTab({tour}) {
     return (
-        <Tabs aria-label="Options" color='primary'>
+        <Tabs aria-label="Options" color='primary' className='flex'>
             <Tab key="description" title="Description" className='text-black'>
                 {tour?.description}
             </Tab>
