@@ -26,13 +26,11 @@ export default function LoginPage() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [session, setSession] = useState(null);
-
   const handleLoginSubmit = async () => {
     try {
       setLoginBtnDisabled(true);
 
-      const response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/login`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/v2/login`, {
         method: "POST",
         headers: {
           accept: "application/json",
@@ -51,9 +49,6 @@ export default function LoginPage() {
       const responseData = await response.json();
       login(responseData);
       
-      let ses = cookieCutter.get('session');
-      setSession(ses);
-
       setErrorMessage("");
 
       router.push('/');
@@ -127,7 +122,7 @@ export default function LoginPage() {
       </div>
       <div className="login-image-container" style={headerStyling}>
         <Image
-          src={LogoText}
+          src={LogoText.src}
           width={360}
           className="nav-logo"
           alt="Philippines Hop On Hop Off"

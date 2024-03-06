@@ -15,13 +15,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en" className='scroll-smooth'>
-        <body className={montserrat.className + ' lightRed'}>
+            <body className={montserrat.className + ' lightRed'}>
                 <Providers>
-                    <ReservationNavbar />
-                    <Spacer y={5} />
-                    {children}
-                    <Spacer y={10} />
-                    <Footer />
+                        <ReservationNavbar />
+                        <Spacer y={5} />
+                        {children}
+                        <Spacer y={10} />
+                        <Footer />
                 </Providers>
             </body>
         </html>

@@ -1,13 +1,17 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { Button, Card, CardBody, Divider, Image, Input, Spacer } from '@nextui-org/react';
+import { Button, Divider, Image, Input, Spacer } from '@nextui-org/react';
 import { format } from 'date-fns';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-import { useAppContext } from '@/context';
+import { getSession } from '@/action';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation'
 
 export default function CheckoutPage() {
-    const {token} = useAppContext();
+    let router = useRouter();
+
     const [tourItems, setTourItems] = useState([]);
 
     const [totalAmount, setTotalAmount] = useState(0);
@@ -23,10 +27,24 @@ export default function CheckoutPage() {
     });
 
     const [isCheckoutBtnActive, setCheckoutBtnActive] = useState(true);
+    const [userSession, setUserSession] = useState(null);
 
     useEffect(() => {
         getReservationItems();
+        getUserSession();
     }, []);
+
+    async function getUserSession() {
+        let session = await getSession();
+        setUserSession(session);
+        setReservation((prevReservation) => ({
+            ...prevReservation,
+            firstname: session.user.user.firstname,
+            lastname: session.user.user.lastname,
+            contact_no: session.user.user.countryCode + session.user.user.contact_no,
+            email: session.user.user.email,
+        }));
+    }
 
     function getReservationItems() {
         let tour_items = JSON.parse(localStorage.getItem("carts")) || [];
@@ -73,18 +91,29 @@ export default function CheckoutPage() {
     }
 
     async function handleCheckoutSubmit() {
-        setCheckoutBtnActive(false);
-        let body = {
-            firstname: reservation.firstname,
-            lastname: reservation.lastname,
-            contact_no: reservation.contact_no,
-            email: reservation.email,
-            address: reservation.address,
-            items: JSON.stringify(reservation.items),
-            promocode: reservation.promocode,
-        };
+        let body, url;
+        if(userSession) {
+            body = {
+                reserved_user_id: userSession.user.user.id,
+                items: JSON.stringify(reservation.items),
+                promocode: reservation.promocode,
+            };
+            url = 'http://127.0.0.1:8000/api/v2/tour-reservations';
+        } else {
+            body = {
+                firstname: reservation.firstname,
+                lastname: reservation.lastname,
+                contact_no: reservation.contact_no,
+                email: reservation.email,
+                address: reservation.address,
+                items: JSON.stringify(reservation.items),
+                promocode: reservation.promocode,
+            };
+            url = 'http://127.0.0.1:8000/api/v2/tour-reservations/guest';
+        }
 
-        const response = await fetch('https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/guest', {
+
+        const response = await fetch(url, {
             method: "POST",
             cache: "no-cache",
             headers: {
@@ -94,19 +123,30 @@ export default function CheckoutPage() {
                 "x-api-key": process.env.API_KEY,
             },
             body: JSON.stringify(body),
-        }).then((data) => data.json());
+        })
+        
+        if(response.ok) {
+            const responseData = await response.json();
+            if(responseData.status == 'paying') {
+                router.push(responseData.url);
+            }
+        } 
+        
+        const errorData = await response.json();
+        displayError(errorData.message, errorData.error);
 
         setCheckoutBtnActive(true);
-
-        if(response.status == 'paying') {
-            window.location.href = response.url;
-        }
     }
+
+    const displayError = (head, body) => {
+        toast.error(body, head);
+    };
 
     return (
         <div className="checkout-main-container">
+            <ToastContainer />
             <div className="wrapper">
-                <h2 className='text-large font-semibold mb-4'>{token}</h2>
+                <h2 className='text-large font-semibold mb-4'>Checkout</h2>
                 <div className="checkout-container">
                     <div className="checkout-details">
                         <div className="w-full mb-10">
