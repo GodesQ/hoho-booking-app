@@ -41,17 +41,17 @@ export default function Home() {
             </div>
             <Spacer y={45} />
             <div className='section-container bg-white mx-auto' style={{ maxWidth: '1440px', padding: '0px 50px' }}>
-                <div className="flex w-full justify-center relative items-center">
+                <div className="flex w-full relative flex-col md:flex-row gap-4">
                     <div className='guided-header-content'>
                         <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>Guided Tours</h2>
                         <h3 className='text-center'>Discover Unforgettable Attractions Await Your Exploration</h3>
                     </div>
-                    <div className="guided-header-button text-primary hover:text-white">
-                        <Link href="#" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-end gap-2'>
+                    <button className="guided-header-button text-primary hover:text-white">
+                        <Link href="#" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-center md:justify-end gap-2'>
                             View All Tours
                             <ArrowRight className='' size={20} />
                         </Link>
-                    </div>
+                    </button>
                 </div>
                 <Spacer y={30} />
                 <GuidedTours />

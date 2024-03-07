@@ -57,7 +57,7 @@ export default function CartPage() {
         {
           carts.length > 0 ? (
             <div className="cart-container my-3">
-              <div className="cart-list">
+              <div className="cart-list ">
                 {carts.map((cart, index) => (
                   <div key={index + 1} className="reservation-tour-item">
                     <Image
@@ -67,21 +67,21 @@ export default function CartPage() {
                       width={"25%"}
                       classNames={{
                         wrapper: "w-[25%]",
-                        img: "max-h-[200px] h-[200px] w-full",
+                        img: "max-h-[80px] md:max-h-[200px] md:h-[200px] w-full",
                       }}
                     />
                     <div className="reservation-tour-main-content">
                       <div className="reservation-tour-content">
-                        <h2 className="text-medium font-medium mb-1.5">
+                        <h2 className="text-small sm:text-medium font-medium mb-1.5">
                           {cart.tour.name}
                         </h2>
                         <span className="bg-primary-50 font-semibold text-primary text-[12px] text-center my-2 p-1 px-3 rounded-2xl cursor-context-menu">
                           {cart.tour.type}
                         </span>
                         <Spacer y={4} />
-                        <h3><small>When :</small> <span>{format(new Date(cart.reservation_date), 'MMMM dd, yyyy')}</span></h3>
-                        <h3><small>How Many :</small> <span>{cart.number_of_pax} x</span></h3>
-                        <h3><small>Total :</small> <span className="font-bold">{cart.total_amount?.toFixed(2)}</span></h3>
+                        <h3><small>When :</small> <span className="text-sm sm:text-medium">{format(new Date(cart.reservation_date), 'MMMM dd, yyyy')}</span></h3>
+                        <h3><small>How Many :</small> <span className="text-sm sm:text-medium">{cart.number_of_pax} x</span></h3>
+                        <h3><small>Total :</small> <span className="text-sm sm:text-medium font-bold">{cart.total_amount?.toFixed(2)}</span></h3>
                       </div>
                       <div className="reservation-tour-content-action flex justify-end">
                         <Button onPress={() => handleRemoveCart(index)} className="bg-primary border-1 border-primary text-white text-tiny px-2 min-w-[3rem]">
@@ -93,7 +93,7 @@ export default function CartPage() {
                 ))
                 }
               </div>
-              <div className="cart-form">
+              <div className="cart-form ">
                 <h2 className="text-medium font-semibold">Cart Summary</h2>
                 <div className="flex justify-between my-2">
                   <div>Items :</div>

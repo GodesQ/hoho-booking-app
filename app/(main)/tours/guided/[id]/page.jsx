@@ -38,20 +38,17 @@ export default async function page({ params }) {
     <div className="lightRed ">
       <HeaderPage title="Guided Tour" subTitle={tour?.name} />
       <div className="tour-container">
-        <Card className="tour-content px-5 py-5">
-          <div className="flex gap-6">
-            <Image
-              style={{ width: "100%" }}
-              width={"30%"}
-              classNames={{ wrapper: "w-auto" }}
-              src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour?.id}/${tour?.featured_image}`}
-              alt={tour?.name}
-            />
-            <div style={{ width: "70%" }}>
-              <TourDetailTab tour={tour} />
-            </div>
+        <div className="tour-content">
+          <Image
+            style={{ width: "100%" }}
+            classNames={{ wrapper: "w-auto" }}
+            src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour?.id}/${tour?.featured_image}`}
+            alt={tour?.name}
+          />
+          <div className="tour-content-tab-con">
+            <TourDetailTab tour={tour} />
           </div>
-        </Card>
+        </div>
         <TourBookForm tour={tour} />
       </div>
       <div className="wrapper pb-5">

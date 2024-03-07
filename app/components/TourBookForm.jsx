@@ -270,7 +270,7 @@ export default function TourBookForm({ tour }) {
               onChange={handleSelectedPax}
             >
               {Array.from({ length: 100 }).map((_, index) => {
-                const paxCount = index + 4;
+                const paxCount = index + (tour.minimum_pax ? tour.minimum_pax : 1);
                 return (
                   <SelectItem
                     key={paxCount}

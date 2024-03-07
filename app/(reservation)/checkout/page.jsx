@@ -36,20 +36,23 @@ export default function CheckoutPage() {
 
     async function getUserSession() {
         let session = await getSession();
-        setUserSession(session);
-        setReservation((prevReservation) => ({
-            ...prevReservation,
-            firstname: session.user.user.firstname,
-            lastname: session.user.user.lastname,
-            contact_no: session.user.user.countryCode + session.user.user.contact_no,
-            email: session.user.user.email,
-        }));
+        if (session) {
+            setUserSession(session);
+            setReservation((prevReservation) => ({
+                ...prevReservation,
+                firstname: session.user.user.firstname,
+                lastname: session.user.user.lastname,
+                contact_no: session.user.user.countryCode + session.user.user.contact_no,
+                email: session.user.user.email,
+            }));
+        }
+
     }
 
     function getReservationItems() {
         let tour_items = JSON.parse(localStorage.getItem("carts")) || [];
         setTourItems(tour_items);
-        
+
         let reservationItems = [];
         let totalAmount = 0;
 
@@ -92,13 +95,13 @@ export default function CheckoutPage() {
 
     async function handleCheckoutSubmit() {
         let body, url;
-        if(userSession) {
+        if (userSession) {
             body = {
                 reserved_user_id: userSession.user.user.id,
                 items: JSON.stringify(reservation.items),
                 promocode: reservation.promocode,
             };
-            url = 'http://127.0.0.1:8000/api/v2/tour-reservations';
+            url = 'https://dashboard.philippines-hoho.ph/api/v2/tour-reservations';
         } else {
             body = {
                 firstname: reservation.firstname,
@@ -109,9 +112,8 @@ export default function CheckoutPage() {
                 items: JSON.stringify(reservation.items),
                 promocode: reservation.promocode,
             };
-            url = 'http://127.0.0.1:8000/api/v2/tour-reservations/guest';
+            url = 'https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/guest';
         }
-
 
         const response = await fetch(url, {
             method: "POST",
@@ -124,14 +126,14 @@ export default function CheckoutPage() {
             },
             body: JSON.stringify(body),
         })
-        
-        if(response.ok) {
+
+        if (response.ok) {
             const responseData = await response.json();
-            if(responseData.status == 'paying') {
+            if (responseData.status == 'paying') {
                 router.push(responseData.url);
             }
-        } 
-        
+        }
+
         const errorData = await response.json();
         displayError(errorData.message, errorData.error);
 
@@ -159,21 +161,21 @@ export default function CheckoutPage() {
                                         width={"25%"}
                                         classNames={{
                                             wrapper: "w-[25%]",
-                                            img: "max-h-[200px] h-[200px] w-full",
+                                            img: "max-h-[80px] md:max-h-[200px] md:h-[200px] w-full",
                                         }}
                                     />
                                     <div className="reservation-tour-main-content">
                                         <div className="reservation-tour-content">
-                                            <h2 className="text-medium font-medium mb-1.5">
+                                            <h2 className="text-small sm:text-medium font-medium mb-1.5">
                                                 {tourItem.tour.name}
                                             </h2>
                                             <span className="bg-primary-50 font-semibold text-primary text-[12px] text-center my-2 p-1 px-3 rounded-2xl cursor-context-menu">
                                                 {tourItem.tour.type}
                                             </span>
                                             <Spacer y={4} />
-                                            <h3><small>When :</small> <span>{format(new Date(tourItem.reservation_date), 'MMMM dd, yyyy')}</span></h3>
-                                            <h3><small>How Many :</small> <span>{tourItem.number_of_pax} x</span></h3>
-                                            <h3><small>Total :</small> <span className="font-bold">₱ {tourItem.total_amount?.toFixed(2)}</span></h3>
+                                            <h3><small>When :</small> <span className='text-sm sm:text-medium'>{format(new Date(tourItem.reservation_date), 'MMMM dd, yyyy')}</span></h3>
+                                            <h3><small>How Many :</small> <span className='text-sm sm:text-medium'>{tourItem.number_of_pax} x</span></h3>
+                                            <h3><small>Total :</small> <span className="text-sm sm:text-medium font-bold">₱ {tourItem.total_amount?.toFixed(2)}</span></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +183,7 @@ export default function CheckoutPage() {
                         </div>
                         <h2 className='text-large font-semibold my-4'>Contact Information</h2>
                         <div className="customer-detail-form">
-                            <div className="columns-2 my-3">
+                            <div className="columns-1 sm:columns-2 my-3 space-y-3">
                                 <Input label="Email" onInput={handleEmailChange} value={reservation.email} />
                                 <div className="phone-number-input">
                                     <PhoneInput
@@ -190,23 +192,20 @@ export default function CheckoutPage() {
                                         onChange={(e) => handlePhoneNumberChange(e)} className='h-full' />
                                 </div>
                             </div>
-                            <div className="columns-2 my-3">
-                                <Input label="First Name" 
-                                    value={reservation.firstname} 
-                                    onInput={(e) => setReservation(prevReservation => ({...prevReservation, firstname: e.target.value}))} 
+                            <div className="columns-1 sm:columns-2 my-3 space-y-3">
+                                <Input label="First Name"
+                                    value={reservation.firstname}
+                                    onInput={(e) => setReservation(prevReservation => ({ ...prevReservation, firstname: e.target.value }))}
                                 />
-                                <Input label="Last Name" 
-                                    value={reservation.lastname} 
-                                    onInput={(e) => setReservation(prevReservation => ({...prevReservation, lastname: e.target.value})) } 
+                                <Input label="Last Name"
+                                    value={reservation.lastname}
+                                    onInput={(e) => setReservation(prevReservation => ({ ...prevReservation, lastname: e.target.value }))}
                                 />
                             </div>
                             <Input label="Address"
-                                value={reservation.address} 
-                                onInput={(e) => setReservation(prevReservation => ({...prevReservation, address: e.target.value})) }  
+                                value={reservation.address}
+                                onInput={(e) => setReservation(prevReservation => ({ ...prevReservation, address: e.target.value }))}
                             />
-                        </div>
-                        <div className="flex justify-center mt-3">
-                            <Button className='bg-primary text-white' onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>Proceed to Payment</Button>
                         </div>
                     </div>
                     <div className="checkout-summary">
@@ -224,6 +223,10 @@ export default function CheckoutPage() {
                         <div className="flex justify-between my-2">
                             <div>Total Amount :</div>
                             <div>₱ {parseFloat(totalAmount).toFixed(2)}</div>
+                        </div>
+                        <Divider />
+                        <div className="flex justify-center mt-3">
+                            <Button className='bg-primary text-white' onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>Proceed to Payment</Button>
                         </div>
                     </div>
                 </div>

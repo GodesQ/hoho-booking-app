@@ -136,7 +136,15 @@ nav ul li a {
 	gap: 10px;
 }
 .tour-content {
+	@apply px-3 py-3 rounded-md shadow bg-content1;
 	width: 65%;
+	display: flex !important;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 10px !important;
+}
+.tour-content-tab-con {
+	width: 70%;
 }
 .tour-content h3 {
 	@apply text-black;
@@ -168,7 +176,7 @@ nav ul li a {
 }
 .reservation-steps-main ul li {
 	display: inline-block;
-	width: 32%;
+	width: 33%;
 	text-align: center;
 	border-top: 3px solid lightgray;
 	padding-top: 10px;
@@ -346,6 +354,7 @@ nav ul li a {
 	
 	.header-section {
 		padding: 10px 20px;
+		height: 400px;
 	}
 	.header-content h2 {
 		font-size: 30px;
@@ -360,7 +369,7 @@ nav ul li a {
 		padding: 0 !important;
 	}
 	.guided-card {
-		width: 150px !important;
+		width: 100% !important;
 		height: auto;
 		padding: 0 !important;
 	}
@@ -377,14 +386,56 @@ nav ul li a {
 	.guided-card small {
 		display: none;
 	}
-
+	.guided-header-button {
+		position: relative;
+		text-align: center !important;
+	}
 	.tour-container {
 		flex-direction: column !important;
 	}
 	.tour-content {
 		width: 100%;
 	}
+	.tour-content {
+		flex-direction: column;
+	}
+	.tour-content-tab-con {
+		width: 100%;
+	}
 	.tour-book-form {
+		width: 100%;
+	}
+	.cart-container {
+		flex-direction: column;
+	}
+	.cart-form {
+		width: 100%;
+	}
+	.cart-list {
+		width: 100%;
+	}
+	.reservation-navbar {
+		padding: 10px;
+	}
+
+	.wrapper {
+		padding: 0 20px;
+	}
+
+	.reservation-steps-main {
+		flex-direction: column;
+		gap: 10px;
+	}
+	.reservation-steps-main ul {
+		width: 100%;
+	}
+	.checkout-container {
+		flex-direction: column;
+	}
+	.checkout-details {
+		width: 100%; 
+	}
+	.checkout-summary {
 		width: 100%;
 	}
 }
