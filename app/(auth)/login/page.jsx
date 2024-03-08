@@ -63,15 +63,17 @@ export default function LoginPage() {
       <div className="login-content-container">
         <div className="flex justify-center items-center flex-col text-center gap-3">
           <Image
+          classNames={{
+            wrapper: 'max-w-[100px] w-100',
+            img: 'max-w-[100px] w-100'
+          }}
             src={Logo.src}
-            width={100}
-            className="nav-logo"
             alt="Philippines Hop On Hop Off"
           />
-          <h2 className="text-large" style={{ lineHeight: "35px" }}>
+          <h2 className="text-medium sm:text-large" style={{ lineHeight: "35px" }}>
             Welcome to Philippine Hop On Hop Off Booking Tour Website
           </h2>
-          <h3>
+          <h3 className="text-sm sm:text-medium">
             Get Ready to Explore - Login and Dive into the Vibrant Culture of
             the Philippines!
           </h3>

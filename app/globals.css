@@ -306,6 +306,14 @@ nav ul li a {
 		font-size: 35px;
 		margin-bottom: 10px;
 	}
+	.login-content-container {
+		width: 100%;
+		padding: 20px;
+		gap: 10px;
+	}
+	.login-image-container { 
+		display: none;
+	}
 }
 
 @media screen and (max-width: 640px) {
@@ -437,5 +445,16 @@ nav ul li a {
 	}
 	.checkout-summary {
 		width: 100%;
+	}
+	.login-content-container {
+		width: 100%;
+		padding: 20px;
+		gap: 10px;
+	}
+	.login-image-container { 
+		display: none;
+	}
+	.footer {
+		padding: 10px 5px;
 	}
 }

@@ -43,7 +43,7 @@ export default async function DIYPage({ params }) {
           <Image
             style={{ width: "100%" }}
             classNames={{ wrapper: "w-auto" }}
-            src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour?.id}/${tour?.featured_image}`}
+            src={tour?.featured_image}
             alt={tour?.name}
           />
           <div className="tour-content-tab-con">
