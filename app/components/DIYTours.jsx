@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 
 async function fetchDIYTours() {
-    let url = `https://dashboard.philippines-hoho.ph/api/v2/tours/diy`;
+    let url = `https://staging.philippines-hoho.ph/api/v2/tours/diy`;
     let response = await fetch(url, {
         next: { revalidate: 60 },
         headers: {
@@ -36,7 +36,7 @@ export default async function DIYTours() {
                                 <Image
                                     alt="Card background"
                                     className="object-cover rounded-xl"
-                                    src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour.id}/${tour.featured_image}`}
+                                    src={tour.featured_image}
                                     width={'100%'}
                                 />
                             </CardBody>

@@ -6,7 +6,7 @@ import TourDetailTab from "@/app/components/TourDetailTab";
 import GuidedTours from "@/app/components/GuidedTours";
 
 export async function generateStaticParams() {
-  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/guided?length=5`, {
+  let response = await fetch(`https://staging.philippines-hoho.ph/api/v2/tours/guided?length=5`, {
     headers: {
       "Content-Type": "application/json",
       'x-api-code': process.env.API_CODE,
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 }
 
 async function getGuidedTour(id) {
-  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/${id}`, {
+  let response = await fetch(`https://staging.philippines-hoho.ph/api/v2/tours/${id}`, {
     headers: {
       "Content-Type": "application/json",
       'x-api-code': process.env.API_CODE,
@@ -42,7 +42,7 @@ export default async function page({ params }) {
           <Image
             style={{ width: "100%" }}
             classNames={{ wrapper: "w-auto" }}
-            src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour?.id}/${tour?.featured_image}`}
+            src={tour.featured_image}
             alt={tour?.name}
           />
           <div className="tour-content-tab-con">

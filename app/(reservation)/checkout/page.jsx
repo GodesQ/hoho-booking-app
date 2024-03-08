@@ -101,7 +101,7 @@ export default function CheckoutPage() {
                 items: JSON.stringify(reservation.items),
                 promocode: reservation.promocode,
             };
-            url = 'https://dashboard.philippines-hoho.ph/api/v2/tour-reservations';
+            url = 'https://staging.philippines-hoho.ph/api/v2/tour-reservations';
         } else {
             body = {
                 firstname: reservation.firstname,
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
                 items: JSON.stringify(reservation.items),
                 promocode: reservation.promocode,
             };
-            url = 'https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/guest';
+            url = 'https://staging.philippines-hoho.ph/api/v2/tour-reservations/guest';
         }
 
         const response = await fetch(url, {

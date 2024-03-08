@@ -2,7 +2,7 @@ import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 async function fetchGuidedTours() {
-  let url = `https://dashboard.philippines-hoho.ph/api/v2/tours/guided?length=8`;
+  let url = `https://staging.philippines-hoho.ph/api/v2/tours/guided?length=8`;
   let response = await fetch(url, {
     next: { revalidate: 60 },
     headers: {
@@ -36,7 +36,7 @@ export default async function GuidedTours() {
               <Image
                 alt="Card background"
                 className="object-cover rounded-xl"
-                src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tour.id}/${tour.featured_image}`}
+                src={tour.featured_image}
                 width={"100%"}
               />
             </CardBody>

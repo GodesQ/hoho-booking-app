@@ -30,7 +30,7 @@ export default function LoginPage() {
     try {
       setLoginBtnDisabled(true);
 
-      const response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/login`, {
+      const response = await fetch(`https://staging.philippines-hoho.ph/api/v2/login`, {
         method: "POST",
         headers: {
           accept: "application/json",
