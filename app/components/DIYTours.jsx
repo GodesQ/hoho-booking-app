@@ -1,6 +1,7 @@
 import React from 'react'
-import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import Link from 'next/link';
+import Image from 'next/image';
 
 
 async function fetchDIYTours() {
@@ -34,10 +35,11 @@ export default async function DIYTours() {
                             </CardHeader>
                             <CardBody className="overflow-visible py-2">
                                 <Image
+                                    width={350}
+                                    height={0}
                                     alt="Card background"
                                     className="object-cover rounded-xl"
                                     src={tour.featured_image}
-                                    width={'100%'}
                                 />
                             </CardBody>
                         </Link>

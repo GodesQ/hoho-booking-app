@@ -13,8 +13,8 @@ export default function HeaderPage(props) {
     return (
         <div className="header-section" style={headerStyling}>
             <div className="header-content">
-                <h2>{title}</h2>
-                <h1 className='text-small'>{subTitle}</h1>
+                <h1>{title}</h1>
+                <h2 className='text-small'>{subTitle}</h2>
             </div>
         </div>
     )

@@ -37,7 +37,8 @@ export default async function GuidedTours() {
                 alt="Card background"
                 className="object-cover rounded-xl"
                 src={tour.featured_image}
-                width={"100%"}
+                width={350}
+                height={0}
               />
             </CardBody>
           </Link>

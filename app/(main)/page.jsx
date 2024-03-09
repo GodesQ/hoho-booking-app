@@ -34,7 +34,7 @@ export default function Home() {
             <div className='' style={diySection}>
                 <div className='section-container'>
                     <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>DIY Tours</h2>
-                    <h3 className='text-center'>Discover Unforgettable Attractions Await Your Exploration</h3>
+                    <h3 className='text-center'>Create Your Own Experience: Do It Yourself Tour</h3>
                     <Spacer y={30} />
                     <DIYTours />
                 </div>
@@ -44,7 +44,7 @@ export default function Home() {
                 <div className="flex w-full relative flex-col md:flex-row gap-4">
                     <div className='guided-header-content'>
                         <h2 style={{ fontSize: '30px', fontWeight: '700' }} className='text-center'>Guided Tours</h2>
-                        <h3 className='text-center'>Discover Unforgettable Attractions Await Your Exploration</h3>
+                        <h3 className='text-center'>Professionally Led Tours: Learn With a Guide</h3>
                     </div>
                     <button className="guided-header-button text-primary hover:text-white">
                         <Link href="#" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-center md:justify-end gap-2'>
