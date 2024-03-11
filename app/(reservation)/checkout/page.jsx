@@ -157,7 +157,7 @@ export default function CheckoutPage() {
                                     <Image
                                         alt={tourItem.tour.name}
                                         className="object-cover object-top rounded-xl shadow"
-                                        src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${tourItem.tour.id}/${tourItem.tour.featured_image}`}
+                                        src={tourItem.tour.featured_image}
                                         width={"25%"}
                                         classNames={{
                                             wrapper: "w-[25%]",

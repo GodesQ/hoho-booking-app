@@ -63,7 +63,7 @@ export default function CartPage() {
                     <Image
                       alt={cart.tour.name}
                       className="object-cover object-top rounded-xl shadow"
-                      src={`https://dashboard.philippines-hoho.ph/assets/img/tours/${cart.tour.id}/${cart.tour.featured_image}`}
+                      src={cart.tour.featured_image}
                       width={"25%"}
                       classNames={{
                         wrapper: "w-[25%]",
