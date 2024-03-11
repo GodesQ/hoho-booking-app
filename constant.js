@@ -1,1 +1,1 @@
-export const API_ENDPOINT = "http://127.0.0.1:8000/api/v2";
+export const API_ENDPOINT = "https://staging.philippines-hoho.ph/api/v2";
