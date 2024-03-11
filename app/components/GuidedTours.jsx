@@ -1,14 +1,15 @@
+import { API_ENDPOINT } from "@/constant";
 import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 async function fetchGuidedTours() {
-  let url = `https://staging.philippines-hoho.ph/api/v2/tours/guided?length=8`;
+  let url = `${API_ENDPOINT}/tours/guided?length=8`;
   let response = await fetch(url, {
     next: { revalidate: 60 },
     headers: {
       "Content-Type": "application/json",
-      'x-api-code': "hoho-code-hohobookingwebsite030524",
-      'x-api-key': "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
+      'x-api-code': process.env.API_CODE,
+      'x-api-key': process.env.API_KEY,
     },
   });
 

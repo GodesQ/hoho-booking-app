@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
@@ -57,4 +57,44 @@ export async function updateSession(request) {
     expires: parsed.expires,
   });
   return res;
+}
+
+export async function getAttractions(url) {
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-code": process.env.API_CODE,
+      "x-api-key": process.env.API_KEY,
+    },
+  });
+
+  // Extract JSON content from the response
+  return await response.json();
+
+}
+
+export async function getTours(url) {
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-code": process.env.API_CODE,
+      "x-api-key": process.env.API_KEY,
+    },
+  });
+
+  // Extract JSON content from the response
+  return await response.json();
+}
+
+export async function getTicketPasses(url) {
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-code": process.env.API_CODE,
+      "x-api-key": process.env.API_KEY,
+    },
+  });
+
+  // Extract JSON content from the response
+  return await response.json();
 }

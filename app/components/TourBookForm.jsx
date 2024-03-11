@@ -30,6 +30,8 @@ import {
 import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
+import { API_ENDPOINT } from "@/constant";
+import { getTicketPasses } from "@/action";
 
 export default function TourBookForm({ tour }) {
   const router = useRouter();
@@ -54,13 +56,8 @@ export default function TourBookForm({ tour }) {
   }, []);
 
   async function fetchTicketPasses() {
-    let response = await fetch("https://staging.philippines-hoho.ph/api/v2/ticket-passes", {
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-code": "hoho-code-hohobookingwebsite030524",
-        "x-api-key": "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
-      },
-    }).then((data) => data.json());
+    let url = `${API_ENDPOINT}/ticket-passes`;
+    let response = await getTicketPasses(url);
     setTicketPasses(response.data);
   }
 
@@ -78,7 +75,6 @@ export default function TourBookForm({ tour }) {
 
   function handleReservationErrors() {
     let newErrors = [];
-    // console.log()
     for (const key in reservation) {
       let key_name = key.split("_").join(" ");
       let error = `The ${key_name} is required`;

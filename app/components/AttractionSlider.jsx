@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Image from "next/image";
+import { API_ENDPOINT } from "@/constant";
+import { getAttractions } from "@/action";
 // import { Image, Spacer, Card, CardHeader, CardBody } from "@nextui-org/react";
 
 export default function AttractionSlider() {
@@ -14,15 +16,8 @@ export default function AttractionSlider() {
     }, []);
 
     async function fetchAttractions() {
-        let url = `https://staging.philippines-hoho.ph/api/v2/attractions?length=15`;
-        let response = await fetch(url, {
-            headers: {
-                "Content-Type": "application/json",
-                'x-api-code': process.env.API_CODE,
-                'x-api-key': process.env.API_KEY,
-            },
-        });
-        response = await response.json();
+        let url = `${API_ENDPOINT}/attractions?length=15`;
+        let response = await getAttractions(url);
         setAttractions(response.data);
     }
 

@@ -5,9 +5,9 @@ import LogoText from "../../../public/hoho_text.png";
 import Logo from "../../../public/hoho-logo.jpg";
 import heroBackground from "../../../public/assets/bg-hero.png";
 import { Button, Image, Input } from "@nextui-org/react";
-import { login, getSession } from "@/action";
-import cookieCutter from 'cookie-cutter'
+import { login } from "@/action";
 import { useRouter } from 'next/navigation'
+import { API_ENDPOINT } from "@/constant";
 
 
 export default function LoginPage() {
@@ -30,7 +30,7 @@ export default function LoginPage() {
     try {
       setLoginBtnDisabled(true);
 
-      const response = await fetch(`https://staging.philippines-hoho.ph/api/v2/login`, {
+      const response = await fetch(`${API_ENDPOINT}/login`, {
         method: "POST",
         headers: {
           accept: "application/json",
