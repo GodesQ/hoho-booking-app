@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Logo from '../../public/hoho-logo.jpg';
 import { Menu, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { getSession } from '@/action';
-import { Image } from '@nextui-org/react';
+import { getSession, logout } from '@/action';
+import { Avatar, Button, Image, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
+import DefaultAvatar from '../../public/avatar.jpg';
 
 export default function Navbar() {
     const [session, setSession] = useState(null);
@@ -27,6 +28,11 @@ export default function Navbar() {
         }
     }
 
+    const handleLogout = async () => {
+        await logout();
+        window.location.reload();
+    }
+
     return (
         <nav>
             <div className="flex justify-center items-center gap-4">
@@ -38,12 +44,24 @@ export default function Navbar() {
 
             <ul className='nav-list' style={{ top: isOpen ? '80px' : '-180px', }}>
                 <li><Link href="/">Home</Link></li>
-                <li><Link href="#">Tours</Link></li>
+                <li><Link href="/tours">Tours</Link></li>
                 <li><Link href="https://philippines-hoho.ph/">Official Website</Link></li>
             </ul>
             <div className="flex gap-3 items-center justify-between nav-end-section">
                 {session?.user ? (
-                    <Link href='/#' className='nav-btn bg-primary rounded text-foreground'>Book Now</Link>
+                    <Popover placement="bottom">
+                        <PopoverTrigger>
+                            <Avatar src={DefaultAvatar.src} size='sm' className='cursor-pointer' />
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <ul className='p-2'>
+                                <li className='hover:bg-grey'>
+                                    <a href='#' onClick={handleLogout}>Logout</a>
+                                </li>
+                            </ul>
+                        </PopoverContent>
+                    </Popover>
+              
                 ) : (
                     <Link href='/login' className='nav-btn bg-primary rounded text-foreground'>Login Now</Link>
                 )}

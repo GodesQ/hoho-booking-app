@@ -21,14 +21,21 @@ import { useRouter } from "next/navigation";
 
 export default function HeroBookForm() {
     const router = useRouter();
+
     const tourTypeRef = useRef();
+
     const tourType = [
         { label: "DIY", value: "diy" },
         { label: "Guided", value: "guided" },
     ];
 
+    const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+
     const [tours, setTours] = useState([]);
+
+    // This state used for selectedKeys of select tour field
     const [selectedTour, setSelectedTour] = useState("");
+    
     const [ticketPasses, setTicketPasses] = useState([]);
 
     const [reservation, setReservation] = useState({
@@ -60,11 +67,14 @@ export default function HeroBookForm() {
     const handleTourChange = (e) => {
         let tour_id = e.target.value;
         let selectedTour = tours.find((tour) => tour.id == tour_id);
+
         setReservation((prevReservation) => ({
             ...prevReservation,
             tour: selectedTour,
         }));
+
         setSelectedTour(e.target.value);
+
         computeTotalAmount(reservation.number_of_pax, reservation.ticket_pass, selectedTour)
     };
 
@@ -77,22 +87,25 @@ export default function HeroBookForm() {
 
     const handleSelectedPax = (e) => {
         const newReservation = { ...reservation, number_of_pax: e.target.value };
+
         setReservation((prevReservation) => ({
             ...prevReservation,
             number_of_pax: e.target.value,
         }));
+
         computeTotalAmount(newReservation.number_of_pax, reservation.ticket_pass, reservation.tour);
     }
 
     const handleTicketPassChange = (e) => {
-        let ticketPass = ticketPasses.find(
-            (ticketPass) => ticketPass.id == e.target.value
-        );
+        let ticketPass = ticketPasses.find((ticketPass) => ticketPass.id == e.target.value);
+        let ticketPassName = ticketPass != undefined ? ticketPass.name : null;
+
         setReservation((prevReservation) => ({
             ...prevReservation,
-            ticket_pass: ticketPass.name,
+            ticket_pass: ticketPassName,
         }));
-        computeTotalAmount(reservation.number_of_pax, ticketPass.name, reservation.tour);
+
+        computeTotalAmount(reservation.number_of_pax, ticketPassName, reservation.tour);
     }
 
     const computeTotalAmount = (numberOfPax, ticketPass, tour) => {
@@ -107,9 +120,7 @@ export default function HeroBookForm() {
                 totalAmount = tour?.bracket_price_one * numberOfPax;
             }
         } else {
-            let selectedTicketPass = ticketPasses.find(
-                (pass) => pass.name === ticketPass
-            );
+            let selectedTicketPass = ticketPasses.find((pass) => pass.name === ticketPass);
             totalAmount = selectedTicketPass?.price * reservation.number_of_pax;
         }
 
@@ -119,18 +130,21 @@ export default function HeroBookForm() {
         }));
     };
 
-    const handleCheckoutBtn = () => {
-        console.log(reservation);
+    const handleCheckoutBtn = async () => {
         let errors = handleReservationErrors();
         if (errors.length > 0) return;
 
+        setIsCheckoutLoading(true);
 
          // Retrieve existing cart data from localStorage
-        let items = JSON.parse(localStorage.getItem("carts")) || [];
+        let items = await JSON.parse(localStorage.getItem("carts")) || [];
         items.push(reservation);
 
         // Store the updated cart data back in localStorage
         localStorage.setItem("carts", JSON.stringify(items));
+
+        setIsCheckoutLoading(false);
+
         router.push("/checkout");
     }
 
@@ -138,8 +152,9 @@ export default function HeroBookForm() {
         let errors = [];
 
         for (const property in reservation) {
+            let normalProperty = property.replace(/_/g, ' ');
+            
             if (reservation[property] == null || reservation[property] == '' || reservation[property] == 0) {
-                let normalProperty = property.replace(/_/g, ' ');
                 if (property === 'ticket_pass') {
                     if (tourTypeRef.current.value === 'diy') {
                         toast.error(`The ${normalProperty} is required.`);
@@ -233,7 +248,7 @@ export default function HeroBookForm() {
                         </Popover>
                     </div>
                     <div
-                        className="form-group flex flex-wrap md:flex-nowrap gap-4"
+                        className="flex-1 form-group flex flex-wrap md:flex-nowrap gap-4"
                         style={{ width: "15%" }}
                     >
                         <Select label="Pax" placeholder="Select Pax" className="max-w-xs" onChange={handleSelectedPax}>
@@ -254,7 +269,7 @@ export default function HeroBookForm() {
                         </Select>
                     </div>
                     <div
-                        className="form-group flex flex-wrap md:flex-nowrap gap-4"
+                        className={"form-group flex-wrap md:flex-nowrap gap-4" + (tourTypeRef.current?.value != 'diy' ? " hidden" : "flex")}
                         style={{ width: "15%" }}
                     >
                         <Select
@@ -271,8 +286,8 @@ export default function HeroBookForm() {
                         </Select>
                     </div>
                 </div>
-                <button className="book-btn" type="button" onClick={handleCheckoutBtn}>
-                    Book Tour
+                <button className="book-btn" type="button" disabled={isCheckoutLoading ? true : false} onClick={handleCheckoutBtn}>
+                    {isCheckoutLoading ? 'Booking...' : 'Book Now'}
                 </button>
             </form>
         </div>

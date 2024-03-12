@@ -63,6 +63,7 @@ export async function getAttractions(url) {
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       "x-api-code": process.env.API_CODE,
       "x-api-key": process.env.API_KEY,
     },
@@ -77,6 +78,7 @@ export async function getTours(url) {
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       "x-api-code": process.env.API_CODE,
       "x-api-key": process.env.API_KEY,
     },
@@ -90,6 +92,7 @@ export async function getTicketPasses(url) {
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       "x-api-code": process.env.API_CODE,
       "x-api-key": process.env.API_KEY,
     },
