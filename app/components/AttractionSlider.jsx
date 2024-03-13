@@ -16,7 +16,7 @@ export default function AttractionSlider() {
     }, []);
 
     async function fetchAttractions() {
-        let url = `${API_ENDPOINT}/attractions?length=15`;
+        let url = `https://staging.philippines-hoho.ph/api/v2/attractions?length=15`;
         let response = await getAttractions(url);
         setAttractions(response.data);
     }

@@ -38,11 +38,10 @@ const ToursPage = () => {
     }, []);
 
     const fetchTours = async () => {
-        let url = `${API_ENDPOINT}/tours`;
+        let url = `https://staging.philippines-hoho.ph/api/v2/tours`;
         let response = await getTours(url);
         setTours(response.data);
         setFilteredTours(response.data);
-        console.log(API_ENDPOINT);
     };
 
     const handleFilterTours = () => {
