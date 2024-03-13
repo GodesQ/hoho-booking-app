@@ -42,6 +42,7 @@ const ToursPage = () => {
         let response = await getTours(url);
         setTours(response.data);
         setFilteredTours(response.data);
+        console.log(API_ENDPOINT);
     };
 
     const handleFilterTours = () => {
