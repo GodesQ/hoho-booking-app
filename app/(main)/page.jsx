@@ -47,7 +47,7 @@ export default function Home() {
                         <h3 className='text-center'>Professionally Led Tours: Learn With a Guide</h3>
                     </div>
                     <button className="guided-header-button text-primary hover:text-white">
-                        <Link href="#" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-center md:justify-end gap-2'>
+                        <Link href="/tours" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-center md:justify-end gap-2'>
                             View All Tours
                             <ArrowRight className='' size={20} />
                         </Link>
