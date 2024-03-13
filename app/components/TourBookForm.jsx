@@ -56,7 +56,7 @@ export default function TourBookForm({ tour }) {
   }, []);
 
   async function fetchTicketPasses() {
-    let url = `${API_ENDPOINT}/ticket-passes`;
+    let url = `https://staging.philippines-hoho.ph/api/v2/ticket-passes`;
     let response = await getTicketPasses(url);
     setTicketPasses(response.data);
   }
