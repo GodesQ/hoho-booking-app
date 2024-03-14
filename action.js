@@ -101,3 +101,18 @@ export async function getTicketPasses(url) {
   // Extract JSON content from the response
   return await response.json();
 }
+
+export async function checkout(url, data) {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "x-api-code": process.env.API_CODE,
+        "x-api-key": process.env.API_KEY,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return await response.json();
+}

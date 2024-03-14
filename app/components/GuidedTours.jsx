@@ -3,7 +3,8 @@ import { Card, CardHeader, CardBody, Image, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 async function fetchGuidedTours() {
-  let url = `${API_ENDPOINT}/tours/guided?length=8`;
+  let url = `https://staging.philippines-hoho.ph/api/v2/tours/guided?length=8`;
+  console.log(url);
   let response = await fetch(url, {
     next: { revalidate: 60 },
     headers: {

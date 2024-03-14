@@ -4,7 +4,7 @@ import { Button, Divider, Image, Input, Spacer } from "@nextui-org/react";
 import { format } from "date-fns";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { getSession } from "@/action";
+import { checkout, getSession } from "@/action";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
@@ -114,27 +114,13 @@ export default function CheckoutPage() {
             url = "https://staging.philippines-hoho.ph/api/v2/tour-reservations/guest";
         }
 
-        const response = await fetch(url, {
-            method: "POST",
-            cache: "no-cache",
-            headers: {
-                accept: "application/json",
-                "Content-Type": "application/json",
-                "x-api-code": process.env.API_CODE,
-                "x-api-key": process.env.API_KEY,
-            },
-            body: JSON.stringify(body),
-        });
+        const response = await checkout(url, body);
 
-        if (response.ok) {
-            const responseData = await response.json();
-            if (responseData.status == "paying") {
-                router.push(responseData.url);
-            }
+        if (response.status == "paying") {
+            router.push(response.url);
         }
-
-        const errorData = await response.json();
-        displayError(errorData.message, errorData.error);
+        
+        displayError(response.message, response.error);
 
         setCheckoutBtnActive(true);
     }
