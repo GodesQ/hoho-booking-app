@@ -8,7 +8,7 @@ import { AppWrapper } from "@/context";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Book Tour - Philippine Hop On Hop Off",
+  title: "Book Tour - Philippines Hop On Hop Off",
   description: 'Experience the best of the Philippines with our Book Tour website. Discover different hubs and book your DIY or guided tour. Unforgettable memories await!',
 };
 

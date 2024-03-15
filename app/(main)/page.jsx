@@ -21,7 +21,7 @@ export default function Home() {
 
     return (
         <div>
-            <HeaderPage title='Book Philippine Hop On Hop Off Tours' subTitle="Explore the Wonders of the Philippines with our Hop-On Hop-Off Tours" />
+            <HeaderPage title='Book Philippines Hop On Hop Off Tours' subTitle="Explore the Wonders of the Philippines with our Hop-On Hop-Off Tours" />
             <HeroBookForm />
             <Spacer y={30} />
             <div className='section-container'>
