@@ -4,6 +4,7 @@ import { Card, Image } from "@nextui-org/react";
 import TourBookForm from "@/app/components/TourBookForm";
 import TourDetailTab from "@/app/components/TourDetailTab";
 import DIYTours from "@/app/components/DIYTours";
+import Navbar from "@/app/components/Navbar";
 
 
 export async function generateStaticParams() {
@@ -37,6 +38,7 @@ export default async function DIYPage({ params }) {
   tour = tour.data;
   return (
     <div className="lightRed ">
+      <Navbar isWithHeader={true} />
       <HeaderPage title="DIY Tour" subTitle={tour?.name} />
       <div className="tour-container">
         <div className="tour-content">

@@ -7,6 +7,7 @@ import { API_ENDPOINT } from "@/constant";
 import { getTours } from "@/action";
 import Image from "next/image";
 import Link from "next/link";
+import Navbar from "@/app/components/Navbar";
 
 const ToursPage = () => {
     const tourTypes = [
@@ -68,6 +69,7 @@ const ToursPage = () => {
 
     return (
         <div className="lightRed ">
+            <Navbar isWithHeader={true} />
             <HeaderPage title="All Tours" subTitle="Immerse Yourself in Filipino Culture: Philippine Hop On Hop Off Tours Invite You to Explore Diversity" />
             <div className="wrapper pt-3 pb-10">
                 <div className="flex justify-center items-start gap-5">

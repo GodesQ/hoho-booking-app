@@ -8,6 +8,7 @@ import DIYTours from '../components/DIYTours';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import HeaderPage from '../components/HeaderPage';
+import Navbar from '../components/Navbar';
 
 const diySection = {
     backgroundImage: `url(${diyBackground.src})`,
@@ -21,6 +22,7 @@ export default function Home() {
 
     return (
         <div>
+            <Navbar isWithHeader={true} />
             <HeaderPage title='Book Philippines Hop On Hop Off Tours' subTitle="Explore the Wonders of the Philippines with our Hop-On Hop-Off Tours" />
             <HeroBookForm />
             <Spacer y={30} />

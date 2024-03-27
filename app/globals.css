@@ -42,13 +42,67 @@ nav ul li {
 	margin-right: 30px;
 }
 
-nav ul li a {
+nav ul.with-bg li a {
 	color: #fff;
 }
+
+nav ul li a {
+	color: #000;
+}
+
 .section-container {
 	max-width: 1440px;
 	padding: 0 50px;
 	@apply mx-auto;
+}
+
+.profile-container {
+	max-width: 1440px;
+	padding: 20px 50px;
+	@apply mx-auto;
+}
+
+.profile-sidebar {
+	width: 30%;
+	padding: 1rem;
+	background: #fff;
+	@apply shadow rounded;
+}
+
+.profile-sidebar-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.profile-sidebar-tabs {
+	margin: 1rem 0;
+	width: 100%;
+	display: flex; 
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.tab {
+	cursor: pointer;
+	width: 100%;
+	padding: .5rem;
+	@apply rounded text-center bg-white text-black;
+}
+
+.tab.active {
+	@apply bg-primary text-white;
+}
+
+.profile-content-container {
+	width: 70%;
+	padding: 1rem;
+	background: #fff;
+	@apply shadow rounded;
 }
 
 .header-section {

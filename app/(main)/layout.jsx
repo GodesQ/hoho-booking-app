@@ -18,7 +18,6 @@ export default function RootLayout({ children }) {
       <body className={montserrat.className + " lightRed"}>
         <Providers>
           <AppWrapper>
-            <Navbar />
             {children}
             <Footer />
           </AppWrapper>

@@ -4,6 +4,7 @@ import { Card, Image } from "@nextui-org/react";
 import TourBookForm from "@/app/components/TourBookForm";
 import TourDetailTab from "@/app/components/TourDetailTab";
 import GuidedTours from "@/app/components/GuidedTours";
+import Navbar from "@/app/components/Navbar";
 
 export async function generateStaticParams() {
   let response = await fetch(`https://staging.philippines-hoho.ph/api/v2/tours/guided?length=5`, {
@@ -36,6 +37,7 @@ export default async function page({ params }) {
   tour = tour.data;
   return (
     <div className="lightRed ">
+      <Navbar isWithHeader={true} />
       <HeaderPage title="Guided Tour" subTitle={tour?.name} />
       <div className="tour-container">
         <div className="tour-content">

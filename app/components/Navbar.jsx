@@ -7,7 +7,7 @@ import { getSession, logout } from '@/action';
 import { Avatar, Button, Image, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
 import DefaultAvatar from '../../public/avatar.jpg';
 
-export default function Navbar() {
+export default function Navbar({isWithHeader}) {
     const [session, setSession] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -42,7 +42,7 @@ export default function Navbar() {
                 <Menu size={25} color={'black'} className='menu-btn' onClick={handleMenu} />
             </div>
 
-            <ul className='nav-list' style={{ top: isOpen ? '80px' : '-180px', }}>
+            <ul className={isWithHeader ? 'nav-list with-bg' : 'nav-list'} style={{ top: isOpen ? '80px' : '-180px', }}>
                 <li><Link href="/">Home</Link></li>
                 <li><Link href="/tours">Tours</Link></li>
                 <li><Link href="https://philippines-hoho.ph/">Official Website</Link></li>
@@ -55,7 +55,10 @@ export default function Navbar() {
                         </PopoverTrigger>
                         <PopoverContent>
                             <ul className='p-2'>
-                                <li className='hover:bg-grey'>
+                                <li className='hover:bg-grey py-2'>
+                                    <Link href='/profile'>Profile</Link>
+                                </li>
+                                <li className='hover:bg-grey  py-2'>
                                     <a href='#' onClick={handleLogout}>Logout</a>
                                 </li>
                             </ul>
