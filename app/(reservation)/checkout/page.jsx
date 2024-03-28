@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Image, Input, Spacer } from "@nextui-org/react";
+import { Button, Divider, Image, Input, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, User } from "@nextui-org/react";
 import { format } from "date-fns";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
     let router = useRouter();
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [tourItems, setTourItems] = useState([]);
 
@@ -119,7 +121,7 @@ export default function CheckoutPage() {
         if (response.status == "paying") {
             router.push(response.url);
         }
-        
+
         displayError(response.message, response.error);
 
         setCheckoutBtnActive(true);
@@ -215,9 +217,82 @@ export default function CheckoutPage() {
                         </div>
                         <Divider />
                         <div className="flex justify-center mt-3">
-                            <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>
-                                Proceed to Payment
+                            <Button className="bg-primary text-white" onPress={onOpen}>
+                                Review Reservation
                             </Button>
+                            <Modal size={"5xl"} isOpen={isOpen} onClose={onClose} placement="center">
+                                <ModalContent>
+                                    {(onClose) => (
+                                        <>
+                                            <ModalHeader className="flex flex-col gap-1">Review Reservation</ModalHeader>
+                                            <ModalBody>
+                                                <div className="flex flex-col lg:flex-row gap-7 lg:gap-4">
+                                                    <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
+                                                        <h2 className="mb-2 text-medium">Tour Items</h2>
+                                                        <div className="flex flex-column gap-2">
+                                                            {tourItems.map((tourItem) => (
+                                                                <User
+                                                                    name={tourItem.tour.name}
+                                                                    description={tourItem.tour.type}
+                                                                    avatarProps={{
+                                                                        src: tourItem.tour.featured_image,
+                                                                    }}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
+                                                        <h2 className="mb-2 text-medium">Customer Details</h2>
+                                                        <ul>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Name:</span> {reservation.firstname} {reservation.lastname}
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Email:</span> {reservation.email}
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Contact Number:</span> {reservation.contact_no}
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Address:</span> {reservation.address}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="w-[100%] lg:w-[33%]">
+                                                        <h2 className="mb-2 text-medium">Summary</h2>
+                                                        <ul>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Promo Code:</span> {reservation.promocode}
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Items:</span> {reservation.items.length} x
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Discount:</span> ₱ 0.00
+                                                            </li>
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Sub Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                            </li>
+                                                            <Divider className="mb-2" />
+                                                            <li className="mb-2">
+                                                                <span className="font-bold">Total Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </ModalBody>
+                                            <ModalFooter>
+                                                <Button color="danger" variant="light" onPress={onClose}>
+                                                    Close
+                                                </Button>
+                                                <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>
+                                                    Proceed to Payment
+                                                </Button>
+                                            </ModalFooter>
+                                        </>
+                                    )}
+                                </ModalContent>
+                            </Modal>
                         </div>
                     </div>
                 </div>
