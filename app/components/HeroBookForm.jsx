@@ -35,12 +35,12 @@ export default function HeroBookForm() {
 
     // This state used for selectedKeys of select tour field
     const [selectedTour, setSelectedTour] = useState("");
-    
+
     const [ticketPasses, setTicketPasses] = useState([]);
 
     const [reservation, setReservation] = useState({
         tour: null,
-        reservation_date: format(new Date(), "yyyy-MM-dd"),
+        reservation_date: "",
         number_of_pax: null,
         ticket_pass: null,
         total_amount: 0,
@@ -136,7 +136,7 @@ export default function HeroBookForm() {
 
         setIsCheckoutLoading(true);
 
-         // Retrieve existing cart data from localStorage
+        // Retrieve existing cart data from localStorage
         let items = await JSON.parse(localStorage.getItem("carts")) || [];
         items.push(reservation);
 
@@ -153,7 +153,7 @@ export default function HeroBookForm() {
 
         for (const property in reservation) {
             let normalProperty = property.replace(/_/g, ' ');
-            
+
             if (reservation[property] == null || reservation[property] == '' || reservation[property] == 0) {
                 if (property === 'ticket_pass') {
                     if (tourTypeRef.current.value === 'diy') {
@@ -241,7 +241,7 @@ export default function HeroBookForm() {
                                 <DayPicker
                                     selected={new Date(reservation.reservation_date)}
                                     mode="single"
-                                    disabled={{ before: new Date() }}
+                                    disabled={[{ before: new Date() }, { dayOfWeek: reservation?.tour?.disabled_days.map(day => parseInt(day)) ?? [] }]}
                                     onDayClick={handleDayClick}
                                 />
                             </PopoverContent>
@@ -254,7 +254,7 @@ export default function HeroBookForm() {
                         <Select label="Pax" placeholder="Select Pax" className="max-w-xs" onChange={handleSelectedPax}>
                             {Array.from({ length: 100 }).map((_, index) => {
                                 const paxCount =
-                                    index + (1);
+                                    index + (reservation?.tour?.minimum_pax ? reservation?.tour?.minimum_pax : 1);
                                 return (
                                     <SelectItem
                                         key={paxCount}

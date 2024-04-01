@@ -4,7 +4,7 @@ import { Button, Divider, Image, Input, Spacer, Modal, ModalContent, ModalHeader
 import { format } from "date-fns";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { checkout, getSession } from "@/action";
+import { checkout, getSession, verifyPromoCode } from "@/action";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,8 @@ export default function CheckoutPage() {
     const [tourItems, setTourItems] = useState([]);
 
     const [totalAmount, setTotalAmount] = useState(0);
+
+    const [totalDiscount, setTotalDiscount] = useState(0);
 
     const [reservation, setReservation] = useState({
         firstname: "",
@@ -63,7 +65,7 @@ export default function CheckoutPage() {
                 trip_date: format(item.reservation_date, "yyyy-MM-dd"),
                 type: item.tour.type,
                 ticket_pass: item.ticket_pass,
-                number_of_pax: 4,
+                number_of_pax: parseInt(item.number_of_pax),
                 amount: item.total_amount,
                 discounted_amount: item.total_amount,
                 discount: 0,
@@ -125,6 +127,51 @@ export default function CheckoutPage() {
         displayError(response.message, response.error);
 
         setCheckoutBtnActive(true);
+    }
+
+    const handleVerifyPromoCode = async () => {
+        const url =  "http://127.0.0.1:8000/api/v2/promocodes/verify";
+        const body = {code: reservation.promocode};
+
+        const response = await verifyPromoCode(url, body);
+        
+        if(!response.promocode_exist) return displayError(response.message, (response.error ?? response.message))
+
+        toast.success('Promocode exist');
+
+        let total_discount = 0;
+
+        if(response?.data?.type == 'discount') {
+            if(response?.data?.discount_type == 'percentage') {
+                let percent = response.data.discount_amount / 100;
+
+                reservation.items.map(item => {
+                    let discount = item.amount * percent;
+                    total_discount += discount;
+                    setTotalDiscount(prevDiscount => prevDiscount + discount);
+                    return {
+                        tour_id: item.tour_id,
+                        trip_date: item.trip_date,
+                        type: item.type,
+                        ticket_pass: item.ticket_pass,
+                        number_of_pax: item.number_of_pax,
+                        amount: item.amount,
+                        discounted_amount: item.amount - discount,
+                        discount: discount,
+                    }
+                })
+            }
+        }
+
+        setTotalAmount(prevTotalAmount => prevTotalAmount - total_discount);
+    }
+
+    const handlePromoCodeChange = (e) => {
+        let value = e.target.value;
+        setReservation((prevReservation) => ({
+            ...prevReservation,
+            promocode: value,
+        }));
     }
 
     const displayError = (head, body) => {
@@ -200,7 +247,10 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                     <div className="checkout-summary">
-                        <Input label="Promo Code" />
+                        <div className="flex">
+                            <Input label="Promo Code" value={reservation.promocode} onChange={handlePromoCodeChange} />
+                            <Button className="bg-primary text-foreground h-auto" onPress={handleVerifyPromoCode}>Verify</Button>
+                        </div>
                         <Spacer y={4} />
                         <Divider />
                         <div className="flex justify-between my-2">
@@ -209,7 +259,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="flex justify-between my-2">
                             <div>Discount :</div>
-                            <div>₱ 0.00</div>
+                            <div>₱ {totalDiscount.toFixed(2)}</div>
                         </div>
                         <div className="flex justify-between my-2">
                             <div>Total Amount :</div>
@@ -268,7 +318,7 @@ export default function CheckoutPage() {
                                                                 <span className="font-bold">Items:</span> {reservation.items.length} x
                                                             </li>
                                                             <li className="mb-2">
-                                                                <span className="font-bold">Discount:</span> ₱ 0.00
+                                                                <span className="font-bold">Discount:</span> ₱ {totalDiscount.toFixed(2)}
                                                             </li>
                                                             <li className="mb-2">
                                                                 <span className="font-bold">Sub Amount:</span> ₱ {totalAmount.toFixed(2)}
