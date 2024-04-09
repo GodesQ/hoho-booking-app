@@ -130,7 +130,7 @@ export default function CheckoutPage() {
     }
 
     const handleVerifyPromoCode = async () => {
-        const url =  "http://127.0.0.1:8000/api/v2/promocodes/verify";
+        const url =  "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
         const body = {code: reservation.promocode};
 
         const response = await verifyPromoCode(url, body);
@@ -282,6 +282,7 @@ export default function CheckoutPage() {
                                                         <div className="flex flex-column gap-2">
                                                             {tourItems.map((tourItem) => (
                                                                 <User
+                                                                    key={tourItem.tour.id}
                                                                     name={tourItem.tour.name}
                                                                     description={tourItem.tour.type}
                                                                     avatarProps={{
