@@ -14,6 +14,10 @@ export default function CheckoutPage() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const [isPromoCodeVerify, setIsPromoCodeVerify] = useState(false);
+
+    const [promocode, setPromoCode] = useState("");
+
     const [tourItems, setTourItems] = useState([]);
 
     const [totalAmount, setTotalAmount] = useState(0);
@@ -137,8 +141,6 @@ export default function CheckoutPage() {
         
         if(!response.promocode_exist) return displayError(response.message, (response.error ?? response.message))
 
-        toast.success('Promocode exist');
-
         let total_discount = 0;
 
         if(response?.data?.type == 'discount') {
@@ -163,15 +165,24 @@ export default function CheckoutPage() {
             }
         }
 
+        toast.success('Promocode exist');
+        setIsPromoCodeVerify(true);
+        setReservation((prevReservation) => ({...prevReservation, promocode: promocode}));
         setTotalAmount(prevTotalAmount => prevTotalAmount - total_discount);
     }
 
     const handlePromoCodeChange = (e) => {
         let value = e.target.value;
-        setReservation((prevReservation) => ({
-            ...prevReservation,
-            promocode: value,
-        }));
+        
+        let total_amount = 0;
+        tourItems.forEach((item) => {
+            total_amount += item.total_amount;
+        });
+
+        setTotalAmount(total_amount);
+        setTotalDiscount(0);
+        setPromoCode(value);
+        setIsPromoCodeVerify(false);
     }
 
     const displayError = (head, body) => {
@@ -248,7 +259,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="checkout-summary">
                         <div className="flex">
-                            <Input label="Promo Code" value={reservation.promocode} onChange={handlePromoCodeChange} />
+                            <Input label="Promo Code" value={promocode} onChange={handlePromoCodeChange} />
                             <Button className="bg-primary text-foreground h-auto" onPress={handleVerifyPromoCode}>Verify</Button>
                         </div>
                         <Spacer y={4} />
