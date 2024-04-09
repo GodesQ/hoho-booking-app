@@ -166,7 +166,6 @@ nav ul li a {
 
 .guided-card {
 	width: auto;
-	height: auto;
 	@apply py-4;
 }
 

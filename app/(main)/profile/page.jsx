@@ -1,9 +1,14 @@
+"use client"
+
 import HeaderPage from '@/app/components/HeaderPage'
 import Navbar from '@/app/components/Navbar'
-import { Divider, Spacer } from '@nextui-org/react'
+import { Divider, Spacer, Input, Button } from '@nextui-org/react'
 import React from 'react'
 import Logo from '../../../public/hoho-logo.jpg';
 import Image from 'next/image';
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
 
 export default function ProfilePage() {
     return (
@@ -30,8 +35,35 @@ export default function ProfilePage() {
                         </div>
                     </div>
                     <div className="profile-content-container">
-                        <div className="tab-panel">
-                            <div className="tab-content"></div>
+                        <div className="tab-panel h-full">
+                            <div className="tab-content h-full">
+                                <div className="columns-1 sm:columns-2 space-y-3 mb-2">
+                                    <Input
+                                        label="Username"
+                                        value=""
+                                    />
+                                    <Input
+                                        label="Email"
+                                        value=""
+                                    />
+                                </div>
+                                <div className="columns-1 sm:columns-2 space-y-3 mb-2">
+                                    <Input
+                                        label="Firstname"
+                                        value=""
+                                    />
+                                    <Input
+                                        label="Lastname"
+                                        value=""
+                                    />
+                                </div>
+                                <div className="columns-1 sm:columns-1 space-y-3 mb-2">
+                                    <div className="phone-number-input">
+                                        <PhoneInput placeholder="Enter phone number" className="h-full" />
+                                    </div>
+                                </div>
+                                <Button className='bg-primary text-foreground mt-3'>Save Changes</Button>
+                            </div>
                             <div className="tab-content"></div>
                             <div className="tab-content"></div>
                         </div>
