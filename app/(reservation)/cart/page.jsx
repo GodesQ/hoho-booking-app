@@ -80,7 +80,7 @@ export default function CartPage() {
                         </span>
                         <Spacer y={4} />
                         <h3><small>When :</small> <span className="text-sm sm:text-medium">{format(new Date(cart.reservation_date), 'MMMM dd, yyyy')}</span></h3>
-                        <h3><small>How Many :</small> <span className="text-sm sm:text-medium">{cart.number_of_pax} x</span></h3>
+                        <h3><small>Number of Pax :</small> <span className="text-sm sm:text-medium">{cart.number_of_pax} pax</span></h3>
                         <h3><small>Total :</small> <span className="text-sm sm:text-medium font-bold">{cart.total_amount?.toFixed(2)}</span></h3>
                       </div>
                       <div className="reservation-tour-content-action flex justify-end">

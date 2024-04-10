@@ -120,7 +120,7 @@ const ToursPage = () => {
                                                 <small className="text-default-500">{tour.type}</small>
                                             </CardHeader>
                                             <CardBody className="overflow-visible py-2 h-auto">
-                                                <Image alt="Card background" className="object-cover rounded-xl h-[180px] lg:h-[270px]" src={tour.featured_image} width={350} height={350} />
+                                                <Image alt="Card background" className="object-cover object-top rounded-xl h-[180px] lg:h-[270px]" src={tour.featured_image} width={350} height={350} />
                                             </CardBody>
                                         </Card>
                                     </Link>

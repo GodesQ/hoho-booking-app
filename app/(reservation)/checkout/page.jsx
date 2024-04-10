@@ -1,6 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Image, Input, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, User } from "@nextui-org/react";
+import {
+    Button,
+    Divider,
+    Image,
+    Input,
+    Spacer,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+    User,
+} from "@nextui-org/react";
 import { format } from "date-fns";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -8,6 +21,7 @@ import { checkout, getSession, verifyPromoCode } from "@/action";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
+import { ShoppingCart, Trash } from "lucide-react";
 
 export default function CheckoutPage() {
     let router = useRouter();
@@ -100,6 +114,26 @@ export default function CheckoutPage() {
         }));
     }
 
+    function handleRemoveCart(index) {
+        // Create a copy of the current carts array
+        const newTourItems = [...tourItems];
+
+        // Remove the cart at the specified index
+        newTourItems.splice(index, 1);
+
+        // Update the state with the new array
+        setTourItems(newTourItems);
+
+        localStorage.setItem("carts", JSON.stringify(newTourItems));
+
+        let total = 0;
+        newTourItems.forEach((item) => {
+            total += item.total_amount;
+        });
+
+        setTotalAmount(total);
+    }
+
     async function handleCheckoutSubmit() {
         let body, url;
         if (userSession) {
@@ -134,23 +168,23 @@ export default function CheckoutPage() {
     }
 
     const handleVerifyPromoCode = async () => {
-        const url =  "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
-        const body = {code: reservation.promocode};
+        const url = "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
+        const body = { code: reservation.promocode };
 
         const response = await verifyPromoCode(url, body);
-        
-        if(!response.promocode_exist) return displayError(response.message, (response.error ?? response.message))
+
+        if (!response.promocode_exist) return displayError(response.message, response.error ?? response.message);
 
         let total_discount = 0;
 
-        if(response?.data?.type == 'discount') {
-            if(response?.data?.discount_type == 'percentage') {
+        if (response?.data?.type == "discount") {
+            if (response?.data?.discount_type == "percentage") {
                 let percent = response.data.discount_amount / 100;
 
-                reservation.items.map(item => {
+                reservation.items.map((item) => {
                     let discount = item.amount * percent;
                     total_discount += discount;
-                    setTotalDiscount(prevDiscount => prevDiscount + discount);
+                    setTotalDiscount((prevDiscount) => prevDiscount + discount);
                     return {
                         tour_id: item.tour_id,
                         trip_date: item.trip_date,
@@ -160,20 +194,20 @@ export default function CheckoutPage() {
                         amount: item.amount,
                         discounted_amount: item.amount - discount,
                         discount: discount,
-                    }
-                })
+                    };
+                });
             }
         }
 
-        toast.success('Promocode exist');
+        toast.success("Promocode exist");
         setIsPromoCodeVerify(true);
-        setReservation((prevReservation) => ({...prevReservation, promocode: promocode}));
-        setTotalAmount(prevTotalAmount => prevTotalAmount - total_discount);
-    }
+        setReservation((prevReservation) => ({ ...prevReservation, promocode: promocode }));
+        setTotalAmount((prevTotalAmount) => prevTotalAmount - total_discount);
+    };
 
     const handlePromoCodeChange = (e) => {
         let value = e.target.value;
-        
+
         let total_amount = 0;
         tourItems.forEach((item) => {
             total_amount += item.total_amount;
@@ -183,7 +217,7 @@ export default function CheckoutPage() {
         setTotalDiscount(0);
         setPromoCode(value);
         setIsPromoCodeVerify(false);
-    }
+    };
 
     const displayError = (head, body) => {
         toast.error(body, head);
@@ -217,14 +251,29 @@ export default function CheckoutPage() {
                                             </span>
                                             <Spacer y={4} />
                                             <h3>
-                                                <small>When :</small> <span className="text-sm sm:text-medium">{format(new Date(tourItem.reservation_date), "MMMM dd, yyyy")}</span>
+                                                <small>When :</small>{" "}
+                                                <span className="text-sm sm:text-medium">
+                                                    {format(new Date(tourItem.reservation_date), "MMMM dd, yyyy")}
+                                                </span>
                                             </h3>
                                             <h3>
-                                                <small>How Many :</small> <span className="text-sm sm:text-medium">{tourItem.number_of_pax} x</span>
+                                                <small>Number of Pax :</small>{" "}
+                                                <span className="text-sm sm:text-medium">{tourItem.number_of_pax} pax</span>
                                             </h3>
                                             <h3>
-                                                <small>Total :</small> <span className="text-sm sm:text-medium font-bold">₱ {tourItem.total_amount?.toFixed(2)}</span>
+                                                <small>Total :</small>{" "}
+                                                <span className="text-sm sm:text-medium font-bold">₱ {tourItem.total_amount?.toFixed(2)}</span>
                                             </h3>
+                                        </div>
+                                        <div className="reservation-tour-content-action flex justify-end">
+                                            {tourItems.length > 1 && (
+                                                <Button
+                                                    onPress={() => handleRemoveCart(index)}
+                                                    className="bg-primary border-1 border-primary text-white text-tiny px-2 min-w-[3rem]"
+                                                >
+                                                    <Trash size={15} /> Remove
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +284,12 @@ export default function CheckoutPage() {
                             <div className="columns-1 sm:columns-2 my-3 space-y-3">
                                 <Input label="Email" onInput={handleEmailChange} value={reservation.email} />
                                 <div className="phone-number-input">
-                                    <PhoneInput placeholder="Enter phone number" value={reservation.contact_no} onChange={(e) => handlePhoneNumberChange(e)} className="h-full" />
+                                    <PhoneInput
+                                        placeholder="Enter phone number"
+                                        value={reservation.contact_no}
+                                        onChange={(e) => handlePhoneNumberChange(e)}
+                                        className="h-full"
+                                    />
                                 </div>
                             </div>
                             <div className="columns-1 sm:columns-2 my-3 space-y-3">
@@ -260,7 +314,9 @@ export default function CheckoutPage() {
                     <div className="checkout-summary">
                         <div className="flex">
                             <Input label="Promo Code" value={promocode} onChange={handlePromoCodeChange} />
-                            <Button className="bg-primary text-foreground h-auto" onPress={handleVerifyPromoCode}>Verify</Button>
+                            <Button className="bg-primary text-foreground h-auto" onPress={handleVerifyPromoCode}>
+                                Verify
+                            </Button>
                         </div>
                         <Spacer y={4} />
                         <Divider />
@@ -307,7 +363,8 @@ export default function CheckoutPage() {
                                                         <h2 className="mb-2 text-medium">Customer Details</h2>
                                                         <ul>
                                                             <li className="mb-2">
-                                                                <span className="font-bold">Name:</span> {reservation.firstname} {reservation.lastname}
+                                                                <span className="font-bold">Name:</span> {reservation.firstname}{" "}
+                                                                {reservation.lastname}
                                                             </li>
                                                             <li className="mb-2">
                                                                 <span className="font-bold">Email:</span> {reservation.email}
@@ -347,7 +404,11 @@ export default function CheckoutPage() {
                                                 <Button color="danger" variant="light" onPress={onClose}>
                                                     Close
                                                 </Button>
-                                                <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>
+                                                <Button
+                                                    className="bg-primary text-white"
+                                                    onClick={handleCheckoutSubmit}
+                                                    isDisabled={!isCheckoutBtnActive}
+                                                >
                                                     Proceed to Payment
                                                 </Button>
                                             </ModalFooter>
