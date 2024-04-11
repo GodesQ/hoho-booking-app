@@ -39,6 +39,8 @@ export default function LoginPage() {
         body: JSON.stringify(credentials),
       });
 
+      console.log(response);
+
       setLoginBtnDisabled(false);
 
       if (!response.ok) {

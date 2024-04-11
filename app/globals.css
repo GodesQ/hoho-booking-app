@@ -344,6 +344,12 @@ nav ul li a {
 	width: 75%;
 	text-align: center;
 }
+.tab-content {
+	display: none;
+}
+.tab-content.show {
+	display: block;
+}
 
 @media screen and (max-width: 768px) {
 	.hero-book-form {
