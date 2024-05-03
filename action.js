@@ -8,11 +8,7 @@ const secretKey = "secret";
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload) {
-    return await new SignJWT(payload)
-        .setProtectedHeader({ alg: "HS256" })
-        .setIssuedAt()
-        .setExpirationTime("1 day")
-        .sign(key);
+    return await new SignJWT(payload).setProtectedHeader({ alg: "HS256" }).setIssuedAt().setExpirationTime("1 day").sign(key);
 }
 
 export async function decrypt(input) {
@@ -32,6 +28,17 @@ export async function login(user) {
 }
 
 export async function logout() {
+    const session = await getSession();
+    
+    const response = await fetch("https://staging.philippines-hoho.ph/api/v2/logout", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${session.user.token}`,
+        },
+    });
+
     // Destroy the session
     cookies().set("session", "", { expires: new Date(0) });
 }
@@ -76,8 +83,8 @@ export async function updateUserSession(updatedInfo) {
             contact_no: updatedInfo.contact_no.number,
             countryCode: updatedInfo.contact_no.countryCode,
             isoCode: updatedInfo.contact_no.isoCode,
-        }
-    }
+        },
+    };
 
     const expires = new Date(Date.now() + 24 * 3600 * 1000);
 
@@ -91,13 +98,14 @@ export async function updateUserSession(updatedInfo) {
 }
 
 export async function getUserReservations(url, token) {
+    
     const response = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
         },
-    })
+    });
 
     // Extract JSON content from the response
     return await response.json();
@@ -107,7 +115,7 @@ export async function getAttractions(url) {
     const response = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "x-api-code": process.env.API_CODE,
             "x-api-key": process.env.API_KEY,
         },
@@ -115,14 +123,13 @@ export async function getAttractions(url) {
 
     // Extract JSON content from the response
     return await response.json();
-
 }
 
 export async function getTours(url) {
     const response = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "x-api-code": process.env.API_CODE,
             "x-api-key": process.env.API_KEY,
         },
@@ -136,7 +143,7 @@ export async function getTicketPasses(url) {
     const response = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "x-api-code": process.env.API_CODE,
             "x-api-key": process.env.API_KEY,
         },
@@ -148,10 +155,10 @@ export async function getTicketPasses(url) {
 
 export async function checkout(url, data) {
     const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "x-api-code": process.env.API_CODE,
             "x-api-key": process.env.API_KEY,
         },
@@ -163,26 +170,26 @@ export async function checkout(url, data) {
 
 export async function verifyPromoCode(url, data) {
     const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "x-api-code": process.env.API_CODE,
             "x-api-key": process.env.API_KEY,
         },
         body: JSON.stringify(data),
-    })
+    });
 
     return await response.json();
 }
 
 export async function updateProfile(url, data, token) {
     const response = await fetch(url, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
     });

@@ -51,7 +51,7 @@ export default function Home() {
                     <button className="guided-header-button text-primary hover:text-white">
                         <Link href="/tours" className='bg-transparent hover:bg-primary border-1 border-primary px-5 py-3 rounded-full flex justify-center md:justify-end gap-2'>
                             View All Tours
-                            <ArrowRight className='' size={20} />
+                            <ArrowRight size={20} />
                         </Link>
                     </button>
                 </div>
