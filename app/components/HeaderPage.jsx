@@ -1,5 +1,3 @@
-"use client"
-
 import heroBackground from '../../public/assets/bg-hero.png';
 
 const headerStyling = {

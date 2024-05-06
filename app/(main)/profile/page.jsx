@@ -57,7 +57,6 @@ export default function ProfilePage() {
     async function getTourReservations(userToken, userId) {
         const url = `https://staging.philippines-hoho.ph/api/v2/tour-reservations/users/${userId}`;
         const response = await getUserReservations(url, userToken);
-        console.log(response);
         setTourReservations(response.data);
     }
 
@@ -179,7 +178,6 @@ export default function ProfilePage() {
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </CardBody>
                                             </Card>
                                         ))
