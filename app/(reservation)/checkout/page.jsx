@@ -250,19 +250,14 @@ export default function CheckoutPage() {
                                                 {tourItem.tour.type}
                                             </span>
                                             <Spacer y={4} />
-                                            <h3>
-                                                <small>When :</small>{" "}
-                                                <span className="text-sm sm:text-medium">
-                                                    {format(new Date(tourItem.reservation_date), "MMMM dd, yyyy")}
-                                                </span>
+                                            <h3 className="text-md my-1 sm:text-md">
+                                                When : {format(new Date(tourItem.reservation_date), "MMMM dd, yyyy")}
                                             </h3>
-                                            <h3>
-                                                <small>Number of Pax :</small>{" "}
-                                                <span className="text-sm sm:text-medium">{tourItem.number_of_pax} pax</span>
+                                            <h3 className="text-md my-1 sm:text-md">
+                                                Number of Pax : {tourItem.number_of_pax} pax
                                             </h3>
-                                            <h3>
-                                                <small>Total :</small>{" "}
-                                                <span className="text-sm sm:text-medium font-bold">₱ {tourItem.total_amount?.toFixed(2)}</span>
+                                            <h3 className="text-md my-1 sm:text-md">
+                                                Total : <span className="font-semibold">{tourItem.total_amount?.toFixed(2)}</span>
                                             </h3>
                                         </div>
                                         <div className="reservation-tour-content-action flex justify-end">
