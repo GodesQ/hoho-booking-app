@@ -241,7 +241,7 @@ export default function HeroBookForm() {
                                 <DayPicker
                                     selected={new Date(reservation.reservation_date)}
                                     mode="single"
-                                    disabled={[{ before: new Date() }, { dayOfWeek: reservation?.tour?.disabled_days.map(day => parseInt(day)) ?? [] }]}
+                                    disabled={[{ before: new Date() }, { dayOfWeek: reservation?.tour?.disabled_days?.map(day => parseInt(day)) ?? [] }]}
                                     onDayClick={handleDayClick}
                                 />
                             </PopoverContent>
