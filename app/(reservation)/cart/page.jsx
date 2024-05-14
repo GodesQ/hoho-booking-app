@@ -56,7 +56,7 @@ export default function CartPage() {
                 <h2 className="text-large font-semibold">Travel Cart</h2>
                 {carts.length > 0 ? (
                     <div className="cart-container my-3">
-                        <div className="cart-list ">
+                        <div className="cart-list">
                             {carts.map((cart, index) => (
                                 <div key={index + 1} className="reservation-tour-item">
                                     <Image
@@ -79,9 +79,7 @@ export default function CartPage() {
                                             <h3 className="text-md my-1 sm:text-md">
                                                 When : {format(new Date(cart.reservation_date), "MMMM dd, yyyy")}
                                             </h3>
-                                            <h3 className="text-md my-1 sm:text-md">
-                                                Number of Pax : {cart.number_of_pax} pax
-                                            </h3>
+                                            <h3 className="text-md my-1 sm:text-md">Number of Pax : {cart.number_of_pax} pax</h3>
                                             <h3 className="text-md my-1 sm:text-md">
                                                 Total : <span className="font-semibold">{cart.total_amount?.toFixed(2)}</span>
                                             </h3>

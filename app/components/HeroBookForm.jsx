@@ -3,14 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Calendar, CalendarIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
-import {
-    Select,
-    SelectItem,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    Input,
-} from "@nextui-org/react";
+import { Select, SelectItem, Popover, PopoverTrigger, PopoverContent, Input } from "@nextui-org/react";
 import "react-day-picker/dist/style.css";
 import { API_ENDPOINT } from "@/constant";
 import { ToastContainer, toast } from "react-toastify";
@@ -48,13 +41,13 @@ export default function HeroBookForm() {
 
     useEffect(() => {
         fetchTicketPasses();
-    }, [])
+    }, []);
 
     const fetchTicketPasses = async () => {
         let url = `https://staging.philippines-hoho.ph/api/v2/ticket-passes`;
         let response = await getTicketPasses(url);
         setTicketPasses(response.data);
-    }
+    };
 
     const handleTourTypeChange = async (e) => {
         let typeValue = e.target.value;
@@ -75,7 +68,7 @@ export default function HeroBookForm() {
 
         setSelectedTour(e.target.value);
 
-        computeTotalAmount(reservation.number_of_pax, reservation.ticket_pass, selectedTour)
+        computeTotalAmount(reservation.number_of_pax, reservation.ticket_pass, selectedTour);
     };
 
     const handleDayClick = (day, modifiers) => {
@@ -83,7 +76,7 @@ export default function HeroBookForm() {
             ...prevReservation,
             reservation_date: format(day, "yyyy-MM-dd"),
         }));
-    }
+    };
 
     const handleSelectedPax = (e) => {
         const newReservation = { ...reservation, number_of_pax: e.target.value };
@@ -94,7 +87,7 @@ export default function HeroBookForm() {
         }));
 
         computeTotalAmount(newReservation.number_of_pax, reservation.ticket_pass, reservation.tour);
-    }
+    };
 
     const handleTicketPassChange = (e) => {
         let ticketPass = ticketPasses.find((ticketPass) => ticketPass.id == e.target.value);
@@ -106,7 +99,7 @@ export default function HeroBookForm() {
         }));
 
         computeTotalAmount(reservation.number_of_pax, ticketPassName, reservation.tour);
-    }
+    };
 
     const computeTotalAmount = (numberOfPax, ticketPass, tour) => {
         let totalAmount = 0;
@@ -137,7 +130,7 @@ export default function HeroBookForm() {
         setIsCheckoutLoading(true);
 
         // Retrieve existing cart data from localStorage
-        let items = await JSON.parse(localStorage.getItem("carts")) || [];
+        let items = (await JSON.parse(localStorage.getItem("carts"))) || [];
         items.push(reservation);
 
         // Store the updated cart data back in localStorage
@@ -146,17 +139,17 @@ export default function HeroBookForm() {
         setIsCheckoutLoading(false);
 
         router.push("/checkout");
-    }
+    };
 
     const handleReservationErrors = () => {
         let errors = [];
 
         for (const property in reservation) {
-            let normalProperty = property.replace(/_/g, ' ');
+            let normalProperty = property.replace(/_/g, " ");
 
-            if (reservation[property] == null || reservation[property] == '' || reservation[property] == 0) {
-                if (property === 'ticket_pass') {
-                    if (tourTypeRef.current.value === 'diy') {
+            if (reservation[property] == null || reservation[property] == "" || reservation[property] == 0) {
+                if (property === "ticket_pass") {
+                    if (tourTypeRef.current.value === "diy") {
                         toast.error(`The ${normalProperty} is required.`);
                         errors.push(normalProperty);
                     }
@@ -168,18 +161,14 @@ export default function HeroBookForm() {
         }
 
         return errors;
-    }
-
+    };
 
     return (
         <div className="hero-book-form ">
             <ToastContainer />
             <form>
                 <div className="fieldset">
-                    <div
-                        className=" form-group flex flex-wrap md:flex-nowrap gap-4"
-                        style={{ width: "20%" }}
-                    >
+                    <div className=" form-group flex flex-wrap md:flex-nowrap gap-4" style={{ width: "20%" }}>
                         <Select
                             ref={tourTypeRef}
                             label="Tour Type"
@@ -188,20 +177,13 @@ export default function HeroBookForm() {
                             onChange={handleTourTypeChange}
                         >
                             {tourType.map((tourType) => (
-                                <SelectItem
-                                    key={tourType.value}
-                                    value={tourType.value}
-                                    className="text-small"
-                                >
+                                <SelectItem key={tourType.value} value={tourType.value} className="text-small">
                                     {tourType.label}
                                 </SelectItem>
                             ))}
                         </Select>
                     </div>
-                    <div
-                        className="form-group flex flex-wrap md:flex-nowrap gap-4"
-                        style={{ width: "30%" }}
-                    >
+                    <div className="form-group flex flex-wrap md:flex-nowrap gap-4" style={{ width: "30%" }}>
                         <Select
                             label="Tours"
                             placeholder="Select tour"
@@ -223,11 +205,7 @@ export default function HeroBookForm() {
                                 <Input
                                     classNames={{
                                         label: "cursor-pointer",
-                                        input: [
-                                            "cursor-pointer",
-                                            "text-left",
-                                            "placeholder:text-black dark:placeholder:text-black",
-                                        ],
+                                        input: ["cursor-pointer", "text-left", "placeholder:text-black dark:placeholder:text-black"],
                                         description: "text-background",
                                     }}
                                     type="date"
@@ -241,27 +219,21 @@ export default function HeroBookForm() {
                                 <DayPicker
                                     selected={new Date(reservation.reservation_date)}
                                     mode="single"
-                                    disabled={[{ before: new Date() }, { dayOfWeek: reservation?.tour?.disabled_days?.map(day => parseInt(day)) ?? [] }]}
+                                    disabled={[
+                                        { before: new Date() },
+                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => parseInt(day)) ?? [] },
+                                    ]}
                                     onDayClick={handleDayClick}
                                 />
                             </PopoverContent>
                         </Popover>
                     </div>
-                    <div
-                        className="flex-1 form-group flex flex-wrap md:flex-nowrap gap-4"
-                        style={{ width: "15%" }}
-                    >
+                    <div className="flex-1 form-group flex flex-wrap md:flex-nowrap gap-4" style={{ width: "15%" }}>
                         <Select label="Pax" placeholder="Select Pax" className="max-w-xs" onChange={handleSelectedPax}>
                             {Array.from({ length: 100 }).map((_, index) => {
-                                const paxCount =
-                                    index + (reservation?.tour?.minimum_pax ? reservation?.tour?.minimum_pax : 1);
+                                const paxCount = index + (reservation?.tour?.minimum_pax ? reservation?.tour?.minimum_pax : 1);
                                 return (
-                                    <SelectItem
-                                        key={paxCount}
-                                        value={paxCount}
-                                        textValue={`${paxCount} Pax`}
-                                        classNames={{ base: "text-small" }}
-                                    >
+                                    <SelectItem key={paxCount} value={paxCount} textValue={`${paxCount} Pax`} classNames={{ base: "text-small" }}>
                                         {`${paxCount} Pax`}
                                     </SelectItem>
                                 );
@@ -269,15 +241,10 @@ export default function HeroBookForm() {
                         </Select>
                     </div>
                     <div
-                        className={"form-group flex-wrap md:flex-nowrap gap-4" + (tourTypeRef.current?.value != 'diy' ? " hidden" : "flex")}
+                        className={"form-group flex-wrap md:flex-nowrap gap-4" + (tourTypeRef.current?.value != "diy" ? " hidden" : "flex")}
                         style={{ width: "15%" }}
                     >
-                        <Select
-                            label="Ticket Pass"
-                            placeholder="Select Ticket Pass"
-                            className="max-w-xs"
-                            onChange={handleTicketPassChange}
-                        >
+                        <Select label="Ticket Pass" placeholder="Select Ticket Pass" className="max-w-xs" onChange={handleTicketPassChange}>
                             {ticketPasses.map((ticketPass) => (
                                 <SelectItem key={ticketPass.id} value={ticketPass.id}>
                                     {ticketPass.name}
@@ -287,7 +254,7 @@ export default function HeroBookForm() {
                     </div>
                 </div>
                 <button className="book-btn" type="button" disabled={isCheckoutLoading ? true : false} onClick={handleCheckoutBtn}>
-                    {isCheckoutLoading ? 'Booking...' : 'Book Now'}
+                    {isCheckoutLoading ? "Booking..." : "Book Now"}
                 </button>
             </form>
         </div>

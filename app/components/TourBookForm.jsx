@@ -83,8 +83,7 @@ export default function TourBookForm({ tour }) {
         // Store the updated cart data back in localStorage
         localStorage.setItem("carts", JSON.stringify(carts));
         router.push("/checkout");
-    }
-
+    };
 
     function handleReservationErrors() {
         let newErrors = [];
@@ -188,21 +187,27 @@ export default function TourBookForm({ tour }) {
                                                     <h4>Bracket Price One</h4>
                                                     <small>( Minimum of 4 )</small>
                                                 </div>
-                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour?.bracket_price_one).toFixed(2)}</p>
+                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                                                    ₱ {parseFloat(tour?.bracket_price_one).toFixed(2)}
+                                                </p>
                                             </div>
                                             <div className="flex justify-between items-center px-2 my-1">
                                                 <div>
                                                     <h4>Bracket Price Two</h4>
                                                     <small>( Minimum of 10 )</small>
                                                 </div>
-                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour?.bracket_price_two).toFixed(2)}</p>
+                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                                                    ₱ {parseFloat(tour?.bracket_price_two).toFixed(2)}
+                                                </p>
                                             </div>
                                             <div className="flex justify-between items-center px-2 my-1">
                                                 <div>
                                                     <h4>Bracket Price Three</h4>
                                                     <small>( Minimum of 25 )</small>
                                                 </div>
-                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">₱ {parseFloat(tour?.bracket_price_three).toFixed(2)}</p>
+                                                <p className="bg-primary p-1 px-2 text-white rounded-lg text-small">
+                                                    ₱ {parseFloat(tour?.bracket_price_three).toFixed(2)}
+                                                </p>
                                             </div>
                                         </ModalBody>
                                         <ModalFooter>
@@ -223,7 +228,11 @@ export default function TourBookForm({ tour }) {
                                 <Input
                                     classNames={{
                                         label: "cursor-pointer text-small",
-                                        input: ["cursor-pointer", "text-left", "placeholder:text-black dark:placeholder:text-black text-small leading-6"],
+                                        input: [
+                                            "cursor-pointer",
+                                            "text-left",
+                                            "placeholder:text-black dark:placeholder:text-black text-small leading-6",
+                                        ],
                                         description: "text-background",
                                     }}
                                     type="date"
@@ -234,7 +243,15 @@ export default function TourBookForm({ tour }) {
                                 />
                             </PopoverTrigger>
                             <PopoverContent>
-                                <DayPicker selected={new Date(reservation.reservation_date)} mode="single" disabled={{ before: new Date() }} onDayClick={handleDayClick} />
+                                <DayPicker
+                                    selected={new Date(reservation.reservation_date)}
+                                    mode="single"
+                                    disabled={[
+                                        { before: new Date() },
+                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => parseInt(day)) ?? [] },
+                                    ]}
+                                    onDayClick={handleDayClick}
+                                />
                             </PopoverContent>
                         </Popover>
                     </div>
@@ -275,7 +292,9 @@ export default function TourBookForm({ tour }) {
                         <Button className="bg-transparent border-primary border-1 rounded text-primary" onClick={handleAddToCart}>
                             Add to Cart
                         </Button>
-                        <Button className="bg-primary text-foreground rounded" onClick={handleBookNow}>Book Now</Button>
+                        <Button className="bg-primary text-foreground rounded" onClick={handleBookNow}>
+                            Book Now
+                        </Button>
                     </ButtonGroup>
                 </CardBody>
             </Card>

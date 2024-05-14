@@ -15,7 +15,7 @@ export default function TourDetailTab({tour}) {
                 <span className='hidden md:block'>Description</span>
                 </div>
             }  className='text-black'>
-                {tour?.description}
+                {tour?.description ?? 'No Description Found'}
             </Tab>
             <Tab key="itinerary" title={
                 <div className="flex items-center space-x-2">
