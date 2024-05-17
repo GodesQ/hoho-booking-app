@@ -39,7 +39,7 @@ export default function TourBookForm({ tour }) {
 
     const [reservation, setReservation] = useState({
         tour: tour,
-        reservation_date: format(new Date(), "yyyy-MM-dd"),
+        reservation_date: "",
         number_of_pax: null,
         ticket_pass: null,
         total_amount: 0,
@@ -151,7 +151,21 @@ export default function TourBookForm({ tour }) {
             ticket_pass: ticketPass.name,
         }));
         computeTotalAmount(reservation.number_of_pax, ticketPass.name);
-    };
+    }
+
+    const getByPassDates = (bypass_days = 0) => {
+        let today = new Date();
+
+        if (parseInt(bypass_days) < 1) return today;
+
+        const date = today.getDate() + parseInt(bypass_days);
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+
+        const fullDate = new Date(`${year}-${month}-${date}`);
+        
+        return fullDate;
+    }
 
     return (
         <div className="tour-book-form">
@@ -247,7 +261,7 @@ export default function TourBookForm({ tour }) {
                                     selected={new Date(reservation.reservation_date)}
                                     mode="single"
                                     disabled={[
-                                        { before: new Date() },
+                                        { before: getByPassDates(reservation?.tour?.bypass_days) },
                                         { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => parseInt(day)) ?? [] },
                                     ]}
                                     onDayClick={handleDayClick}

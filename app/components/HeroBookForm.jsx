@@ -163,19 +163,27 @@ export default function HeroBookForm() {
         return errors;
     };
 
+    const getByPassDates = (bypass_days = 0) => {
+        let today = new Date();
+
+        if (parseInt(bypass_days) < 1) return today;
+
+        const date = today.getDate() + parseInt(bypass_days);
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+
+        const fullDate = new Date(`${year}-${month}-${date}`);
+        
+        return fullDate;
+    };
+
     return (
         <div className="hero-book-form ">
             <ToastContainer />
             <form>
                 <div className="fieldset">
                     <div className=" form-group flex flex-wrap md:flex-nowrap gap-4" style={{ width: "20%" }}>
-                        <Select
-                            ref={tourTypeRef}
-                            label="Tour Type"
-                            placeholder="Select a type of tour"
-                            className="max-w-xs"
-                            onChange={handleTourTypeChange}
-                        >
+                        <Select ref={tourTypeRef} label="Tour Type" placeholder="Select a type of tour" className="max-w-xs" onChange={handleTourTypeChange}>
                             {tourType.map((tourType) => (
                                 <SelectItem key={tourType.value} value={tourType.value} className="text-small">
                                     {tourType.label}
@@ -184,13 +192,7 @@ export default function HeroBookForm() {
                         </Select>
                     </div>
                     <div className="form-group flex flex-wrap md:flex-nowrap gap-4" style={{ width: "30%" }}>
-                        <Select
-                            label="Tours"
-                            placeholder="Select tour"
-                            className="max-w-xs"
-                            onChange={handleTourChange}
-                            selectedKeys={selectedTour ? [selectedTour] : []}
-                        >
+                        <Select label="Tours" placeholder="Select tour" className="max-w-xs" onChange={handleTourChange} selectedKeys={selectedTour ? [selectedTour] : []}>
                             {tours.length > 0 &&
                                 tours.map((tour) => (
                                     <SelectItem key={tour.id} value={tour.id} title={tour.name}>
@@ -220,8 +222,8 @@ export default function HeroBookForm() {
                                     selected={new Date(reservation.reservation_date)}
                                     mode="single"
                                     disabled={[
-                                        { before: new Date() },
-                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => parseInt(day)) ?? [] },
+                                        { before: getByPassDates(reservation?.tour?.bypass_days) },
+                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => (day == 7 ? 0 : parseInt(day))) ?? [] },
                                     ]}
                                     onDayClick={handleDayClick}
                                 />
@@ -240,10 +242,7 @@ export default function HeroBookForm() {
                             })}
                         </Select>
                     </div>
-                    <div
-                        className={"form-group flex-wrap md:flex-nowrap gap-4" + (tourTypeRef.current?.value != "diy" ? " hidden" : "flex")}
-                        style={{ width: "15%" }}
-                    >
+                    <div className={"form-group flex-wrap md:flex-nowrap gap-4" + (tourTypeRef.current?.value != "diy" ? " hidden" : "flex")} style={{ width: "15%" }}>
                         <Select label="Ticket Pass" placeholder="Select Ticket Pass" className="max-w-xs" onChange={handleTicketPassChange}>
                             {ticketPasses.map((ticketPass) => (
                                 <SelectItem key={ticketPass.id} value={ticketPass.id}>
