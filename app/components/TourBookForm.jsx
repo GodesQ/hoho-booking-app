@@ -262,7 +262,7 @@ export default function TourBookForm({ tour }) {
                                     mode="single"
                                     disabled={[
                                         { before: getByPassDates(reservation?.tour?.bypass_days) },
-                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => parseInt(day)) ?? [] },
+                                        { dayOfWeek: reservation?.tour?.disabled_days?.map((day) => (day == 7 ? 0 : parseInt(day))) ?? [] },
                                     ]}
                                     onDayClick={handleDayClick}
                                 />
