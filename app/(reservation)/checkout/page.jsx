@@ -216,6 +216,10 @@ export default function CheckoutPage() {
         setTotalAmount(total_amount);
         setTotalDiscount(0);
         setPromoCode(value);
+        setReservation((prevReservation) => ({
+            ...prevReservation,
+            promocode: value,
+        }));
         setIsPromoCodeVerify(false);
     };
 
