@@ -20,7 +20,7 @@ export default function ReservationNavbar() {
                             <a href="#">Cart</a>
                         </li>
                         <li className={pathname == '/checkout' ? 'active' : null}>
-                            <a href="#">Payment</a>
+                            <a href="#">Checkout</a>
                         </li>
                         <li className={pathname == '/confirmation' ? 'active' : null}>
                             <a href="#">Confirmation</a>

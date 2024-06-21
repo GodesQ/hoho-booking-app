@@ -351,6 +351,52 @@ nav ul li a {
 	display: block;
 }
 
+.travel-cart-container {
+	width: 65%;
+	background: #fff;
+	@apply shadow rounded;
+}
+
+.travel-cart-header {
+	width: 100%;
+	@apply py-4 px-8 border-b-1 border-y-gray-200 font-semibold text-lg;
+}
+
+.travel-cart-table {
+	width: 100%;
+}
+
+.travel-cart-table-header {
+	width: 100%;
+	@apply flex justify-start items-center gap-3 pb-6;
+}
+
+.travel-cart-table-body {
+	width: 100%;
+}
+
+
+.travel-cart-body {
+	width: 100%;
+	@apply py-4 px-8;
+}
+
+.order-summary-container {
+	width: 35%;
+	background: #fff;
+	@apply shadow rounded border-b-8 border-t-8 border-primary;
+}
+
+.order-summary-header {
+	width: 100%;
+	text-align: center;
+	@apply py-4 px-8 border-b-1 border-y-gray-200 font-semibold text-lg;
+}
+.order-summary-body {
+	width: 100%;
+	@apply py-4 px-8;
+}
+
 @media screen and (max-width: 768px) {
 	.hero-book-form {
 		display: none;
