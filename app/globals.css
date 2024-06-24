@@ -352,7 +352,7 @@ nav ul li a {
 }
 
 .travel-cart-container {
-	width: 65%;
+	width: 67%;
 	background: #fff;
 	@apply shadow rounded;
 }
@@ -373,8 +373,8 @@ nav ul li a {
 
 .travel-cart-table-body {
 	width: 100%;
+	@apply flex justify-start items-start flex-col gap-4;
 }
-
 
 .travel-cart-body {
 	width: 100%;
@@ -382,7 +382,7 @@ nav ul li a {
 }
 
 .order-summary-container {
-	width: 35%;
+	width: 33%;
 	background: #fff;
 	@apply shadow rounded border-b-8 border-t-8 border-primary;
 }
