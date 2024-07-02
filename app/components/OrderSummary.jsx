@@ -11,14 +11,6 @@ const OrderSummary = (props) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const [financialData, setFinancialData] = useState({
-        total_amount: 0,
-        sub_amount: 0,
-        discount: 0,
-        additional_charges: 0,
-        promocode_info: {},
-    });
-
     const [promocode, setPromoCode] = useState('');
     const [hidePromoCode, setHidePromoCode] = useState(true);
 
@@ -30,59 +22,12 @@ const OrderSummary = (props) => {
             setHidePromoCode(true);
         }
 
-        getFinancialAmounts();
         setPromoCode(promocode);
     }, [props.cart_items, props.promocode]);
 
-    const getFinancialAmounts = () => {
-        let subAmount = 0;
-
-        props.cart_items.forEach((item) => {
-            subAmount += item.total_amount;
-        });
-
-        setFinancialData((prevData) => ({ ...prevData, sub_amount: subAmount, total_amount: subAmount }));
-    };
 
     const handleVerifyPromoCode = async () => {
-        const url = "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
-        const body = { code: promocode };
-
-        const response = await verifyPromoCode(url, body);
-
-        if (!response.promocode_exist) {
-            setFinancialData((prevData) => ({...prevData, promocode_info: {}}))
-            return displayError(response.message, response.error ?? response.message);
-        }
-
-        toast.success('Promocode exist');
-
-        setFinancialData((prevData) => ({...prevData, promocode_info: response.data}))
-
-        if (response?.data?.type == "discount") {
-            if(response?.data?.discount_type == "percentage") {
-                let total_discount = getTotalPercentageDiscount(response.data);
-                setFinancialData((prevData) => ({...prevData, discount: total_discount}));
-                computeTotalAmount(total_discount);
-            }
-        }
-    }
-
-    const computeTotalAmount = (discount) => {
-        let sub_amount = financialData.sub_amount;
-        setFinancialData((prevData) => ({...prevData, total_amount: sub_amount - discount}))
-    }
-
-    const getTotalPercentageDiscount = (promocode) => {
-        let percent = promocode.discount_amount / 100;
-        let total_discount = 0;
-
-        props.cart_items.forEach((item) => {
-            let discount = item.total_amount * percent;
-            total_discount += discount;
-        });
-
-        return total_discount;
+        props.handleVerifyPromoCode(promocode);
     }
 
     const handlePromoCodeChange = (e) => {
@@ -91,7 +36,6 @@ const OrderSummary = (props) => {
     }
 
     const handleRedirectToCheckout = (e) => {
-        sessionStorage.setItem('financialData', JSON.stringify(financialData));
         router.push("/checkout");
     }
 
@@ -126,11 +70,11 @@ const OrderSummary = (props) => {
 
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Sub Total</h5>
-                        <h5>{financialData.sub_amount.toFixed(2)}</h5>
+                        <h5>{props.financialData.sub_amount.toFixed(2)}</h5>
                     </div>
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Discount</h5>
-                        <h5 className="text-red-500 font-semibold">{financialData.discount.toFixed(2)}</h5>
+                        <h5 className="text-red-500 font-semibold">{props.financialData.discount.toFixed(2)}</h5>
                     </div>
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Additional Charges</h5>
@@ -138,19 +82,29 @@ const OrderSummary = (props) => {
                     </div>
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Promo Code</h5>
-                        <h5 className="text-green-600 font-semibold uppercase">{financialData?.promocode_info?.code}</h5>
+                        <h5 className="text-green-600 font-semibold uppercase">{props?.financialData?.promocode_info?.value}</h5>
                     </div>
 
                     <div className="border-t-1 border-gray-200 mt-4">
                         <div className="flex justify-between items-center my-2">
                             <h5 className="font-bold">Total Amount</h5>
-                            <h5 className="font-bold">{financialData.total_amount.toFixed(2)}</h5>
+                            <h5 className="font-bold">{props.financialData.total_amount.toFixed(2)}</h5>
                         </div>
                     </div>
                 </div>
-                <Button onClick={handleRedirectToCheckout} className="w-[100%] bg-primary text-white mt-4">
-                    CHECKOUT <SendHorizonal />
-                </Button>
+                {
+                    props?.onOpen ? (
+                        <Button onPress={props.onOpen} className={`w-[100%] bg-primary text-white mt-4 ${props?.cart_items?.length <= 0 ? 'hidden' : null }`}>
+                            Review Reservation <SendHorizonal />
+                        </Button>
+                    ) :
+                    (
+                        <Button onClick={handleRedirectToCheckout} className={`w-[100%] bg-primary text-white mt-4 ${props?.cart_items?.length <= 0 ? 'hidden' : null }`}>
+                            CHECKOUT <SendHorizonal />
+                        </Button>
+                    )
+                }
+                
             </div>
         </div>
     );

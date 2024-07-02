@@ -16,13 +16,18 @@ export default function CheckoutPage() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [promocode, setPromoCode] = useState("");
+    const [financialData, setFinancialData] = useState({
+        total_amount: 0,
+        sub_amount: 0,
+        discount: 0,
+        additional_charges: 0,
+        promocode_info: {
+            value: '',
+            is_verify: false,
+        },
+    });
 
     const [tourItems, setTourItems] = useState([]);
-
-    const [totalAmount, setTotalAmount] = useState(0);
-
-    const [totalDiscount, setTotalDiscount] = useState(0);
 
     const [reservation, setReservation] = useState({
         firstname: "",
@@ -38,6 +43,7 @@ export default function CheckoutPage() {
     const [userSession, setUserSession] = useState(null);
 
     useEffect(() => {
+
         getReservationItems();
         getUserSession();
     }, []);
@@ -58,10 +64,13 @@ export default function CheckoutPage() {
 
     function getReservationItems() {
         let tour_items = JSON.parse(localStorage.getItem("carts")) || [];
+
+        if(tour_items.length <= 0) router.back(); 
+
         setTourItems(tour_items);
 
         let reservationItems = [];
-        let totalAmount = 0;
+        let total_items_amount = 0;
 
         tour_items.forEach((item) => {
             reservationItems.push({
@@ -75,10 +84,10 @@ export default function CheckoutPage() {
                 discount: 0,
             });
 
-            totalAmount += item.total_amount;
+            total_items_amount += item.total_amount;
         });
 
-        setTotalAmount(totalAmount);
+        setFinancialData((prevData) => ({ ...prevData, total_amount: total_items_amount, sub_amount: total_items_amount }));
 
         setReservation((prevReservation) => ({
             ...prevReservation,
@@ -98,26 +107,6 @@ export default function CheckoutPage() {
             ...prevReservation,
             email: e.target.value,
         }));
-    }
-
-    function handleRemoveCart(index) {
-        // Create a copy of the current carts array
-        const newTourItems = [...tourItems];
-
-        // Remove the cart at the specified index
-        newTourItems.splice(index, 1);
-
-        // Update the state with the new array
-        setTourItems(newTourItems);
-
-        localStorage.setItem("carts", JSON.stringify(newTourItems));
-
-        let total = 0;
-        newTourItems.forEach((item) => {
-            total += item.total_amount;
-        });
-
-        setTotalAmount(total);
     }
 
     async function handleCheckoutSubmit() {
@@ -153,9 +142,9 @@ export default function CheckoutPage() {
         setCheckoutBtnActive(true);
     }
 
-    const handleVerifyPromoCode = async () => {
+    const handleVerifyPromoCode = async (promocode) => {
         const url = "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
-        const body = { code: reservation.promocode };
+        const body = { code: promocode };
 
         const response = await verifyPromoCode(url, body);
 
@@ -170,7 +159,7 @@ export default function CheckoutPage() {
                 reservation.items.map((item) => {
                     let discount = item.amount * percent;
                     total_discount += discount;
-                    setTotalDiscount((prevDiscount) => prevDiscount + discount);
+
                     return {
                         tour_id: item.tour_id,
                         trip_date: item.trip_date,
@@ -185,27 +174,19 @@ export default function CheckoutPage() {
             }
         }
 
-        toast.success("Promocode exist");
         setReservation((prevReservation) => ({ ...prevReservation, promocode: promocode }));
-        setTotalAmount((prevTotalAmount) => prevTotalAmount - total_discount);
-    };
 
-    const handlePromoCodeChange = (e) => {
-        let value = e.target.value;
-
-        let total_amount = 0;
-        tourItems.forEach((item) => {
-            total_amount += item.total_amount;
-        });
-
-        setTotalAmount(total_amount);
-        setTotalDiscount(0);
-        setPromoCode(value);
-        setReservation((prevReservation) => ({
-            ...prevReservation,
-            promocode: value,
+        setFinancialData((prevData) => ({
+            ...prevData,
+            total_amount: prevData.total_amount - total_discount,
+            discount: total_discount,
+            promocode_info: {
+                value: response?.data?.code,
+                is_verify: true,
+            }
         }));
-    }
+
+    };
 
     const displayError = (head, body) => {
         toast.error(body, head);
@@ -235,8 +216,12 @@ export default function CheckoutPage() {
                         </div>
                     </div>
 
-                    <OrderSummary cart_items={tourItems} />
-                    
+                    <OrderSummary cart_items={tourItems}
+                        handleVerifyPromoCode={handleVerifyPromoCode}
+                        financialData={financialData}
+                        onOpen={onOpen}
+                    />
+
                     <Modal size={"5xl"} isOpen={isOpen} onClose={onClose} placement="center">
                         <ModalContent>
                             {(onClose) => (
@@ -286,14 +271,14 @@ export default function CheckoutPage() {
                                                         <span className="font-bold">Items:</span> {reservation.items.length} x
                                                     </li>
                                                     <li className="mb-2">
-                                                        <span className="font-bold">Discount:</span> ₱ {totalDiscount.toFixed(2)}
+                                                        <span className="font-bold">Discount:</span> ₱ {financialData.discount.toFixed(2)}
                                                     </li>
                                                     <li className="mb-2">
-                                                        <span className="font-bold">Sub Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                        <span className="font-bold">Sub Amount:</span> ₱ {financialData.total_amount.toFixed(2)}
                                                     </li>
                                                     <Divider className="mb-2" />
                                                     <li className="mb-2">
-                                                        <span className="font-bold">Total Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                        <span className="font-bold">Total Amount:</span> ₱ {financialData.total_amount.toFixed(2)}
                                                     </li>
                                                 </ul>
                                             </div>

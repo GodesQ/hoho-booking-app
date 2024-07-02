@@ -8,7 +8,17 @@ import CartTable from "@/app/components/CartTable";
 
 export default function CartPage() {
     const [carts, setCarts] = useState([]);
-    const [cartTotalAmount, setCartTotalAmount] = useState(0);
+
+    const [financialData, setFinancialData] = useState({
+        total_amount: 0,
+        sub_amount: 0,
+        discount: 0,
+        additional_charges: 0,
+        promocode_info: {
+            value: '',
+            is_verify: false,
+        },
+    });
 
     useEffect(() => {
         getCartItems();
@@ -17,17 +27,14 @@ export default function CartPage() {
     async function getCartItems() {
         let cart_items = (await JSON.parse(localStorage.getItem("carts"))) || [];
         setCarts(cart_items);
-        calculateCartTotalAmount(cart_items);
-    }
 
-    function calculateCartTotalAmount(carts) {
-        let totalAmount = 0;
+        let total_items_amount = 0;
 
-        carts.forEach((item) => {
-            totalAmount += item.total_amount;
+        cart_items.forEach((item) => {
+            total_items_amount += item.total_amount;
         });
 
-        setCartTotalAmount(totalAmount);
+        setFinancialData((prevData) => ({...prevData, sub_amount: total_items_amount, total_amount: total_items_amount}))
     }
 
     function handleRemoveCart(index) {
@@ -37,12 +44,17 @@ export default function CartPage() {
         // Remove the cart at the specified index
         newCarts.splice(index, 1);
 
+        let total_item_amount = 0;
+
+        newCarts.forEach(item => {
+            total_item_amount += item.total_amount;
+        });
+
         // Update the state with the new array
         setCarts(newCarts);
+        setFinancialData((prevData) => ({...prevData, sub_amount: total_item_amount, total_amount: total_item_amount}))
 
         localStorage.setItem("carts", JSON.stringify(newCarts));
-
-        calculateCartTotalAmount(newCarts);
     }
 
     return (
@@ -55,7 +67,7 @@ export default function CartPage() {
                     <CartTable items={carts}  handleRemoveCart={handleRemoveCart}  />
                 </div>
 
-                <OrderSummary cart_items={carts}/>
+                <OrderSummary cart_items={carts} financialData={financialData} />
             </div>
         </div>
     );
