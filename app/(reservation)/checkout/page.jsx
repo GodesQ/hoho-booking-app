@@ -1,19 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-    Button,
-    Divider,
-    Image,
-    Input,
-    Spacer,
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    useDisclosure,
-    User,
-} from "@nextui-org/react";
+import { Button, Divider, Image, Input, Spacer, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, User } from "@nextui-org/react";
 import { format } from "date-fns";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -21,14 +8,13 @@ import { checkout, getSession, verifyPromoCode } from "@/action";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Trash } from "lucide-react";
+import OrderSummary from "@/app/components/OrderSummary";
+import CartTable from "@/app/components/CartTable";
 
 export default function CheckoutPage() {
     let router = useRouter();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-    const [isPromoCodeVerify, setIsPromoCodeVerify] = useState(false);
 
     const [promocode, setPromoCode] = useState("");
 
@@ -200,7 +186,6 @@ export default function CheckoutPage() {
         }
 
         toast.success("Promocode exist");
-        setIsPromoCodeVerify(true);
         setReservation((prevReservation) => ({ ...prevReservation, promocode: promocode }));
         setTotalAmount((prevTotalAmount) => prevTotalAmount - total_discount);
     };
@@ -220,12 +205,11 @@ export default function CheckoutPage() {
             ...prevReservation,
             promocode: value,
         }));
-        setIsPromoCodeVerify(false);
-    };
+    }
 
     const displayError = (head, body) => {
         toast.error(body, head);
-    };
+    }
 
     return (
         <div className="checkout-main-container">
@@ -234,189 +218,99 @@ export default function CheckoutPage() {
                 <h2 className="text-large font-semibold mb-4">Checkout</h2>
                 <div className="checkout-container">
                     <div className="checkout-details">
-                        <div className="w-full mb-10">
-                            {tourItems.map((tourItem, index) => (
-                                <div key={index + 1} className="reservation-tour-item">
-                                    <Image
-                                        alt={tourItem.tour.name}
-                                        className="object-cover object-top rounded-xl shadow"
-                                        src={tourItem.tour.featured_image}
-                                        width={"25%"}
-                                        classNames={{
-                                            wrapper: "w-[25%]",
-                                            img: "max-h-[80px] md:max-h-[200px] md:h-[200px] w-full",
-                                        }}
-                                    />
-                                    <div className="reservation-tour-main-content">
-                                        <div className="reservation-tour-content">
-                                            <h2 className="text-small sm:text-medium font-medium mb-1.5">{tourItem.tour.name}</h2>
-                                            <span className="bg-primary-50 font-semibold text-primary text-[12px] text-center my-2 p-1 px-3 rounded-2xl cursor-context-menu">
-                                                {tourItem.tour.type}
-                                            </span>
-                                            <Spacer y={4} />
-                                            <h3 className="text-md my-1 sm:text-md">
-                                                When : {format(new Date(tourItem.reservation_date), "MMMM dd, yyyy")}
-                                            </h3>
-                                            <h3 className="text-md my-1 sm:text-md">
-                                                Number of Pax : {tourItem.number_of_pax} pax
-                                            </h3>
-                                            <h3 className="text-md my-1 sm:text-md">
-                                                Total : <span className="font-semibold">{tourItem.total_amount?.toFixed(2)}</span>
-                                            </h3>
-                                        </div>
-                                        <div className="reservation-tour-content-action flex justify-end">
-                                            {tourItems.length > 1 && (
-                                                <Button
-                                                    onPress={() => handleRemoveCart(index)}
-                                                    className="bg-primary border-1 border-primary text-white text-tiny px-2 min-w-[3rem]"
-                                                >
-                                                    <Trash size={15} /> Remove
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        <CartTable items={tourItems} />
                         <h2 className="text-large font-semibold my-4">Contact Information</h2>
                         <div className="customer-detail-form">
                             <div className="columns-1 sm:columns-2 my-3 space-y-3">
                                 <Input label="Email" onInput={handleEmailChange} value={reservation.email} />
                                 <div className="phone-number-input">
-                                    <PhoneInput
-                                        placeholder="Enter phone number"
-                                        value={reservation.contact_no}
-                                        onChange={(e) => handlePhoneNumberChange(e)}
-                                        className="h-full"
-                                    />
+                                    <PhoneInput placeholder="Enter phone number" value={reservation.contact_no} onChange={(e) => handlePhoneNumberChange(e)} className="h-full" />
                                 </div>
                             </div>
                             <div className="columns-1 sm:columns-2 my-3 space-y-3">
-                                <Input
-                                    label="First Name"
-                                    value={reservation.firstname}
-                                    onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, firstname: e.target.value }))}
-                                />
-                                <Input
-                                    label="Last Name"
-                                    value={reservation.lastname}
-                                    onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, lastname: e.target.value }))}
-                                />
+                                <Input label="First Name" value={reservation.firstname} onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, firstname: e.target.value }))} />
+                                <Input label="Last Name" value={reservation.lastname} onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, lastname: e.target.value }))} />
                             </div>
-                            <Input
-                                label="Address"
-                                value={reservation.address}
-                                onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, address: e.target.value }))}
-                            />
+                            <Input label="Address" value={reservation.address} onInput={(e) => setReservation((prevReservation) => ({ ...prevReservation, address: e.target.value }))} />
                         </div>
                     </div>
-                    <div className="checkout-summary">
-                        <div className="flex">
-                            <Input label="Promo Code" value={promocode} onChange={handlePromoCodeChange} />
-                            <Button className="bg-primary text-foreground h-auto" onPress={handleVerifyPromoCode}>
-                                Verify
-                            </Button>
-                        </div>
-                        <Spacer y={4} />
-                        <Divider />
-                        <div className="flex justify-between my-2">
-                            <div>Items :</div>
-                            <div>{tourItems.length} x</div>
-                        </div>
-                        <div className="flex justify-between my-2">
-                            <div>Discount :</div>
-                            <div>₱ {totalDiscount.toFixed(2)}</div>
-                        </div>
-                        <div className="flex justify-between my-2">
-                            <div>Total Amount :</div>
-                            <div>₱ {parseFloat(totalAmount).toFixed(2)}</div>
-                        </div>
-                        <Divider />
-                        <div className="flex justify-center mt-3">
-                            <Button className="bg-primary text-white" onPress={onOpen}>
-                                Review Reservation
-                            </Button>
-                            <Modal size={"5xl"} isOpen={isOpen} onClose={onClose} placement="center">
-                                <ModalContent>
-                                    {(onClose) => (
-                                        <>
-                                            <ModalHeader className="flex flex-col gap-1">Review Reservation</ModalHeader>
-                                            <ModalBody>
-                                                <div className="flex flex-col lg:flex-row gap-7 lg:gap-4">
-                                                    <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
-                                                        <h2 className="mb-2 text-medium">Tour Items</h2>
-                                                        <div className="flex flex-column gap-2">
-                                                            {tourItems.map((tourItem) => (
-                                                                <User
-                                                                    key={tourItem.tour.id}
-                                                                    name={tourItem.tour.name}
-                                                                    description={tourItem.tour.type}
-                                                                    avatarProps={{
-                                                                        src: tourItem.tour.featured_image,
-                                                                    }}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                    <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
-                                                        <h2 className="mb-2 text-medium">Customer Details</h2>
-                                                        <ul>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Name:</span> {reservation.firstname}{" "}
-                                                                {reservation.lastname}
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Email:</span> {reservation.email}
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Contact Number:</span> {reservation.contact_no}
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Address:</span> {reservation.address}
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className="w-[100%] lg:w-[33%]">
-                                                        <h2 className="mb-2 text-medium">Summary</h2>
-                                                        <ul>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Promo Code:</span> {reservation.promocode}
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Items:</span> {reservation.items.length} x
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Discount:</span> ₱ {totalDiscount.toFixed(2)}
-                                                            </li>
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Sub Amount:</span> ₱ {totalAmount.toFixed(2)}
-                                                            </li>
-                                                            <Divider className="mb-2" />
-                                                            <li className="mb-2">
-                                                                <span className="font-bold">Total Amount:</span> ₱ {totalAmount.toFixed(2)}
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+
+                    <OrderSummary cart_items={tourItems} />
+                    
+                    <Modal size={"5xl"} isOpen={isOpen} onClose={onClose} placement="center">
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">Review Reservation</ModalHeader>
+                                    <ModalBody>
+                                        <div className="flex flex-col lg:flex-row gap-7 lg:gap-4">
+                                            <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
+                                                <h2 className="mb-2 text-medium">Tour Items</h2>
+                                                <div className="flex flex-column gap-2">
+                                                    {tourItems.map((tourItem) => (
+                                                        <User
+                                                            key={tourItem.tour.id}
+                                                            name={tourItem.tour.name}
+                                                            description={tourItem.tour.type}
+                                                            avatarProps={{
+                                                                src: tourItem.tour.featured_image,
+                                                            }}
+                                                        />
+                                                    ))}
                                                 </div>
-                                            </ModalBody>
-                                            <ModalFooter>
-                                                <Button color="danger" variant="light" onPress={onClose}>
-                                                    Close
-                                                </Button>
-                                                <Button
-                                                    className="bg-primary text-white"
-                                                    onClick={handleCheckoutSubmit}
-                                                    isDisabled={!isCheckoutBtnActive}
-                                                >
-                                                    Proceed to Payment
-                                                </Button>
-                                            </ModalFooter>
-                                        </>
-                                    )}
-                                </ModalContent>
-                            </Modal>
-                        </div>
-                    </div>
+                                            </div>
+                                            <div className="w-[100%] lg:w-[33%] border-none lg:border-r-1  border-grey">
+                                                <h2 className="mb-2 text-medium">Customer Details</h2>
+                                                <ul>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Name:</span> {reservation.firstname} {reservation.lastname}
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Email:</span> {reservation.email}
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Contact Number:</span> {reservation.contact_no}
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Address:</span> {reservation.address}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div className="w-[100%] lg:w-[33%]">
+                                                <h2 className="mb-2 text-medium">Summary</h2>
+                                                <ul>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Promo Code:</span> {reservation.promocode}
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Items:</span> {reservation.items.length} x
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Discount:</span> ₱ {totalDiscount.toFixed(2)}
+                                                    </li>
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Sub Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                    </li>
+                                                    <Divider className="mb-2" />
+                                                    <li className="mb-2">
+                                                        <span className="font-bold">Total Amount:</span> ₱ {totalAmount.toFixed(2)}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="danger" variant="light" onPress={onClose}>
+                                            Close
+                                        </Button>
+                                        <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>
+                                            Proceed to Payment
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
                 </div>
             </div>
         </div>

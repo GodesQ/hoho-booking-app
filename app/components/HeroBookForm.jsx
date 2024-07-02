@@ -139,7 +139,7 @@ export default function HeroBookForm() {
         setIsCheckoutLoading(false);
 
         router.push("/checkout");
-    };
+    }
 
     const handleReservationErrors = () => {
         let errors = [];

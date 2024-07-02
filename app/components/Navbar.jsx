@@ -10,6 +10,7 @@ import DefaultAvatar from '../../public/avatar.jpg';
 export default function Navbar({isWithHeader}) {
     const [session, setSession] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [itemsQuantity, setItemsQuantity] = useState(0);
 
     useEffect(() => {
         async function fetchSession() {
@@ -18,7 +19,13 @@ export default function Navbar({isWithHeader}) {
         }
 
         fetchSession();
+        getCartItems();
     }, []);
+
+    const getCartItems = async () => {
+        let cart_items = (await JSON.parse(localStorage.getItem("carts"))) || [];
+        setItemsQuantity(cart_items.length);
+    }
 
     function handleMenu() {
         if(isOpen) {
@@ -68,7 +75,12 @@ export default function Navbar({isWithHeader}) {
                 ) : (
                     <Link href='/login' className='nav-btn bg-primary rounded text-foreground'>Login Now</Link>
                 )}
-                <Link href='/cart'><ShoppingCart size={20} className='cursor-pointer cart-icon-btn' /></Link>
+                <Link href='/cart' className='relative'>
+                    <div className='w-[20px] h-auto text-center absolute top-[-8px] right-[-10px] text-xs bg-primary text-white rounded-full'>
+                        { itemsQuantity }
+                    </div>
+                    <ShoppingCart size={20} className='cursor-pointer cart-icon-btn' />
+                </Link>
             </div>
         </nav>
     );
