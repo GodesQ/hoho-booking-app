@@ -77,10 +77,6 @@ const OrderSummary = (props) => {
                         <h5 className="text-red-500 font-semibold">{props.financialData.discount.toFixed(2)}</h5>
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <h5 className="text-gray-400 font-medium">Additional Charges</h5>
-                        <h5 className="font-semibold">99.00 / Pax</h5>
-                    </div>
-                    <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Promo Code</h5>
                         <h5 className="text-green-600 font-semibold uppercase">{props?.financialData?.promocode_info?.value}</h5>
                     </div>
