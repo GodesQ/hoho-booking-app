@@ -44,7 +44,7 @@ const OrderSummary = (props) => {
     }
 
     return (
-        <div className="order-summary-container">
+        <div className="w-full lg:w-[33%] order-summary-container">
             <ToastContainer />
             <div className="order-summary-header">
                 <h2>Order Summary</h2>
@@ -75,6 +75,10 @@ const OrderSummary = (props) => {
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Discount</h5>
                         <h5 className="text-red-500 font-semibold">{props.financialData.discount.toFixed(2)}</h5>
+                    </div>
+                    <div className="flex justify-between items-center my-2">
+                        <h5 className="text-gray-400 font-medium">Additional Charges</h5>
+                        <h5 className="text-black-500 font-semibold">99 / Pax</h5>
                     </div>
                     <div className="flex justify-between items-center my-2">
                         <h5 className="text-gray-400 font-medium">Promo Code</h5>

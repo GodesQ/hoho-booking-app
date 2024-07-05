@@ -59,8 +59,8 @@ export default function CartPage() {
 
     return (
         <div className="wrapper">
-            <div className="flex justify-center items-start gap-5">
-                <div className="travel-cart-container">
+            <div className="flex justify-center items-start flex-col lg:flex-row gap-5">
+                <div className="w-[100%] lg:w-[67%] travel-cart-container">
                     <div className="travel-cart-header">
                         <h2>Travel Cart</h2>
                     </div>

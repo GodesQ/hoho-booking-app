@@ -8,8 +8,8 @@ const CartTable = (props) => {
     return (
         <div className="travel-cart-body">
             <div className="travel-cart-table">
-                <div className="travel-cart-table-header">
-                    <div className="w-[45%] font-semibold">Tour Details</div>
+                <div className="hidden sm:hidden lg:flex travel-cart-table-header">
+                    <div className="w-[35%] font-semibold">Tour Details</div>
                     <div className="w-[20%] font-semibold">Trip Date</div>
                     <div className="w-[15%] font-semibold">No. of Pax</div>
                     <div className="w-[15%] font-semibold">Total</div>
@@ -18,8 +18,8 @@ const CartTable = (props) => {
                 {props.items.length > 0 ? (
                     <div className="travel-cart-table-body">
                         {props.items.map((item, index) => (
-                            <div key={index} className="flex justify-start items-start gap-4 w-full">
-                                <div className="w-[45%]">
+                            <div key={index} className="flex justify-start items-start flex-wrap lg:flex-row gap-4 w-full">
+                                <div className="w-full sm:w-full lg:w-[35%]">
                                     <div className="flex justify-start items-start gap-3">
                                         <Image
                                             alt={item.tour.name}
@@ -37,10 +37,10 @@ const CartTable = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[20%]"> {format(new Date(item.reservation_date), "MMM dd, yyyy")}</div>
-                                <div className="w-[15%]">{item.number_of_pax} Pax</div>
-                                <div className="w-[15%]">{item.total_amount?.toFixed(2)}</div>
-                                <div className="w-[5%]">
+                                <div className="lg:w-[20%]"> {format(new Date(item.reservation_date), "MMM dd, yyyy")}</div>
+                                <div className="lg:w-[15%]">{item.number_of_pax} Pax</div>
+                                <div className="w-full sm:w-full lg:w-[15%] font-bold">₱ {item.total_amount?.toFixed(2)}</div>
+                                <div className="w-full sm:w-full lg:w-[5%]">
                                     {
                                         props.handleRemoveCart && (
                                             <Button className="min-w-[100%] bg-primary text-white px-2" onClick={() => props.handleRemoveCart()}>
