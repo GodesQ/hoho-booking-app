@@ -5,7 +5,7 @@ import Image from "next/image";
 import { API_ENDPOINT } from "@/constant";
 
 async function fetchDIYTours() {
-	let url = `https://staging.philippines-hoho.ph/api/v2/tours/diy`;
+	let url = `https://dashboard.philippines-hoho.ph/api/v2/tours/diy`;
 	let response = await fetch(url, {
 		next: { revalidate: 60 },
 		headers: {

@@ -55,7 +55,7 @@ export default function ProfilePage() {
     }
 
     async function getTourReservations(userToken, userId) {
-        const url = `https://staging.philippines-hoho.ph/api/v2/tour-reservations/users/${userId}`;
+        const url = `https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/users/${userId}`;
         const response = await getUserReservations(url, userToken);
         setTourReservations(response.data);
     }
@@ -77,7 +77,7 @@ export default function ProfilePage() {
     }
 
     const handleSubmitProfile = async (e) => {
-        const url = `https://staging.philippines-hoho.ph/api/v2/users/profile`;
+        const url = `https://dashboard.philippines-hoho.ph/api/v2/users/profile`;
         const response = await updateProfile(url, profile, userSession.user.token);
 
         if (response.status == 'success') {

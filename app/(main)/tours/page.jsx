@@ -23,6 +23,10 @@ const ToursPage = () => {
             label: "Guided",
             value: "Guided Tour",
         },
+        {
+            label: "Seasonal",
+            value: "Seasonal Tour",
+        },
     ];
 
     const [query, setQuery] = useState({
@@ -39,7 +43,7 @@ const ToursPage = () => {
     }, []);
 
     const fetchTours = async () => {
-        let url = `https://staging.philippines-hoho.ph/api/v2/tours`;
+        let url = `https://dashboard.philippines-hoho.ph/api/v2/tours`;
         let response = await getTours(url);
         setTours(response.data);
         setFilteredTours(response.data);

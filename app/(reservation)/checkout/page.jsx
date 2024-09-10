@@ -14,7 +14,8 @@ import CartTable from "@/app/components/CartTable";
 export default function CheckoutPage() {
     let router = useRouter();
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const modal1 = useDisclosure();
+    const modal2 = useDisclosure();
 
     const [financialData, setFinancialData] = useState({
         total_amount: 0,
@@ -39,7 +40,7 @@ export default function CheckoutPage() {
         promocode: "",
     });
 
-    const [isCheckoutBtnActive, setCheckoutBtnActive] = useState(true);
+    const [isBookTourBtnDisabled, setBookTourBtnDisabled] = useState(false);
     const [userSession, setUserSession] = useState(null);
 
     useEffect(() => {
@@ -76,9 +77,9 @@ export default function CheckoutPage() {
             reservationItems.push({
                 tour_id: item.tour.id,
                 trip_date: format(item.reservation_date, "yyyy-MM-dd"),
-                type: item.tour.type,
+                type: item.tour.type.replace(" Tour", ""),
                 ticket_pass: item.ticket_pass,
-                number_of_pax: parseInt(item.number_of_pax),
+                number_of_pass: parseInt(item.number_of_pax),
                 amount: item.total_amount,
                 discounted_amount: item.total_amount,
                 discount: 0,
@@ -114,10 +115,10 @@ export default function CheckoutPage() {
         if (userSession) {
             body = {
                 reserved_user_id: userSession.user.user.id,
-                items: JSON.stringify(reservation.items),
+                items: reservation.items,
                 promocode: reservation.promocode,
             };
-            url = "https://staging.philippines-hoho.ph/api/v2/tour-reservations";
+            url = "https://dashboard.philippines-hoho.ph/api/v2/tour-reservations";
         } else {
             body = {
                 firstname: reservation.firstname,
@@ -128,22 +129,24 @@ export default function CheckoutPage() {
                 items: JSON.stringify(reservation.items),
                 promocode: reservation.promocode,
             };
-            url = "https://staging.philippines-hoho.ph/api/v2/tour-reservations/guest";
+            url = "https://dashboard.philippines-hoho.ph/api/v2/tour-reservations/guest";
         }
 
-        const response = await checkout(url, body);
+        setBookTourBtnDisabled(true);
 
-        if (response.status == "paying") {
-            router.push(response.url);
+        const response = await checkout(url, body);
+        console.log(response);
+
+        if (response.status) {
+            router.push(`/tour-reservation/success/${response.transaction.id}`);
         }
 
         displayError(response.message, response.error);
-
-        setCheckoutBtnActive(true);
+        setBookTourBtnDisabled(false);
     }
 
     const handleVerifyPromoCode = async (promocode) => {
-        const url = "https://staging.philippines-hoho.ph/api/v2/promocodes/verify";
+        const url = "https://dashboard.philippines-hoho.ph/api/v2/promocodes/verify";
         const body = { code: promocode };
 
         const response = await verifyPromoCode(url, body);
@@ -219,10 +222,10 @@ export default function CheckoutPage() {
                     <OrderSummary cart_items={tourItems}
                         handleVerifyPromoCode={handleVerifyPromoCode}
                         financialData={financialData}
-                        onOpen={onOpen}
+                        onOpen={modal1.onOpen}
                     />
 
-                    <Modal size={"5xl"} isOpen={isOpen} onClose={onClose} placement="center">
+                    <Modal motionProps={{ variants: { enter: { scale: "var(--scale-enter)", y: "var(--slide-enter)", opacity: 1, transition: { scale: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1], }, opacity: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1], }, y: { type: "spring", bounce: 0, duration: 0.6, }, }, }, exit: { scale: "var(--scale-exit)", y: "var(--slide-exit)", opacity: 0, transition: { duration: 0.3, ease: [0.36, 0.66, 0.4, 1], }, }, }, }} size={"5xl"} isOpen={modal1.isOpen} onClose={modal1.onClose} placement="center">
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -288,14 +291,15 @@ export default function CheckoutPage() {
                                         <Button color="danger" variant="light" onPress={onClose}>
                                             Close
                                         </Button>
-                                        <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={!isCheckoutBtnActive}>
-                                            Proceed to Payment
+                                        <Button className="bg-primary text-white" onClick={handleCheckoutSubmit} isDisabled={isBookTourBtnDisabled}>
+                                            Book Tour
                                         </Button>
                                     </ModalFooter>
                                 </>
                             )}
                         </ModalContent>
                     </Modal>
+
                 </div>
             </div>
         </div>

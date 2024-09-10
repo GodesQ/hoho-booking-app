@@ -8,7 +8,7 @@ import Navbar from "@/app/components/Navbar";
 
 
 export async function generateStaticParams() {
-  let response = await fetch(`https://staging.philippines-hoho.ph/api/v2/tours/diy?length=5`, {
+  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/diy?length=5`, {
     headers: {
       "Content-Type": "application/json",
       'x-api-code': process.env.API_CODE,
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
 }
 
 async function getDIYTour(id) {
-  let response = await fetch(`https://staging.philippines-hoho.ph/api/v2/tours/${id}`, {
+  let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/${id}`, {
     headers: {
       "Content-Type": "application/json",
       'x-api-code': process.env.API_CODE,

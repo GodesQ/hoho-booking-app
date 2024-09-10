@@ -1,28 +1,34 @@
 import "../globals.css";
 import { Montserrat } from "next/font/google";
 import { Providers } from "../providers";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { AppWrapper } from "@/context";
+import { Image } from "@nextui-org/react";
+import messengerLogo from "../../public/messenger.png";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Book Tour - Philippines Hop On Hop Off",
-  description: 'Experience the best of the Philippines with our Book Tour website. Discover different hubs and book your DIY or guided tour. Unforgettable memories await!',
+    title: "Book Tour - Philippines Hop On Hop Off",
+    description: "Experience the best of the Philippines with our Book Tour website. Discover different hubs and book your DIY or guided tour. Unforgettable memories await!",
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en" className="scroll-smooth">
-      <body className={montserrat.className + " lightRed"}>
-        <Providers>
-          <AppWrapper>
-            {children}
-            <Footer />
-          </AppWrapper>
-        </Providers>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" className="scroll-smooth">
+            <body className={montserrat.className + " lightRed"}>
+                <Providers>
+                    <AppWrapper>
+                        {children}
+                        <Footer />
+                    </AppWrapper>
+                </Providers>
+                <div class="contact-messenger-con">
+                    <a href="https://m.me/philippineshoponhopoff" target="_blank">
+                        <Image src={messengerLogo.src} />
+                    </a>
+                </div>
+            </body>
+        </html>
+    );
 }

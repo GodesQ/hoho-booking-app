@@ -30,7 +30,7 @@ export async function login(user) {
 export async function logout() {
     const session = await getSession();
     
-    const response = await fetch("https://staging.philippines-hoho.ph/api/v2/logout", {
+    const response = await fetch("https://dashboard.philippines-hoho.ph/api/v2/logout", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -139,6 +139,20 @@ export async function getTours(url) {
     return await response.json();
 }
 
+export async function getTour(url) {
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-api-code": process.env.API_CODE,
+            "x-api-key": process.env.API_KEY,
+        },
+    });
+
+    // Extract JSON content from the response
+    return await response.json();
+}
+
 export async function getTicketPasses(url) {
     const response = await fetch(url, {
         headers: {
@@ -194,5 +208,19 @@ export async function updateProfile(url, data, token) {
         body: JSON.stringify(data),
     });
 
+    return await response.json();
+}
+
+export async function getTransaction(url) {
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-api-code": process.env.API_CODE,
+            "x-api-key": process.env.API_KEY,
+        },
+    });
+
+    // Extract JSON content from the response
     return await response.json();
 }

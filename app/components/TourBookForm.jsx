@@ -56,7 +56,7 @@ export default function TourBookForm({ tour }) {
     }, []);
 
     async function fetchTicketPasses() {
-        let url = `https://staging.philippines-hoho.ph/api/v2/ticket-passes`;
+        let url = `https://dashboard.philippines-hoho.ph/api/v2/ticket-passes`;
         let response = await getTicketPasses(url);
         setTicketPasses(response.data);
     }
@@ -124,14 +124,17 @@ export default function TourBookForm({ tour }) {
 
     const computeTotalAmount = (numberOfPax, ticketPass) => {
         let totalAmount = 0;
-        if (tour?.type == "Guided Tour") {
+        if (tour?.type == "Guided Tour" || tour?.type == "Seasonal Tour") {
             if (numberOfPax >= 25) {
                 totalAmount = tour?.bracket_price_three * numberOfPax;
             } else if (numberOfPax >= 10) {
                 totalAmount = tour?.bracket_price_two * numberOfPax;
-            } else {
+            } else if (numberOfPax >= 4) {
                 totalAmount = tour?.bracket_price_one * numberOfPax;
+            } else {
+                totalAmount = tour?.price * numberOfPax;
             }
+            console.log(totalAmount);
         } else {
             let selectedTicketPass = ticketPasses.find((pass) => pass.name === ticketPass);
             totalAmount = selectedTicketPass?.price * numberOfPax;
@@ -183,7 +186,7 @@ export default function TourBookForm({ tour }) {
                     <h2 className="text-black text-left text-small leading-6">{tour?.name}</h2>
                     <div className="flex justify-between w-full">
                         <h2 className="text-primary text-small">₱ {parseFloat(tourPrice).toFixed(2)}</h2>
-                        {tour?.type == "Guided Tour" ? (
+                        {tour?.type == "Guided Tour" || tour?.type == "Seasonal Tour" ? (
                             <a href="#" onClick={onOpen} className="text-primary text-sm">
                                 Bracket Prices
                             </a>

@@ -1,5 +1,6 @@
 import React from "react";
 import HeaderPage from "@/app/components/HeaderPage";
+import { Card, Image } from "@nextui-org/react";
 import TourBookForm from "@/app/components/TourBookForm";
 import TourDetailTab from "@/app/components/TourDetailTab";
 import GuidedTours from "@/app/components/GuidedTours";
@@ -22,7 +23,7 @@ export async function generateStaticParams() {
   }));
 }
 
-async function getGuidedTour(id) {
+async function getTour(id) {
   let response = await fetch(`https://dashboard.philippines-hoho.ph/api/v2/tours/${id}`, {
     headers: {
       "Content-Type": "application/json",
@@ -34,12 +35,12 @@ async function getGuidedTour(id) {
 }
 
 export default async function page({ params }) {
-  let tour = await getGuidedTour(params.id);
+  let tour = await getTour(params.id);
   tour = tour.data;
   return (
     <div className="lightRed ">
       <Navbar isWithHeader={true} />
-      <HeaderPage title="Guided Tour" subTitle={tour?.name} />
+      <HeaderPage title="Seasonal Tour" subTitle={tour?.name} />
       <div className="tour-container">
         <div className="tour-content">
           <TourFeaturedImage tour={tour} />

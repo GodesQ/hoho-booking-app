@@ -44,14 +44,14 @@ export default function HeroBookForm() {
     }, []);
 
     const fetchTicketPasses = async () => {
-        let url = `https://staging.philippines-hoho.ph/api/v2/ticket-passes`;
+        let url = `https://dashboard.philippines-hoho.ph/api/v2/ticket-passes`;
         let response = await getTicketPasses(url);
         setTicketPasses(response.data);
     };
 
     const handleTourTypeChange = async (e) => {
         let typeValue = e.target.value;
-        let url = `https://staging.philippines-hoho.ph/api/v2/tours?type=${typeValue}`;
+        let url = `https://dashboard.philippines-hoho.ph/api/v2/tours?type=${typeValue}`;
         let response = await getTours(url);
         setTours(response.data);
         setSelectedTour("");

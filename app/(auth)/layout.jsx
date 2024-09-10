@@ -3,6 +3,8 @@ import { Montserrat } from 'next/font/google'
 import { Providers } from '../providers'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import messengerLogo from "../../public/messenger.png";
+import { Image } from '@nextui-org/react'
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -18,6 +20,11 @@ export default function RootLayout({ children }) {
                 <Providers>
                     {children}
                 </Providers>
+                <div class="contact-messenger-con">
+                    <a href="https://m.me/philippineshoponhopoff" target="_blank">
+                        <Image src={messengerLogo.src} />
+                    </a>
+                </div>
             </body>
         </html>
     )
