@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import HeaderPage from "@/app/components/HeaderPage";
 import { Button, Card, CardBody, CardHeader, Input, Select, SelectItem } from "@nextui-org/react";
 import { API_ENDPOINT } from "@/constant";
@@ -8,6 +8,7 @@ import { getTours } from "@/action";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
+import { resolve } from "styled-jsx/css";
 
 const ToursPage = () => {
     const tourTypes = [
@@ -45,6 +46,7 @@ const ToursPage = () => {
     const fetchTours = async () => {
         let url = `https://dashboard.philippines-hoho.ph/api/v2/tours`;
         let response = await getTours(url);
+
         setTours(response.data);
         setFilteredTours(response.data);
     };
@@ -74,10 +76,7 @@ const ToursPage = () => {
     return (
         <div className="lightRed ">
             <Navbar isWithHeader={true} />
-            <HeaderPage
-                title="All Tours"
-                subTitle="Immerse Yourself in Filipino Culture: Philippine Hop On Hop Off Tours Invite You to Explore Diversity"
-            />
+            <HeaderPage title="All Tours" subTitle="Immerse Yourself in Filipino Culture: Philippine Hop On Hop Off Tours Invite You to Explore Diversity" />
             <div className="wrapper pt-3 pb-10">
                 <div className="flex justify-center items-start flex-col lg:flex-row gap-5">
                     <Card className="w-[100%] lg:w-[30%] p-3">
@@ -117,33 +116,33 @@ const ToursPage = () => {
                         </CardBody>
                     </Card>
                     <div className="w-[100%] lg:w-[70%] lg:p-3">
-                        <div className="grid grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-4">
-                            {filteredTours.length > 0 ? (
-                                filteredTours?.map((tour) => (
-                                    <Link key={tour.id} href={`/tours/${tour.type.replace("Tour", "").toLowerCase().trim()}/${tour.id}`}>
-                                        <Card className="guided-card" key={tour.id}>
-                                            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                                                <h4 className="font-bold text-small text-black">
-                                                    {tour.name.length > 20 ? tour.name.substr(0, 20) + "..." : tour.name}
-                                                </h4>
-                                                <small className="text-default-500">{tour.type}</small>
-                                            </CardHeader>
-                                            <CardBody className="overflow-visible py-2 h-auto">
-                                                <Image
-                                                    alt="Card background"
-                                                    className="object-cover object-top rounded-xl h-[180px] lg:h-[270px]"
-                                                    src={tour.featured_image}
-                                                    width={350}
-                                                    height={350}
-                                                />
-                                            </CardBody>
-                                        </Card>
-                                    </Link>
-                                ))
-                            ) : (
-                                <div className="text-black">No Tour Found</div>
-                            )}
-                        </div>
+                        <Suspense fallback={<div>Test</div>}>
+                            <div className="grid grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 gap-2 lg:gap-4">
+                                {filteredTours.length > 0 ? (
+                                    filteredTours?.map((tour) => (
+                                        <Link key={tour.id} href={`/tours/${tour.type.replace("Tour", "").toLowerCase().trim()}/${tour.id}`}>
+                                            <Card className="guided-card" key={tour.id}>
+                                                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                                                    <h4 className="font-bold text-small text-black">{tour.name.length > 20 ? tour.name.substr(0, 20) + "..." : tour.name}</h4>
+                                                    <small className="text-default-500">{tour.type}</small>
+                                                </CardHeader>
+                                                <CardBody className="overflow-visible py-2 h-auto">
+                                                    <Image
+                                                        alt="Card background"
+                                                        className="object-cover object-top rounded-xl h-[180px] lg:h-[270px]"
+                                                        src={tour.featured_image}
+                                                        width={350}
+                                                        height={350}
+                                                    />
+                                                </CardBody>
+                                            </Card>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div className="text-black">No Tour Found</div>
+                                )}
+                            </div>
+                        </Suspense>
                     </div>
                 </div>
             </div>

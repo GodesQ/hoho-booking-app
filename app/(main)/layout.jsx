@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
                         <Footer />
                     </AppWrapper>
                 </Providers>
-                <div class="contact-messenger-con">
+                <div className="contact-messenger-con">
                     <a href="https://m.me/philippineshoponhopoff" target="_blank">
                         <Image src={messengerLogo.src} />
                     </a>
