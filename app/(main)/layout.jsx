@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import { AppWrapper } from "@/context";
 import { Image } from "@nextui-org/react";
 import messengerLogo from "../../public/messenger.png";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -19,6 +21,7 @@ export default function RootLayout({ children }) {
             <body className={montserrat.className + " lightRed"}>
                 <Providers>
                     <AppWrapper>
+                        <ToastContainer />
                         {children}
                         <Footer />
                     </AppWrapper>
