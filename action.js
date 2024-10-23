@@ -29,7 +29,7 @@ export async function login(user) {
 
 export async function logout() {
     const session = await getSession();
-    
+
     const response = await fetch("https://dashboard.philippines-hoho.ph/api/v2/logout", {
         method: "POST",
         headers: {
@@ -98,7 +98,7 @@ export async function updateUserSession(updatedInfo) {
 }
 
 export async function getUserReservations(url, token) {
-    
+
     const response = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
@@ -168,6 +168,21 @@ export async function getTicketPasses(url) {
 }
 
 export async function checkout(url, data) {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-api-code": process.env.API_CODE,
+            "x-api-key": process.env.API_KEY,
+        },
+        body: JSON.stringify(data),
+    });
+
+    return await response.json();
+}
+
+export async function storeTravelTax(url, data) {
     const response = await fetch(url, {
         method: "POST",
         headers: {

@@ -30,8 +30,8 @@ const validatePassenger = (currentPassenger) => {
     if (!currentPassenger.departure_date.trim()) {
         errors.departure_date = "Departure date is required";
     }
-    if (!currentPassenger.class_type.trim()) {
-        errors.class_type = "Class type is required";
+    if (!currentPassenger.class.trim()) {
+        errors.class = "Class type is required";
     }
     if (!currentPassenger.amount) {
         errors.amount = "Amount is required";
