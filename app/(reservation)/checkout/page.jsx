@@ -23,7 +23,7 @@ export default function CheckoutPage() {
         discount: 0,
         additional_charges: 0,
         promocode_info: {
-            value: '',
+            value: "",
             is_verify: false,
         },
     });
@@ -44,7 +44,6 @@ export default function CheckoutPage() {
     const [userSession, setUserSession] = useState(null);
 
     useEffect(() => {
-
         getReservationItems();
         getUserSession();
     }, []);
@@ -66,7 +65,7 @@ export default function CheckoutPage() {
     function getReservationItems() {
         let tour_items = JSON.parse(localStorage.getItem("carts")) || [];
 
-        if(tour_items.length <= 0) router.back(); 
+        if (tour_items.length <= 0) router.back();
 
         setTourItems(tour_items);
 
@@ -135,7 +134,6 @@ export default function CheckoutPage() {
         setBookTourBtnDisabled(true);
 
         const response = await checkout(url, body);
-        console.log(response);
 
         if (response.status) {
             router.push(`/tour-reservation/success/${response.transaction.id}`);
@@ -186,14 +184,13 @@ export default function CheckoutPage() {
             promocode_info: {
                 value: response?.data?.code,
                 is_verify: true,
-            }
+            },
         }));
-
     };
 
     const displayError = (head, body) => {
         toast.error(body, head);
-    }
+    };
 
     return (
         <div className="checkout-main-container">
@@ -219,13 +216,29 @@ export default function CheckoutPage() {
                         </div>
                     </div>
 
-                    <OrderSummary cart_items={tourItems}
-                        handleVerifyPromoCode={handleVerifyPromoCode}
-                        financialData={financialData}
-                        onOpen={modal1.onOpen}
-                    />
+                    <OrderSummary cart_items={tourItems} handleVerifyPromoCode={handleVerifyPromoCode} financialData={financialData} onOpen={modal1.onOpen} />
 
-                    <Modal motionProps={{ variants: { enter: { scale: "var(--scale-enter)", y: "var(--slide-enter)", opacity: 1, transition: { scale: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1], }, opacity: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1], }, y: { type: "spring", bounce: 0, duration: 0.6, }, }, }, exit: { scale: "var(--scale-exit)", y: "var(--slide-exit)", opacity: 0, transition: { duration: 0.3, ease: [0.36, 0.66, 0.4, 1], }, }, }, }} size={"5xl"} isOpen={modal1.isOpen} onClose={modal1.onClose} placement="center">
+                    <Modal
+                        motionProps={{
+                            variants: {
+                                enter: {
+                                    scale: "var(--scale-enter)",
+                                    y: "var(--slide-enter)",
+                                    opacity: 1,
+                                    transition: {
+                                        scale: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1] },
+                                        opacity: { duration: 0.4, ease: [0.36, 0.66, 0.4, 1] },
+                                        y: { type: "spring", bounce: 0, duration: 0.6 },
+                                    },
+                                },
+                                exit: { scale: "var(--scale-exit)", y: "var(--slide-exit)", opacity: 0, transition: { duration: 0.3, ease: [0.36, 0.66, 0.4, 1] } },
+                            },
+                        }}
+                        size={"5xl"}
+                        isOpen={modal1.isOpen}
+                        onClose={modal1.onClose}
+                        placement="center"
+                    >
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -299,7 +312,6 @@ export default function CheckoutPage() {
                             )}
                         </ModalContent>
                     </Modal>
-
                 </div>
             </div>
         </div>

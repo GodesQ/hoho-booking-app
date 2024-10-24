@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import validatePassenger from "@/utils/validate_passenger";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export default function TravelTaxPage() {
     const router = useRouter();
@@ -97,8 +99,7 @@ export default function TravelTaxPage() {
         const processingFeePercentage = 0.05;
 
         return sub_amount * processingFeePercentage;
-
-    }
+    };
 
     const clearCurrentPassengerValues = () => {
         // Optionally, reset currentPassenger after adding it
@@ -168,11 +169,11 @@ export default function TravelTaxPage() {
             return;
         }
         setCurrentStep(currentStep + 1);
-    }
+    };
 
     const handlePreviousStep = () => {
         setCurrentStep(currentStep - 1);
-    }
+    };
 
     const handleSubmitTravelTax = async () => {
         try {
@@ -183,18 +184,15 @@ export default function TravelTaxPage() {
                     "x-api-code": "hoho-code-hohobookingwebsite030524",
                     "x-api-key": "hoho-keycL0QsUu5pejVaN9GBRfekKRAN030524",
                 },
-            })
+            });
 
             if (response.data.status == "paying") {
-                console.log(response.data);
                 return router.push(response.data.url);
-            } else {
-                router.push('/');
             }
         } catch (error) {
-
+            toast.error(error.message ?? "Server Error");
         }
-    }
+    };
 
     return (
         <div>
@@ -228,7 +226,7 @@ export default function TravelTaxPage() {
                     </Accordion>
 
                     <form className="my-3">
-                        <div className={`${currentStep == 1 ? 'block' : 'hidden'}`}>
+                        <div className={`${currentStep == 1 ? "block" : "hidden"}`}>
                             <div className="grid grid-cols-4 gap-3">
                                 <div className="form-group">
                                     <label aria-label="firstname" htmlFor="firstname" className="form-label">
@@ -348,6 +346,7 @@ export default function TravelTaxPage() {
                                     <label aria-label="mobile_number" htmlFor="mobile_number" className="form-label">
                                         Mobile Number
                                     </label>
+                                    {/* <PhoneInput style={{ border: "1px solid black;" }} placeholder="Enter phone number" name="mobile_number" value={currentPassenger.mobile_number} onChange={handleChange} className="h-full" /> */}
                                     <input
                                         type="text"
                                         className={`form-control ${passengerFormErrors?.mobile_number && "border border-danger"}`}
@@ -441,22 +440,39 @@ export default function TravelTaxPage() {
                             <h2 className="text-xl font-bold mb-4">Payment Summary</h2>
                             <div className="flex flex-col gap-3">
                                 <div>
-                                    <h4>Total of Passengers: <span className="font-bold">{travelTaxData.passengers.length} x</span></h4>
+                                    <h4>
+                                        Total of Passengers: <span className="font-bold">{travelTaxData.passengers.length} x</span>
+                                    </h4>
                                 </div>
                                 <div>
-                                    <h4>Processing Fee: <span className="font-bold">₱ {travelTaxData.processing_fee.toFixed(2)}</span></h4>
+                                    <h4>
+                                        Processing Fee: <span className="font-bold">₱ {travelTaxData.processing_fee.toFixed(2)}</span>
+                                    </h4>
                                 </div>
                                 <div>
-                                    <h4>Sub Amount: <span className="font-bold">₱ {travelTaxData.amount.toFixed(2)}</span></h4>
+                                    <h4>
+                                        Sub Amount: <span className="font-bold">₱ {travelTaxData.amount.toFixed(2)}</span>
+                                    </h4>
                                 </div>
                                 <div>
-                                    <h4>Total Amount: <span className="font-bold">₱ {travelTaxData.total_amount.toFixed(2)}</span></h4>
+                                    <h4>
+                                        Total Amount: <span className="font-bold">₱ {travelTaxData.total_amount.toFixed(2)}</span>
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                         <div className="flex justify-end items-center gap-2">
-                            <button className="py-2 px-2 bg-primary text-white rounded text-lg disabled:bg-gray-200" disabled={currentStep == 1 ? true : false} type="button" onClick={handlePreviousStep}>Previous </button>
-                            <button className="py-2 px-2 bg-primary text-white rounded text-lg disabled:bg-gray-200" type="button" onClick={currentStep == 2 ? handleSubmitTravelTax : handleNextStep}>{currentStep == 2 ? "Submit" : "Next"} </button>
+                            <button
+                                className="py-2 px-2 bg-primary text-white rounded text-lg disabled:bg-gray-200"
+                                disabled={currentStep == 1 ? true : false}
+                                type="button"
+                                onClick={handlePreviousStep}
+                            >
+                                Previous{" "}
+                            </button>
+                            <button className="py-2 px-2 bg-primary text-white rounded text-lg disabled:bg-gray-200" type="button" onClick={currentStep == 2 ? handleSubmitTravelTax : handleNextStep}>
+                                {currentStep == 2 ? "Submit" : "Next"}{" "}
+                            </button>
                         </div>
                     </form>
                 </div>

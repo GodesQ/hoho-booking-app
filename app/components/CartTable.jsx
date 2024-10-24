@@ -1,10 +1,10 @@
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Checkbox } from "@nextui-org/react";
 import { format } from "date-fns";
 import { Trash } from "lucide-react";
 import React from "react";
+import checkMarkIcon from "../../public/assets/check-mark.png";
 
 const CartTable = (props) => {
-
     return (
         <div className="travel-cart-body">
             <div className="travel-cart-table">
@@ -34,6 +34,10 @@ const CartTable = (props) => {
                                         <div className="w-[63%]">
                                             <h2 className="text-small sm:text-small font-medium mb-1.5">{item.tour.name}</h2>
                                             <span className="bg-primary-50 font-semibold text-primary text-[12px] text-center my-2 p-1 px-3 rounded-2xl cursor-context-menu">{item.tour.type}</span>
+                                            <div className="flex gap-1 mt-3 w-full">
+                                                <Image src={checkMarkIcon.src} width={20} />
+                                                <h6 className="text-sm">Insurance Attached</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -41,14 +45,11 @@ const CartTable = (props) => {
                                 <div className="lg:w-[15%]">{item.number_of_pax} Pax</div>
                                 <div className="w-full sm:w-full lg:w-[15%] font-bold">₱ {item.total_amount?.toFixed(2)}</div>
                                 <div className="w-full sm:w-full lg:w-[5%]">
-                                    {
-                                        props.handleRemoveCart && (
-                                            <Button className="min-w-[100%] bg-primary text-white px-2" onClick={() => props.handleRemoveCart()}>
-                                                <Trash size={20} />
-                                            </Button>
-                                        )
-                                    }
-                                    
+                                    {props.handleRemoveCart && (
+                                        <Button className="min-w-[100%] bg-primary text-white px-2" onClick={() => props.handleRemoveCart()}>
+                                            <Trash size={20} />
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         ))}
