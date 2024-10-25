@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 import validatePassenger from "@/utils/validate_passenger";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function TravelTaxPage() {
     const router = useRouter();
@@ -33,6 +33,8 @@ export default function TravelTaxPage() {
         passenger_type: "",
         amount: 1620.0,
     });
+
+    const [phone, setPhone] = useState("");
 
     const [currentFormState, setCurrentFormState] = useState("add");
 
@@ -228,7 +230,7 @@ export default function TravelTaxPage() {
                     <form className="my-3">
                         <div className={`${currentStep == 1 ? "block" : "hidden"}`}>
                             <div className="grid grid-cols-4 gap-3">
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="firstname" htmlFor="firstname" className="form-label">
                                         First Name
                                     </label>
@@ -240,7 +242,7 @@ export default function TravelTaxPage() {
                                         id="firstname"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="lastname" htmlFor="lastname" className="form-label">
                                         Last Name
                                     </label>
@@ -252,33 +254,21 @@ export default function TravelTaxPage() {
                                         id="lastname"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="middlename" htmlFor="middlename" className="form-label">
                                         Middle Name <span className="text-warning text-sm">(Optional)</span>
                                     </label>
-                                    <input
-                                        className={`form-control ${passengerFormErrors?.firstname && "border border-danger"}`}
-                                        value={currentPassenger.middlename}
-                                        onChange={handleChange}
-                                        name="middlename"
-                                        id="middlename"
-                                    />
+                                    <input className={`form-control`} value={currentPassenger.middlename} onChange={handleChange} name="middlename" id="middlename" />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="suffix" htmlFor="suffix" className="form-label">
                                         Suffix <span className="text-warning text-sm">(Optional)</span>
                                     </label>
-                                    <input
-                                        className={`form-control ${passengerFormErrors?.firstname && "border border-danger"}`}
-                                        value={currentPassenger.suffix}
-                                        onChange={handleChange}
-                                        name="suffix"
-                                        id="suffix"
-                                    />
+                                    <input className={`form-control`} value={currentPassenger.suffix} onChange={handleChange} name="suffix" id="suffix" />
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="passport_number" htmlFor="passport_number" className="form-label">
                                         Passport Number
                                     </label>
@@ -290,7 +280,7 @@ export default function TravelTaxPage() {
                                         id="passport_number"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-4">
                                     <label aria-label="ticket_number" htmlFor="ticket_number" className="form-label">
                                         Ticket Number / Booking Reference Number
                                     </label>
@@ -304,7 +294,7 @@ export default function TravelTaxPage() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-2">
                                     <RadioGroup
                                         label="Class"
                                         className="text-black"
@@ -334,7 +324,7 @@ export default function TravelTaxPage() {
                                         </Radio>
                                     </RadioGroup>
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-2">
                                     <label aria-label="amount" htmlFor="amount" className="form-label">
                                         Amount
                                     </label>
@@ -342,21 +332,18 @@ export default function TravelTaxPage() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-3 gap-3">
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-3">
                                     <label aria-label="mobile_number" htmlFor="mobile_number" className="form-label">
                                         Mobile Number
                                     </label>
-                                    {/* <PhoneInput style={{ border: "1px solid black;" }} placeholder="Enter phone number" name="mobile_number" value={currentPassenger.mobile_number} onChange={handleChange} className="h-full" /> */}
-                                    <input
-                                        type="text"
-                                        className={`form-control ${passengerFormErrors?.mobile_number && "border border-danger"}`}
+                                    <PhoneInput
+                                        prefix=""
+                                        defaultCountry="ph"
                                         value={currentPassenger.mobile_number}
-                                        onChange={handleChange}
-                                        name="mobile_number"
-                                        id="mobile_number"
+                                        onChange={(phone) => setCurrentPassenger((prevPassenger) => ({ ...prevPassenger, mobile_number: phone }))}
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-3">
                                     <label aria-label="email_address" htmlFor="email_address" className="form-label">
                                         Email Address
                                     </label>
@@ -370,7 +357,7 @@ export default function TravelTaxPage() {
                                     />
                                 </div>
 
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-3">
                                     <label aria-label="confirm_email" htmlFor="confirm_email" className="form-label">
                                         Confirm Email Address
                                     </label>
@@ -385,7 +372,7 @@ export default function TravelTaxPage() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-3 gap-3">
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-3">
                                     <label aria-label="destination" htmlFor="destination" className="form-label">
                                         Destination
                                     </label>
@@ -405,7 +392,7 @@ export default function TravelTaxPage() {
                                         ))}
                                     </Select>
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group sm:col-span-1 col-span-3">
                                     <label aria-label="departure_date" htmlFor="departure_date" className="form-label">
                                         Departure Date
                                     </label>
@@ -418,17 +405,17 @@ export default function TravelTaxPage() {
                                         id="departure_date"
                                     />
                                 </div>
-                                <div className="flex items-center">
+                                <div className="flex items-center w-full xl:w-auto">
                                     {currentFormState === "add" ? (
-                                        <button className="py-3 px-4 mt-3 bg-primary text-white rounded" type="button" onClick={handleAddPassenger}>
+                                        <button className="py-3 px-4 mt-3 bg-primary text-white rounded w-full xl:w-auto" type="button" onClick={handleAddPassenger}>
                                             Add Passenger
                                         </button>
                                     ) : (
                                         <div className="flex gap-2">
-                                            <button className="py-3 px-4 mt-3 bg-primary text-white rounded" type="button" onClick={handleUpdatePassenger}>
+                                            <button className="py-3 px-4 mt-3 bg-primary text-white rounded w-full xl:w-auto" type="button" onClick={handleUpdatePassenger}>
                                                 Update Passenger
                                             </button>
-                                            <button className="py-3 px-4 mt-3 bg-primary-100 text-primary border border-primary rounded" type="button" onClick={handleCancelForm}>
+                                            <button className="py-3 px-4 mt-3 bg-primary-100 text-primary border border-primary rounded w-full xl:w-auto" type="button" onClick={handleCancelForm}>
                                                 Cancel
                                             </button>
                                         </div>

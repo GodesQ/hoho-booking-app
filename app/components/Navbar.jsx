@@ -49,7 +49,7 @@ export default function Navbar({ isWithHeader }) {
                 <Menu size={25} color={"black"} className="menu-btn" onClick={handleMenu} />
             </div>
 
-            <ul className={isWithHeader ? "nav-list with-bg" : "nav-list"} style={{ top: isOpen ? "80px" : "-180px" }}>
+            <ul className={isWithHeader ? "nav-list with-bg" : "nav-list"} style={{ top: isOpen ? "80px" : "-200px" }}>
                 <li>
                     <Link href="/">Home</Link>
                 </li>

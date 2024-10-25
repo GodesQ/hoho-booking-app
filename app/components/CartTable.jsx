@@ -36,7 +36,7 @@ const CartTable = (props) => {
                                             <span className="bg-primary-50 font-semibold text-primary text-[12px] text-center my-2 p-1 px-3 rounded-2xl cursor-context-menu">{item.tour.type}</span>
                                             <div className="flex gap-1 mt-3 w-full">
                                                 <Image src={checkMarkIcon.src} width={20} />
-                                                <h6 className="text-sm">Insurance Attached</h6>
+                                                <h6 className="text-sm">Insurance Included</h6>
                                             </div>
                                         </div>
                                     </div>

@@ -9,8 +9,12 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import { resolve } from "styled-jsx/css";
+import { useSearchParams } from "next/navigation";
 
 const ToursPage = () => {
+    const searchParams = useSearchParams();
+    const tourTypeParam = searchParams.get("tour_type");
+
     const tourTypes = [
         {
             label: "All",
@@ -40,13 +44,23 @@ const ToursPage = () => {
     const [filteredTours, setFilteredTours] = useState([]);
 
     useEffect(() => {
+        const matchingTourType = tourTypes.find((tour) => tour.label === tourTypeParam);
+
+        setQuery((prevQuery) => ({
+            ...prevQuery,
+            type: matchingTourType ? matchingTourType.value : "",
+        }));
+
         fetchTours();
-    }, []);
+    }, [tourTypeParam]);
+
+    useEffect(() => {
+        handleFilterTours();
+    }, [query, tours]);
 
     const fetchTours = async () => {
         let url = `https://dashboard.philippines-hoho.ph/api/v2/tours`;
         let response = await getTours(url);
-
         setTours(response.data);
         setFilteredTours(response.data);
     };
